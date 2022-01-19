@@ -51,8 +51,7 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('index'))
-        if form.signup.data:
-            return redirect(url_for('login'))
+        flash(u'Username or password is incorect', 'error')
     return render_template('login.html', form=form)
 
 
@@ -62,11 +61,22 @@ def signup():
 
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
+        users = User.query.filter_by(username=form.username.data).first()
+        mymails = User.query.filter_by(email=form.email.data).first()
+        if users or mymails:
+            #db.session.query(User).delete()
+            #db.session.commit()
+            flash(u'User or email is taken', 'error')
+            return redirect(url_for('signup'))
+
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        #return redirect(url_for("signup_success"))
-    return render_template('signup.html', form=form)
+        form.username.data=''
+        form.email.data=''
+        flash(u'User added successfully!', 'success')
+    my_users = User.query.order_by(User.id)
+    return render_template('signup.html', form=form, my_users=my_users)
 
 
 @app.route('/about')
