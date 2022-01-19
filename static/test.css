@@ -1,0 +1,83 @@
+body,
+
+.NormalCharacterStyle1
+{
+	font-family : Clean Ape;
+	font-size : 90px;
+	color : #003E33;
+	color : rgb(0, 62, 51);
+}
+
+html{
+    margin: 0;
+    padding: 0.5rem 0.7rem;
+    height: 105%;
+    background: #F7F7F1;
+}
+
+.login-content{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.login-content .form-shape{
+    rectangle:
+}
+
+.container label{
+    position: relative;
+    left: 84.5718px;
+    bottom: 310px;
+}
+
+.login-content .input-div{
+    position: relative;
+    left: 155px;
+    top: 130.5259px;
+    display: grid;
+    grid-template-columns: 7% 93%;
+    margin: 10px 0;
+    padding: 5px 0;
+    border-bottom: 2px solid #d9d9d9;
+}
+
+input-div > div{
+    position: relative;
+    height: 45px;
+}
+
+.input-div < div <input{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0.5rem 0.7rem;
+}
+
+.input-div.pass{
+    margin-bottom: 4px;
+}
+
+.btn
+{
+    display: block;
+    width: 100%;
+    height: 40px;
+    border-radius: 22px;
+    outline: none;
+    border: none;
+	font-family : Rubik-Medium;
+	font-size : 24px;
+	color: #003E33;
+	text-transform: uppercase;
+	background-color : #E6FE55;
+	background-size: 200%
+	margin: 4rem 0;
+    cursor: pointer;
+    transition: .5s;
+}
