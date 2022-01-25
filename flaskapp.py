@@ -87,6 +87,10 @@ def about():
 def features():
     return render_template('features.html')
 
+@app.route('/support')
+def support():
+    return render_template('support.html')
+
 @app.route('/home')
 @login_required
 def index():
