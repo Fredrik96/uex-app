@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from xml.dom.minidom import Document
+from flask import Flask, render_template, redirect, request, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
@@ -97,7 +98,7 @@ def index():
     return render_template('profile.html', name=current_user.username)
 
 @app.route('/dashboard')
-def adashboard():
+def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/logout')
