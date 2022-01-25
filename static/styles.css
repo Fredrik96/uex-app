@@ -39,6 +39,12 @@ body {
   border-top-right-radius: 0;
 }
 
+.loginbutton{
+  background-color: #E6FE55;
+  width: 45%;
+  border: none;
+}
+
 .Style1
 {
 	font-family : Clean Ape;
@@ -112,13 +118,6 @@ body {
 	background-color: #FFF;
 }
 
-.btn
-{
-    background-color: #E6FE55;
-    width: 45%;
-    border: none;
-}
-
 .cbutton {
   background-color: #E6FE55;
   border: none;
@@ -187,4 +186,25 @@ body {
   color: #003E33;
   font-size: 30px;
   font-weight: 900;
+}
+
+.dashbbtn{
+  background-color: #E6FE55;
+  font-weight: 900;
+  padding: 0px;
+  margin: 10px;
+  font-size: 24px;
+  font-family : Rubik-Regular;
+  color: #003E33; 
+  vertical-align: middle;
+  text-align: center;
+  width: 80px;
+  height: 40px;
+  border: none;
+}
+
+.dashbbtn:hover{
+cursor: pointer;
+font-size: 26px;
+color: #00614f;
 }

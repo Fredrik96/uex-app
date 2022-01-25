@@ -92,6 +92,10 @@ def features():
 def index():
     return render_template('profile.html', name=current_user.username)
 
+@app.route('/dashboard')
+def adashboard():
+    return render_template('dashboard.html')
+
 @app.route('/logout')
 @login_required
 def logout():
