@@ -208,3 +208,18 @@ cursor: pointer;
 font-size: 26px;
 color: #00614f;
 }
+
+#DataTab {
+  border-collapse: collapse; 
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#DataTab th, #DataTab td {
+  text-align: left; 
+  padding: 12px; 
+}
+
+#DataTab tr {
+  border-bottom: 1px solid #ddd;
+}

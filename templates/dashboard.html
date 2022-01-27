@@ -16,6 +16,7 @@ Dashboard
 
 {% block scripts %}
 	<script src="{{url_for('static', filename='js/myfile.js')}}"></script>
+    <script src="{{url_for('static', filename='js/tablefilter.js')}}"></script>
 {% endblock %}
 
 {% block content %}
@@ -26,6 +27,7 @@ Dashboard
             <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
             <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
             <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
+            <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
             <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
         </div>
     </div>
@@ -33,7 +35,7 @@ Dashboard
         <div class="d-flex flex-column" style="margin-top: 80px;">
             <div class="d-flex justify-content-start align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 50px;">
                 <span class="Style3">Your dashboard</span>
-                <input type="text" class="form-control" placeholder="Search..." style="width: 250px; margin: 20px; font-size: 16px;">
+                <input type="text" id="filtersearch" onkeyup="filterFunc()" class="form-control" placeholder="Search..." style="width: 250px; margin: 20px; font-size: 16px;">
             </div>
             <div class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 258px;">
                 <div class="d-flex aling-items-start">
@@ -55,6 +57,46 @@ Dashboard
         </div>
         <div class="d-flex" style="margin-top: 80px;">
             <div class="d-flex flex-column justify-content-start border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 800px; height: 600px;">
+                <script type="text/javascript">
+                    function testfunc(){
+                        if (typeof(Storage) !== "undefined") {
+                            alert("Web storage supported!");
+                        } else {
+                            alert("Sorry! No Web Storage support")
+                        }
+                    };
+                </script>
+                <table id="DataTab" class="table table-hover table-bordered table-striped table-light">
+                    <thead>
+                        <tr>
+                            <th scope="col">Timestamp</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Data</th>
+                        </tr> 
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">time_s1</th>
+                        <td> <span>Experiment1</span></td>
+                        <td> <a href="#">Datafile1</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">time_s2</th>
+                        <td> <span>Experiment2</span></td>
+                        <td> <a href="#">Datafile2</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">time_s3</th>
+                        <td> <span>Experiment3</span></td>
+                        <td> <a href="#">Datafile3</a></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">time_s4</th>
+                        <td> <span>Experiment4</span></td>
+                        <td> <a href="#">Datafile4</a></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

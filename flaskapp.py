@@ -5,12 +5,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import InputRequired, Email, Length
 from flask_sqlalchemy  import SQLAlchemy
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'qwertyqwerty'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+#SQLite
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+#MYSQL
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mypass@localhost/app_users'
+
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -22,7 +27,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), nullable=False, unique=True)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(80))
+    password = db.Column(db.String(200))
+    #date_added = somedb.Column(somedb.DateTime, default=datetime.utcnow)
 
 
 @login_manager.user_loader
