@@ -195,6 +195,7 @@ body {
   margin: 10px;
   font-size: 24px;
   font-family : Rubik-Regular;
+  text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
   text-align: center;
@@ -207,6 +208,7 @@ body {
 cursor: pointer;
 font-size: 26px;
 color: #00614f;
+text-decoration: none;
 }
 
 #DataTab {
@@ -222,4 +224,10 @@ color: #00614f;
 
 #DataTab tr {
   border-bottom: 1px solid #ddd;
+}
+
+select.form-control {
+  -moz-appearance: none;
+   -webkit-appearance: none;
+   appearance: none;
 }

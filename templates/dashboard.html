@@ -15,6 +15,8 @@ Dashboard
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 	<script src="{{url_for('static', filename='js/myfile.js')}}"></script>
     <script src="{{url_for('static', filename='js/tablefilter.js')}}"></script>
 {% endblock %}
@@ -35,23 +37,38 @@ Dashboard
         <div class="d-flex flex-column" style="margin-top: 80px;">
             <div class="d-flex justify-content-start align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 50px;">
                 <span class="Style3">Your dashboard</span>
-                <input type="text" id="filtersearch" onkeyup="filterFunc()" class="form-control" placeholder="Search..." style="width: 250px; margin: 20px; font-size: 16px;">
+                <input type="text" id="filtersearch" onkeyup="SortByName()" class="form-control" placeholder="Search..." style="width: 250px; margin: 20px; font-size: 16px;">
             </div>
             <div class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 258px;">
                 <div class="d-flex aling-items-start">
                     <span class="Style3">Open</span>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
-                    <button type="button" class="dashbbtn rounded-pill">new</button>
+                    <a href="{{ url_for('index') }}" type="button" class="dashbbtn rounded-pill">new</a>
                     <button type="button" class="dashbbtn rounded-pill">recent</button>
                 </div>
                 <div class="d-flex aling-items-start">
                     <span class="Style3">Filter by</span>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
-                    <button type="button" class="dashbbtn rounded-pill">date</button>
-                    <button type="button" class="dashbbtn rounded-pill">title</button>
-                    <button type="button" class="dashbbtn rounded-pill">tool</button>
+                    <button id="datebtn" type="button" class="dashbbtn rounded-pill" onclick="toggleSort()">date</button>
+                    <button id="titlebtn" type="button" class="dashbbtn rounded-pill" onclick="SortByTitle()">title</button>
+                    <div class="dropdown" id="toolmenu">
+                        <button class="dashbbtn rounded-pill" type="button" id="toolsbtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onSelect="SortByTools()">
+                          tools
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="toolsbtn">
+                            <button id="drop-clear" class="dropdown-item" value="clear" type="button" onclick='ClearTools($(this).parent().parent())'>--clear--</button>
+                            <button id="drop-vid" class="dropdown-item" value="video" type="button" onclick='SortByTools($(this).parent().parent())'>video</button>
+                            <button id="drop-pict" class="dropdown-item" value="pict" type="button" onclick='SortByTools($(this).parent().parent())'>pict</button>
+                            <button id="drop-eeg" class="dropdown-item" value="eeg" type="button" onclick='SortByTools($(this).parent().parent())'>eeg</button>
+                            <button id="drop-analyt" class="dropdown-item" value="analyt" type="button" onclick='SortByTools($(this).parent().parent())'>analyt</button>
+                            <button id="drop-sens" class="dropdown-item" value="sens" type="button" onclick='SortByTools($(this).parent().parent())'>sens</button>
+                            <button id="drop-time" class="dropdown-item" value="time" type="button" onclick='SortByTools($(this).parent().parent())'>time</button>
+                            <button id="drop-cardio" class="dropdown-item" value="cardio" type="button" onclick='SortByTools($(this).parent().parent())'>cardio</button>
+                            <button id="drop-quest" class="dropdown-item" value="quest" type="button" onclick='SortByTools($(this).parent().parent())'>quest</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,28 +88,33 @@ Dashboard
                         <tr>
                             <th scope="col">Timestamp</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Tools</th>
                             <th scope="col">Data</th>
                         </tr> 
                     </thead>
-                    <tbody>
+                    <tbody id="tbody-data">
                     <tr>
-                        <th scope="row">time_s1</th>
-                        <td> <span>Experiment1</span></td>
+                        <th scope="row">12/11/2013</th>
+                        <td> <span>GameDev</span></td>
+                        <td><span>eeg,quest,sens</span></td>
                         <td> <a href="#">Datafile1</a></td>
                     </tr>
                     <tr>
-                        <th scope="row">time_s2</th>
-                        <td> <span>Experiment2</span></td>
+                        <th scope="row">10/10/2013</th>
+                        <td> <span>Gambling</span></td>
+                        <td><span>video</span></td>
                         <td> <a href="#">Datafile2</a></td>
                     </tr>
                     <tr>
-                        <th scope="row">time_s3</th>
-                        <td> <span>Experiment3</span></td>
+                        <th scope="row">13/05/2022</th>
+                        <td> <span>Education</span></td>
+                        <td><span>pict,video</span></td>
                         <td> <a href="#">Datafile3</a></td>
                     </tr>
                     <tr>
-                        <th scope="row">time_s4</th>
-                        <td> <span>Experiment4</span></td>
+                        <th scope="row">01/03/2021</th>
+                        <td> <span>Experiment</span></td>
+                        <td><span>analyt,sens,cardio</span></td>
                         <td> <a href="#">Datafile4</a></td>
                     </tr>
                     </tbody>
