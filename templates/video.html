@@ -1,0 +1,45 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Video
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+<link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
+<link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+	<script src="{{url_for('static', filename='js/myfile.js')}}"></script>
+    <script src="{{url_for('static', filename='js/tablefilter.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<body class="d-flex flex-column text-center">
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="{{ url_for('index') }}" class="Style1">UeX</a>
+        <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+            <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
+            <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
+            <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
+            <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
+            <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
+        </div>
+    </div>
+    <div class="container-fluid w-100 h-100 d-flex flex-column justify-content-between align-items-center">
+        <form method="post" action="{{ url_for('tasks') }}">
+            <a type="button" class="dashbbtn rounded-pill" href="{{ url_for('dashboard') }}">Stop</a>
+            <input type="submit" name="rec" value="startstoprec"/>
+            <input type="submit" name="start" value="startstop"/>
+        </form>
+        <img src="{{ url_for('video_feed') }}" height="50%" width="50%">
+    </div>
+</body>
+{% endblock %}
