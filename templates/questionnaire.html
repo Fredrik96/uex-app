@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
+
+    <title>User Profile</title>
+
+    </head>
+    <body class="d-flex flex-column text-center">
+        <form method="post">
+            <div class="form-check form-check-inline">
+                <label for="q1">Q1</label>
+                <input type="number" name="q1"
+                    placeholder="1-10"
+                    value="{{ request.form['q1'] }}"></input>
+                <br>
+                <label for="q2">Q2</label>
+                <input type="number" name="q2"
+                    placeholder="1-10"
+                    value="{{ request.form['q2'] }}"></input>
+                <br>
+                <label for="q3">Q3</label>
+                <input type="number" name="q3"
+                    placeholder="1-10"
+                    value="{{ request.form['q3'] }}"></input>
+                <br>
+                <label for="q4">Q4</label>
+                <input type="number" name="q4"
+                    placeholder="1-10"
+                    value="{{ request.form['q4'] }}"></input>
+                <br>
+                <label for="q5">Q5</label>
+                <input type="number" name="q5"
+                    placeholder="1-10"
+                    value="{{ request.form['q5'] }}"></input>
+                <br>
+                <label for="q6">Q6</label>
+                <input type="number" name="q6"
+                    placeholder="1-10"
+                    value="{{ request.form['q6'] }}"></input>
+                <br>
+                <label for="q7">Q7</label>
+                <input type="number" name="q7"
+                    placeholder="1-10"
+                    value="{{ request.form['q7'] }}"></input>
+                <br>
+                <label for="q8">Q8</label>
+                <input type="number" name="q8"
+                    placeholder="1-10"
+                    value="{{ request.form['q8'] }}"></input>
+                <br>
+                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+            </div>
+        </form>
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>

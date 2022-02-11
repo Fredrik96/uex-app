@@ -8,10 +8,12 @@ from flask_sqlalchemy  import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
+from flask_migrate import Migrate
 import cv2
 from threading import Thread
-
 from video import gen_frames, switch, rec, out, record, camera
+
 
 
 app = Flask(__name__)
@@ -25,9 +27,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:mypass@localhost/a
 
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+quest = [{'q1': 'ans1'},
+         {'q2': 'ans2'},
+         {'q3': 'ans3'},
+         {'q4': 'ans4'},
+         {'q5': 'ans5'},
+         {'q6': 'ans6'},
+         {'q7': 'ans7'},
+         {'q8': 'ans8'}]
 
 class UserData(db.Model):
     parttaker_id = db.Column(db.Integer, primary_key=True)
@@ -102,6 +115,9 @@ def signup():
     my_users = User.query.order_by(User.id)
     return render_template('signup.html', form=form, my_users=my_users)
 
+@app.route('/modal')
+def modal():
+    return render_template('modal.html')
 
 @app.route('/about')
 def about():
@@ -122,8 +138,6 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    camera.release()
-    cv2.destroyAllWindows()
     return render_template('dashboard.html')
 
 @app.route('/logout')
@@ -131,6 +145,51 @@ def dashboard():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+#custom error pages
+#invalid url
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+#internal server error
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500
+
+@app.route('/questionnaire', methods=('GET', 'POST'))
+def questionnaire():
+    if request.method == 'POST':
+        q1 = request.form['q1']
+        q2 = request.form['q2']
+        q3 = request.form['q3']
+        q4 = request.form['q4']
+        q5 = request.form['q5']
+        q6 = request.form['q6']
+        q7 = request.form['q7']
+        q8 = request.form['q8']
+
+        if not q1:
+            flash('q1 empty')
+        elif not q2:
+            flash('q2 empty')
+        elif not q3:
+            flash('q3 empty')
+        elif not q4:
+            flash('q4 empty')
+        elif not q5:
+            flash('q5 empty')
+        elif not q6:
+            flash('q6 empty')
+        elif not q7:
+            flash('q7 empty')
+        elif not q8:
+            flash('q8 empty')
+        else:
+            quest.append({'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'q6': q6, 'q7': q7, 'q8': q8,})
+            return redirect(url_for('dashboard'))
+
+    return render_template('questionnaire.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

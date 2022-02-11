@@ -1,132 +1,152 @@
-{% extends "bootstrap/base.html" %}
+<!doctype html>
+<html lang="en">
 
-{% block title %}
-Home
-{% endblock %}
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block styles %}
-{{super()}}
-<link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
-<link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
-<link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-{% endblock %}
+    <!-- Bootstrap CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
 
-{% block scripts %}
-	<script src="{{url_for('static', filename='js/myfile.js')}}"></script>
-{% endblock %}
+    <title>User Profile</title>
 
-{% block content %}
-<body id="dashdim" class="d-flex flex-column text-center">
-  <div class="d-flex justify-content-between align-items-center">
-    <a href="{{ url_for('index') }}" class="Style1">UeX</a>
-	<div class="d-flex">
-		<span class="Style7">Welcome, {{name}}!</span>
-	</div>
-    <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
-      <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
-      <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
-      <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
-	  <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
-	  <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
-    </div>
-  </div>
-  <div class="container-fluid w-100 h-100 d-flex justify-content-between">
-	<div class="d-flex flex-column" style="margin-top: 80px;">
-		<div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 100px;">
-			<div class="d-flex flex-column w-100">
-				<div class="d-flex align-items-start">
-					<p style="font-size: 22px; font-family: Rubik-Regular; color : #003E33;">Size</p>
-				</div>
-				<div class="d-flex justify-content-evenly">
-					<p style="font-size: 18px; font-family: Rubik-Regular; color : #000000;">Number of participants: </p>
-					<script type="text/javascript">
-						var clicks = 0;
-						function upcounter() {
-							clicks += 1;
-							document.getElementById("clicks").innerHTML = clicks;
-						};
-						function downcounter() {
-							clicks -= 1;
-							if(clicks <= 0){
-								clicks = 0;
-							}
-							document.getElementById("clicks").innerHTML = clicks;
-						};
-					</script>
-					<div style="text-align: center; vertical-align: middle;">
-						<button class="cbutton" type="button" onclick="downcounter()">-</button>
-					</div>
-					<div class="d-flex align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 30px; height: 20px; margin-top: 5px;">
-						<p style="font-size: large;"><a id="clicks">0</a></p>
-					</div>
-					<div style="text-align: center; vertical-align: middle;">
-						<button class="cbutton" type="button" onclick="upcounter()">+</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="cktab" class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 388px;">
-			<div class="d-flex aling-items-start">
-				<span class="Style3">Tools</span>
-			</div>
-			<table>
-				<div class="d-flex flex-row justify-content-evenly align-items-center">
-					<div class="d-flex align-items-center">
-						<span class="Style4">Questionaire</span>
-						<input value="quest" id="quest" class="myinput" type="checkbox">
-					</div>
-					<div class="d-flex align-items-center">
-						<span class="Style4">Time</span>
-						<input value="time" id="time" class="myinput" type="checkbox">
-					</div>
-				</div>
-				<div class="d-flex flex-row justify-content-evenly align-items-center">
-					<div class="d-flex align-items-center">
-						<span class="Style4">Analythics</span>
-						<input value="anltcs" id="analytic" class="myinput" type="checkbox">
-					</div>
-					<div class="d-flex align-items-center">
-						<span class="Style4">Video</span>
-						<input value="vid" id="video" class="myinput" type="checkbox" name="video">
-					</div>
-				</div>
-				<div class="d-flex flex-row justify-content-evenly align-items-center">
-					<div class="d-flex align-items-center">
-						<span class="Style4">Pictorial</span>
-						<input value="pict" id="pictorial" class="myinput" type="checkbox">
-					</div>
-					<div class="d-flex align-items-center">
-						<span class="Style4">Cardiography</span>
-						<input value="cardio" id="cardio" class="myinput" type="checkbox">
-					</div>
-				</div>
-				<div class="d-flex flex-row justify-content-evenly align-items-center">
-					<div class="d-flex align-items-center">
-						<span class="Style4">Encephalography</span>
-						<input value="eeg" id="eeg" class="myinput" type="checkbox">
-					</div>
-					<div class="d-flex align-items-center">
-						<span class="Style4">Sensors</span>
-						<input value="sens" id="sensors" class="myinput" type="checkbox">
-					</div>
-				</div>
-			</table>
-		</div>
-		<div class="d-flex justify-content-center align-items-center">
-			<span class="Style3">Start</span>
-			<button href="{{ url_for('index') }}" id="startbtn" type="button" class="startbutton" aria-label="Right Arrow" onclick="startFunc(true)">
-				<i class="bi bi-arrow-right"></i>
-			</button>
-		</div>
-	</div>
-	<div class="d-flex flex-row justify-content-center align-items-center">
-		<p class="text-end Style2">
-		  User testing <br> made easy. all <br> Your results <br> in one place <br> now. Organize <br> better
-		</p>
-	</div>
-  </div>
-</body>
-{% endblock %}	
+    </head>
+
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('index') }}" class="Style1">UeX</a>
+            <div class="d-flex">
+                <span class="Style7">Welcome, {{name}}!</span>
+            </div>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
+            </div>
+        </div>
+        <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
+            <div class="d-flex flex-column" style="margin-top: 80px;">
+                <div class="d-flex border1 shadow p-1 mb-5 bg-body rounded-3" style ="width: 470px; height: 100px;">
+                    <div class="d-flex flex-column w-100">
+                        <div class="d-flex align-items-start">
+                            <p style="font-size: 22px; font-family: Rubik-Regular; color : #003E33;">Size</p>
+                        </div>
+                        <div class="d-flex justify-content-evenly">
+                            <p style="font-size: 18px; font-family: Rubik-Regular; color : #000000;">Number of participants: </p>
+                            <script type="text/javascript">
+                                var clicks = 0;
+                                function upcounter() {
+                                    clicks += 1;
+                                    document.getElementById("clicks").innerHTML = clicks;
+                                };
+                                function downcounter() {
+                                    clicks -= 1;
+                                    if(clicks <= 0){
+                                        clicks = 0;
+                                    }
+                                    document.getElementById("clicks").innerHTML = clicks;
+                                };
+                            </script>
+                            <div>
+                                <button class="cbutton" type="button" onclick="downcounter()">-</button>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center border1 shadow p-1 mb-5 bg-body rounded-3" style ="width: 50px; height: 25px;">
+                                <span style="font-size: large;"><a id="clicks">0</a></span>
+                            </div>
+                            <div>
+                                <button class="cbutton" type="button" onclick="upcounter()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cktab" class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 388px;">
+                    <div class="d-flex aling-items-start">
+                        <span class="Style3">Tools</span>
+                    </div>
+                    <table id="exp_choise">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Questionaire</span>
+                                <input value="quest" id="quest" class="myinput" type="checkbox" name="quest">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Time</span>
+                                <input value="time" id="time" class="myinput" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Analythics</span>
+                                <input value="anltcs" id="analytic" class="myinput" type="checkbox">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Video</span>
+                                <input value="vid" id="video" class="myinput" type="checkbox" name="video">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Pictorial</span>
+                                <input value="pict" id="pictorial" class="myinput" type="checkbox">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Cardiography</span>
+                                <input value="cardio" id="cardio" class="myinput" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Encephalography</span>
+                                <input value="eeg" id="eeg" class="myinput" type="checkbox">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Sensors</span>
+                                <input value="sens" id="sensors" class="myinput" type="checkbox">
+                            </div>
+                        </div>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <span class="Style3">Start</span>
+                    <button type="button" class="startbutton" aria-label="Right Arrow" data-bs-toggle="modal" data-bs-target="#newExp">
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                    <div class="modal fade" id="newExp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel" style="margin: 0 auto;">Name of experiment</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <input type="text" id="expname" name="expname" placeholder="Name..." />
+                                    </form>
+                                </div>
+                                <div class="modal-footer justify-content-evenly">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
+                                    <button id="startbtn" type="submit" class="btn btn-primary" style="text-decoration: none;" onclick="startFunc()">Start</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center align-items-center">
+                <p class="text-end Style2">
+                User testing <br> made easy. all <br> Your results <br> in one place <br> now. Organize <br> better
+                </p>
+            </div>
+        </div>
+    <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="{{url_for('static', filename='js/starter.js')}}"></script>
+    </body>
+</html>
