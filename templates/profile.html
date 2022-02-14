@@ -42,20 +42,6 @@
                         </div>
                         <div class="d-flex justify-content-evenly">
                             <p style="font-size: 18px; font-family: Rubik-Regular; color : #000000;">Number of participants: </p>
-                            <script type="text/javascript">
-                                var clicks = 0;
-                                function upcounter() {
-                                    clicks += 1;
-                                    document.getElementById("clicks").innerHTML = clicks;
-                                };
-                                function downcounter() {
-                                    clicks -= 1;
-                                    if(clicks <= 0){
-                                        clicks = 0;
-                                    }
-                                    document.getElementById("clicks").innerHTML = clicks;
-                                };
-                            </script>
                             <div>
                                 <button class="cbutton" type="button" onclick="downcounter()">-</button>
                             </div>
@@ -133,7 +119,7 @@
                                 </div>
                                 <div class="modal-footer justify-content-evenly">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
-                                    <button id="startbtn" type="submit" class="btn btn-primary" style="text-decoration: none;" onclick="startFunc()">Start</button>
+                                    <button id="startbtn" type="submit" class="btn btn-primary" onclick="startFunc()">Start</button>
                                 </div>
                             </div>
                         </div>

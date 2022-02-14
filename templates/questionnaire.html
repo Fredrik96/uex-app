@@ -61,9 +61,10 @@
                     placeholder="1-10"
                     value="{{ request.form['q8'] }}"></input>
                 <br>
-                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+                <button id="questbtn" type="submit" class="btn btn-primary rounded-pill" onclick="getActiveElem()">Submit</button>
             </div>
         </form>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/starter.js')}}"></script>
     </body>
 </html>

@@ -187,7 +187,7 @@ def questionnaire():
             flash('q8 empty')
         else:
             quest.append({'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'q6': q6, 'q7': q7, 'q8': q8,})
-            return redirect(url_for('dashboard'))
+            #return redirect(url_for('dashboard'))
 
     return render_template('questionnaire.html')
 
