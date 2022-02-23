@@ -1,25 +1,30 @@
 var clicks = 0;
 var loc_clicks = localStorage.getItem("loc_clicks", 0);
-function upcounter() {
-    clicks += 1;
-    document.getElementById("clicks").innerHTML = clicks;
-    loc_clicks = localStorage.setItem("loc_clicks", clicks);
-};
 
-function downcounter() {
-    clicks -= 1;
-    if(clicks <= 0){
-        clicks = 0;
+function p_counter() {
+    const act_counter = document.activeElement.id;
+
+    if(act_counter == 'upbtn') {
+        clicks += 1;
+        document.getElementById("clicks").innerHTML = clicks;
+        loc_clicks = localStorage.setItem("loc_clicks", clicks);
     }
-    document.getElementById("clicks").innerHTML = clicks;
-    loc_clicks = localStorage.setItem("loc_clicks", clicks);
+    
+    else if(act_counter == 'downbtn') {
+        clicks -= 1;
+        if(clicks <= 0){
+            clicks = 0;
+        }
+        document.getElementById("clicks").innerHTML = clicks;
+        loc_clicks = localStorage.setItem("loc_clicks", clicks);
+    }
 };
+ 
 
 function startFunc(){
     var selected = new Array();
     var elem = document.getElementById("cktab");
-    var chks = elem.getElementsByTagName("INPUT");
-    var ck = 0; 
+    var chks = elem.getElementsByTagName("INPUT"); 
 
     for(var i = 0; i < chks.length; i++){
         if(chks[i].checked){
@@ -31,9 +36,9 @@ function startFunc(){
         const match = selected.find(element => {
             if(element.includes('vid')){
                 alert(element + " was found in : " + selected_items + " with " + clicks + " participants");
-                location.replace('dashboard');
+                location.replace('video');
             }
-            if(element.includes('quest')){
+            else if(element.includes('quest')){
                 alert(element + " was found in : " + selected_items + " with " + clicks + " participants");
                 location.replace('questionnaire');
             }
@@ -63,22 +68,38 @@ function addRow()
     newCell = newRow.insertCell( -1 );
     newCell.innerHTML = "Data";
 
-}
+};
 
-function getActiveElem() {
-    var quest_ck = (parseInt(localStorage.getItem('quest_ck'))+1);
-    localStorage.setItem("quest_ck", quest_ck.toString());
-    
-    const act_elem = document.activeElement.id;
-    var questid = document.getElementById("questbtn").id;
-    //console.log(act_elem + " , " + questid + " , " + quest_ck);
-    alert(act_elem + " , " + questid + " , " + quest_ck + " , " + loc_clicks);
-    if(quest_ck < loc_clicks && act_elem == questid) {
-        location.replace('questionnaire');
-    }
-    else {
-        localStorage.setItem('quest_ck', 0);
-        location.replace('dashboard');
-    }
-    //return act_elem;
-}
+// function getActiveElem() {
+//     var quest_ck = (parseInt(localStorage.getItem('quest_ck'))+1);
+//     if(quest_ck == null) {
+//         localStorage.setItem('quest_ck', 0);
+//     }
+//     localStorage.setItem("quest_ck", (quest_ck).toString());
+
+//     const act_elem = document.activeElement.id;
+//     var questid = document.getElementById("questbtn").id;
+//     //alert(act_elem + " , " + questid + " , " + quest_ck + " , " + loc_clicks);
+
+//     var quest1 = document.querySelector('input[name="q1"]:checked').value;
+//     var quest2 = document.querySelector('input[name="q2"]:checked').value;
+//     var quest3 = document.querySelector('input[name="q3"]:checked').value;
+//     if(!quest1 && !quest2 && !quest3){
+//         alert("No score was selected. Try again.");
+//         return false;
+//     }
+//     else{
+//         alert(quest1 + ' was selected for q1, ' + quest2 + ' was selected for q2, ' + quest3 + ' was selected for q3');
+//     }
+
+//     if(quest_ck < loc_clicks && act_elem == questid) {
+//         location.reload('questionnaire');
+//     }
+//     else {
+//         alert(act_elem + " , " + questid + " , " + quest_ck + " , " + loc_clicks);
+//         localStorage.setItem('quest_ck', 0);
+//         location.replace('dashboard');
+//         return false;
+//     }
+//     //return act_elem;
+// };

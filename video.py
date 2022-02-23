@@ -2,19 +2,24 @@ import cv2
 from datetime import datetime, time
 import os
 
-global rec, rec_frame, out, capture, switch
+global rec, rec_frame, out, switch, camera
 rec = 0
-capture = 0
 rec_frame = 0
-out = 1
-switch = True
+switch = 0
 
-camera = cv2.VideoCapture(0)
-   
 try:
     os.mkdir('./src_shots')
 except OSError as error:
     pass
+
+def getCam(param):
+    global camera
+    if param == 1:
+        camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    elif param == 0:
+        camera.release()
+        cv2.destroyAllWindows()
+    return camera
 
 def record(out):
     global rec_frame
@@ -23,16 +28,11 @@ def record(out):
         out.write(rec_frame)
 
 def gen_frames():
-    global out, capture, rec_frame
+    global rec_frame
+    camera = getCam(1)
     while True:
-        success, frame = camera.read()  # read the camera frame
+        success, frame = camera.read()
         if success:
-            if(capture):
-                capture=0
-                now = datetime.now()
-                p = os.path.sep.join(['src_shots', "shot_{}.png".format(str(now).replace(":",''))])
-                cv2.imwrite(p, frame)
-
             if(rec):
                 rec_frame=frame
                 frame= cv2.putText(cv2.flip(frame,1),"Recording...", (0,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),4)
@@ -46,4 +46,4 @@ def gen_frames():
             except Exception as e:
                 pass
         else:
-            pass
+            break

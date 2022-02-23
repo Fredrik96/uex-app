@@ -17,6 +17,8 @@
 
     <title>User Profile</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     </head>
 
     <body class="d-flex flex-column text-center">
@@ -43,13 +45,13 @@
                         <div class="d-flex justify-content-evenly">
                             <p style="font-size: 18px; font-family: Rubik-Regular; color : #000000;">Number of participants: </p>
                             <div>
-                                <button class="cbutton" type="button" onclick="downcounter()">-</button>
+                                <button id="downbtn" class="cbutton" type="button" onclick="p_counter()">-</button>
                             </div>
                             <div class="d-flex align-items-center justify-content-center border1 shadow p-1 mb-5 bg-body rounded-3" style ="width: 50px; height: 25px;">
-                                <span style="font-size: large;"><a id="clicks">0</a></span>
+                                <textarea id="clicks" name="ckbox" form="expername">0</textarea>
                             </div>
                             <div>
-                                <button class="cbutton" type="button" onclick="upcounter()">+</button>
+                                <button id="upbtn" class="cbutton" type="button" onclick="p_counter()">+</button>
                             </div>
                         </div>
                     </div>
@@ -58,52 +60,54 @@
                     <div class="d-flex aling-items-start">
                         <span class="Style3">Tools</span>
                     </div>
-                    <table id="exp_choise">
-                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                    <table>
+                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Questionaire</span>
-                                <input value="quest" id="quest" class="myinput" type="checkbox" name="quest">
+                                <label>
+                                    <input value="quest" id="quest" class="myinput" type="checkbox" name="ckbox" form="expername">
+                                </label>
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Time</span>
-                                <input value="time" id="time" class="myinput" type="checkbox">
+                                <input value="time" id="time" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Analythics</span>
-                                <input value="anltcs" id="analytic" class="myinput" type="checkbox">
+                                <input value="anltcs" id="analytic" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Video</span>
-                                <input value="vid" id="video" class="myinput" type="checkbox" name="video">
+                                <input value="vid" id="video" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Pictorial</span>
-                                <input value="pict" id="pictorial" class="myinput" type="checkbox">
+                                <input value="pict" id="pictorial" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Cardiography</span>
-                                <input value="cardio" id="cardio" class="myinput" type="checkbox">
+                                <input value="cardio" id="cardio" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Encephalography</span>
-                                <input value="eeg" id="eeg" class="myinput" type="checkbox">
+                                <input value="eeg" id="eeg" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Sensors</span>
-                                <input value="sens" id="sensors" class="myinput" type="checkbox">
+                                <input value="sens" id="sensors" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
                     </table>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <span class="Style3">Start</span>
-                    <button type="button" class="startbutton" aria-label="Right Arrow" data-bs-toggle="modal" data-bs-target="#newExp">
+                    <button id="trigmodal" type="button" class="startbutton" aria-label="Right Arrow" data-bs-toggle="modal" data-bs-target="#newExp">
                         <i class="bi bi-arrow-right"></i>
                     </button>
                     <div class="modal fade" id="newExp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -113,17 +117,36 @@
                                     <h5 class="modal-title" id="staticBackdropLabel" style="margin: 0 auto;">Name of experiment</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
-                                        <input type="text" id="expname" name="expname" placeholder="Name..." />
+                                    <form id="expername" method="POST">
+                                        <input type="text" id="expname" name="ckbox" placeholder="Name..." />
                                     </form>
                                 </div>
                                 <div class="modal-footer justify-content-evenly">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancle</button>
-                                    <button id="startbtn" type="submit" class="btn btn-primary" onclick="startFunc()">Start</button>
+                                    <button id="startbtn" type="submit" form="expername" class="btn btn-primary">Start</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#expername').on('submit',function(e){
+                                e.preventDefault();
+                                $.ajax({
+                                type : 'POST',
+                                url : '/profile',
+                                data:$('[name=ckbox]').serialize(),
+                                success: function (data) {
+                                    alert("Success!");
+                                },
+                                error: function(){
+                                    alert("error");
+                                }
+                                })
+                            });
+                        });
+                    </script> -->
                 </div>
             </div>
             <div class="d-flex flex-row justify-content-center align-items-center">
