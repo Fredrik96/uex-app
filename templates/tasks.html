@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
+
+    <title>Tasks</title>
+    </head>
+
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('profile') }}" class="Style1">UeX</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
+            </div>
+        </div>
+        <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
+            <div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: auto;">
+                <table id="ExperimentTab" class="table table-hover table-bordered table-striped table-light">
+                    <thead>
+                        <tr style="font-size: 20px;">
+                            <th scope="col">Participant ID</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Progress</th>
+                        </tr> 
+                    </thead>
+                    <tbody id="ExperimentTabBody">
+                        {% for number in howMany %}
+                            <tr style="font-size: 15px;">
+                                <th scope="row">{{ number }}</th>
+                                <td style="text-align: center;"><a href="#">Datalink</a></td>
+                                <td style="text-align: center;">
+                                    <form id="progform{{number}}" method="POST" action="{{ url_for('tasks', new_exp_id=new_exp_id) }}">
+                                        <input type="hidden" form="progform{{number}}" style="display: none;" name="session" value="In Session {{number}}"/>
+                                        <div id="sess{{number}}">
+                                            
+                                                <input id="start{{number}}" type="submit" class="btn btn-outline-success" value="Start Session {{ number }}" style="font-size: 15px;"/>
+                                            
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex flex-column border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: 100vb;">
+                <div id="showSpan"></div>
+                {{ mysession }} </br> {{ exp_session }}
+                <form id="videoform" method="post" action="{{ url_for('tasks', new_exp_id=new_exp_id) }}">
+                    <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 50px;">
+                        <a href="{{ url_for('video', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
+                        {% for elem in tools %}
+                            {% if elem == "video" %}
+                            <div class="d-flex flex-column align-items-center">
+                                <img src="{{ url_for('video_feed') }}" height="50%" width="50%">
+                                <input type="submit" name="rec" class="btn btn-primary btn-lg rounded-pill" value="start/stop rec"/>
+                                <input type="submit" name="stop" class="btn btn-primary btn-lg rounded-pill" value="Open/Close"/>
+                            </div>
+                            {% endif %}
+                            {% if elem == "analyt" %}
+                            <div class="d-flex">
+                                <input type="button" name="startanlytic" class="btn btn-primary btn-lg rounded-pill" value="Start Analythics"/>
+                            </div>
+                            {% endif %}
+                            {% if elem == "cardio" %}
+                            <div class="d-flex">
+                                <input type="button" name="startcardio" class="btn btn-primary btn-lg rounded-pill" value="Start HR"/>
+                            </div>
+                            {% endif %}
+                            {% if elem == "time" %}
+                            <div class="d-flex">
+                                <input type="button" name="starttimer" class="btn btn-primary btn-lg rounded-pill" value="Start Timer"/>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex">
+                            <input type="submit" name="next" class="btn btn-primary btn-lg rounded-pill" value="Next Page"/>
+                        </div>
+                        
+                        <div class="d-flex">
+                            <input type="hidden" form="progform{{exp_session}}" style="display: none;" name="donesess" value="Done {{exp_session}}"/>
+                            <input id="finnishbtn" type="submit" form="progform{{exp_session}}" class="btn btn-primary rounded-pill" value="Finnish"/>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" style="margin-top: 40px;">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            // function progressFunc(exp) {
+            //     document.getElementById("showSpan").innerHTML = "<span class='Style3'>Participant {{ exp_session }} in session</span>";
+            //     var sess = "In Session";
+            //     var sess_exp = sess.concat(" ", exp);
+            //     if(mysession = sess_exp) {
+            //         document.getElementById("sess{{exp_session}}").innerHTML = "<span id='session{{exp_session}}' class='sessionform'>In Progress</span>";
+            //     };
+            // };
+            $(document).ready(function(){
+                $('#start{{exp_session}}').click(function() {
+                    $('#progform{{exp_session}}').one('submit',function(e){
+                        e.preventDefault();
+                        $.ajax({
+                        type : 'POST',
+                        url : '{{ url_for("tasks", new_exp_id=new_exp_id) }}',
+                        data: $('[name=session]').serialize(),
+                        success: function (data, exp_session) {
+                            document.getElementById("showSpan").innerHTML = "<span class='Style3'>Participant {{ exp_session }} in session</span>";
+                            var sess = "In Session";
+                            var sess_exp = sess.concat(" ", exp_session);
+                            if(mysession = sess_exp) {
+                                document.getElementById("sess{{exp_session}}").innerHTML = "<span id='session{{exp_session}}' class='sessionform'>In Progress</span>";
+                            }
+                        },
+                        error: function(){
+                            alert("error");
+                        }
+                        })
+                    });
+                });
+            });
+            $('#finnishbtn').click(function() {
+                $('#progform{{exp_session}}').on('submit',function(e){
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    $.ajax({
+                    type : 'POST',
+                    url : '{{ url_for("tasks", new_exp_id=new_exp_id) }}',
+                    data: $('[name=donesess]').serialize(),
+                    success: function (data, exp_session) {
+                        document.getElementById("showSpan").innerHTML = "<span class='Style3'>Waiting...</span>";
+                        var sess = "Done";
+                        var sess_exp = sess.concat(" ", exp_session);
+                        if(mysession = sess_exp) {
+                            document.getElementById("session{{exp_session}}").innerHTML = "<span id='session{{exp_session}}' class='progressdone'>Done</span>";
+                        }
+                    },
+                    error: function(){
+                        alert("Wrong!");
+                    }
+                    })
+                });
+            });
+        </script>
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    </body>
+</html>

@@ -1,134 +1,138 @@
-{% extends "bootstrap/base.html" %}
+<!doctype html>
+<html lang="en">
 
-{% block title %}
-Dashboard
-{% endblock %}
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block styles %}
-{{super()}}
-<link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
-<link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
-<link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-{% endblock %}
+    <!-- Bootstrap CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
 
-{% block scripts %}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-	<script src="{{url_for('static', filename='js/starter.js')}}"></script>
-    <script src="{{url_for('static', filename='js/tablefilter.js')}}"></script>
-{% endblock %}
+    <title>Dashboard</title>
 
-{% block content %}
-<body class="d-flex flex-column text-center">
-    <div class="d-flex justify-content-between align-items-center">
-        <a href="{{ url_for('index') }}" class="Style1">UeX</a>
-        <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
-            <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
-            <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
-            <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
-            <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
-            <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
-        </div>
-    </div>
-    <div class="container-fluid w-100 h-100 d-flex justify-content-between">
-        <div class="d-flex flex-column" style="margin-top: 80px;">
-            <div class="d-flex justify-content-start align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 50px;">
-                <span class="Style3">Your dashboard</span>
-                <input type="text" id="filtersearch" onkeyup="SortByName()" class="form-control" placeholder="Search..." style="width: 250px; margin: 20px; font-size: 16px;">
+    </head>
+
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('profile') }}" class="Style1">UeX</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
             </div>
-            <div class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 258px;">
-                <div class="d-flex aling-items-start">
-                    <span class="Style3">Open</span>
+        </div>
+        <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
+            <div class="d-flex flex-column" style="margin-top: 80px;">
+                <div class="d-flex justify-content-start align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 50px;">
+                    <span class="Style3">Your dashboard</span>
+                    <input type="text" id="filtersearch" onkeyup="SortByName()" class="form-control" placeholder="Search..." style="width: auto; margin: 30px; font-size: 16px;">
                 </div>
-                <div class="d-flex justify-content-start align-items-center">
-                    <a href="{{ url_for('index') }}" type="button" class="dashbbtn rounded-pill">new</a>
-                    <button type="button" class="dashbbtn rounded-pill">recent</button>
-                </div>
-                <div class="d-flex aling-items-start">
-                    <span class="Style3">Filter by</span>
-                </div>
-                <div class="d-flex justify-content-start align-items-center">
-                    <button id="datebtn" type="button" class="dashbbtn rounded-pill" onclick="toggleSort()">date</button>
-                    <button id="titlebtn" type="button" class="dashbbtn rounded-pill" onclick="SortByTitle()">title</button>
-                    <div class="dropdown" id="toolmenu">
-                        <button class="dashbbtn rounded-pill" type="button" id="toolsbtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onSelect="SortByTools()">
-                          tools
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="toolsbtn">
-                            <button id="drop-clear" class="dropdown-item" value="clear" type="button" onclick='ClearTools($(this).parent().parent())'>--clear--</button>
-                            <button id="drop-vid" class="dropdown-item" value="video" type="button" onclick='SortByTools($(this).parent().parent())'>video</button>
-                            <button id="drop-pict" class="dropdown-item" value="pict" type="button" onclick='SortByTools($(this).parent().parent())'>pict</button>
-                            <button id="drop-eeg" class="dropdown-item" value="eeg" type="button" onclick='SortByTools($(this).parent().parent())'>eeg</button>
-                            <button id="drop-analyt" class="dropdown-item" value="analyt" type="button" onclick='SortByTools($(this).parent().parent())'>analyt</button>
-                            <button id="drop-sens" class="dropdown-item" value="sens" type="button" onclick='SortByTools($(this).parent().parent())'>sens</button>
-                            <button id="drop-time" class="dropdown-item" value="time" type="button" onclick='SortByTools($(this).parent().parent())'>time</button>
-                            <button id="drop-cardio" class="dropdown-item" value="cardio" type="button" onclick='SortByTools($(this).parent().parent())'>cardio</button>
-                            <button id="drop-quest" class="dropdown-item" value="quest" type="button" onclick='SortByTools($(this).parent().parent())'>quest</button>
+                <div class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 258px;">
+                    <div class="d-flex aling-items-start">
+                        <span class="Style3">Open</span>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <a href="{{ url_for('profile') }}" type="button" class="dashbbtn rounded-pill">new</a>
+                        <button id="recentbtn" type="button" class="dashbbtn rounded-pill" value="recent" onclick="toggleRecent()">recent</button>
+                    </div>
+                    <div class="d-flex aling-items-start">
+                        <span class="Style3">Filter by</span>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center">
+                        <button id="datebtn" type="button" class="dashbbtn rounded-pill" onclick="toggleSort()">date</button>
+                        <button id="titlebtn" type="button" class="dashbbtn rounded-pill" onclick="SortByTitle()">title</button>
+                        <div class="dropdown" id="toolmenu">
+                            <button class="dashbbtn rounded-pill" type="button" id="toolsbtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onSelect="SortByTools()">
+                            tools
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="toolsbtn">
+                                <button id="drop-clear" class="dropdown-item" value="clear" type="button" onclick='ClearTools($(this).parent().parent())'>--clear--</button>
+                                <button id="drop-vid" class="dropdown-item" value="video" type="button" onclick='SortByTools($(this).parent().parent())'>video</button>
+                                <button id="drop-pict" class="dropdown-item" value="pict" type="button" onclick='SortByTools($(this).parent().parent())'>pict</button>
+                                <button id="drop-analyt" class="dropdown-item" value="analyt" type="button" onclick='SortByTools($(this).parent().parent())'>analyt</button>
+                                <button id="drop-time" class="dropdown-item" value="time" type="button" onclick='SortByTools($(this).parent().parent())'>time</button>
+                                <button id="drop-cardio" class="dropdown-item" value="cardio" type="button" onclick='SortByTools($(this).parent().parent())'>cardio</button>
+                                <button id="drop-quest" class="dropdown-item" value="quest" type="button" onclick='SortByTools($(this).parent().parent())'>quest</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="d-flex" style="margin-top: 80px;">
-            <div class="d-flex flex-column justify-content-start border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 800px; height: 600px;">
-                <script type="text/javascript">
-                    function testfunc(){
-                        if (typeof(Storage) !== "undefined") {
-                            alert("Web storage supported!");
-                        } else {
-                            alert("Sorry! No Web Storage support")
-                        }
-                    };
-                </script>
-                <table id="DataTab" class="table table-hover table-bordered table-striped table-light" contenteditable="true">
-                    <thead>
-                        <tr>
-                            <th scope="col">Timestamp</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Tools</th>
-                            <th scope="col">Size</th>
-                            <th scope="col">Data</th>
-                        </tr> 
-                    </thead>
-                    <tbody id="tbody">
-                    <tr>
-                        <th scope="row">12/11/2013</th>
-                        <td><span>GameDev</span></td>
-                        <td><span>eeg,quest,sens</span></td>
-                        <td style="text-align: center;"><span>20</span></td>
-                        <td><a href="#">Datafile1</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">10/10/2013</th>
-                        <td> <span>Gambling</span></td>
-                        <td><span>video</span></td>
-                        <td style="text-align: center;"><span>50</span></td>
-                        <td> <a href="#">Datafile2</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">13/05/2022</th>
-                        <td> <span>Education</span></td>
-                        <td><span>pict,video</span></td>
-                        <td style="text-align: center;"><span>13</span></td>
-                        <td> <a href="#">Datafile3</a></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">01/03/2021</th>
-                        <td> <span>Experiment</span></td>
-                        <td><span>analyt,sens,cardio</span></td>
-                        <td style="text-align: center;"><span>44</span></td>
-                        <td> <a href="#">Datafile4</a></td>
-                    </tr>
-                    <!-- <tr>
-                        <td> <a type="button" onclick="addRow()" style="text-decoration: none;">+</a></td>
-                    </tr> -->
-                    </tbody>
-                </table>
+            <div class="d-flex" style="margin-top: 80px;">
+                <div class="d-flex flex-column justify-content-start border1 shadow p-3 mb-5 bg-body rounded-3 table-responsive" style ="width: auto; height: 400px;">
+                    <table id="DataTab" class="table table-hover table-bordered table-striped table-light">
+                        <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Tools</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Data</th>
+                                <th scope="col"></th>
+                            </tr> 
+                        </thead>
+                        <tbody id="tbody">
+                            {% for new_exp in my_exp %}
+                                {%  if new_exp.users_id == current_u_id%}
+                                <tr>
+                                    <th scope="row">{{ new_exp.date_time_added }}</th>
+                                    <td> <span>{{ new_exp.expname }}</span></td>
+                                    <td><span>{{ new_exp.tools }}</span></td>
+                                    <td style="text-align: center;"><span>{{ new_exp.number }}</span></td>
+                                    <td style="text-align: center;"><a href="#">Datalink</a></td>
+                                    <td style="text-align: center;">
+                                        <input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#datalinkadd{{ new_exp.id_table }}" value="Add"/>
+                                        <input type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#datalinkdel{{ new_exp.id_table }}" value="Delete"/>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="datalinkdel{{ new_exp.id_table }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <span>Are you shure you want to delete this file?</span>
+                                            </div>
+                                            <div class="modal-footer justify-content-evenly">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <a href="{{ url_for('delete', id=new_exp.id_table) }}" class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form id="addnewform" method="POST" action="{{ url_for('add', id=new_exp.id_table) }}">
+                                    <div class="modal fade" id="datalinkadd{{ new_exp.id_table }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <span>How many new participants will be added to the experiment?</span>
+                                                    <input type="text" name="addnew" style="width: 30px;" placeholder="0"/>
+                                                </div>
+                                                <div class="modal-footer justify-content-evenly">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</body>
-{% endblock %}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/tablefilter.js')}}"></script>
+    </body>
+</html>

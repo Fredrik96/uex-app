@@ -21,7 +21,7 @@
     <body class="d-flex flex-column align-items-center text-center">
         <div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: auto; height: auto; margin: 40px;">
             <div class="d-flex align-items-center justify-content-center">
-                <form method="post" action="/quest">
+                <form method="post" action="{{ url_for('quest', new_exp_id=new_exp_id) }}">
                     <div class="d-flex justify-content-between align-items-end">
                         <span style="font-size: large; margin-right: 20px;">How much were you able to control events?</span>
                         <div class="d-flex align-items-end">

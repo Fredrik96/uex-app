@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
 
     <title>User Profile</title>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     </head>
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('index') }}" class="Style1">UeX</a>
+            <a href="{{ url_for('profile') }}" class="Style1">UeX</a>
             <div class="d-flex">
                 <span class="Style7">Welcome, {{name}}!</span>
             </div>
@@ -61,50 +61,48 @@
                         <span class="Style3">Tools</span>
                     </div>
                     <table>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
                             <div class="d-flex align-items-center">
-                                <span class="Style4">Questionaire</span>
-                                <label>
-                                    <input value="quest" id="quest" class="myinput" type="checkbox" name="ckbox" form="expername">
-                                </label>
+                                <span class="Style4">Video</span>
+                                <input value="video" id="video" class="myinput" type="checkbox" name="ckbox" form="expername">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Analythics</span>
+                                <input value="analyt" id="analytic" class="myinput" type="checkbox" name="ckbox" form="expername">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="Style4">Cardiography</span>
+                                <input value="cardio" id="cardio" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Time</span>
                                 <input value="time" id="time" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
-                            <div class="d-flex align-items-center">
-                                <span class="Style4">Analythics</span>
-                                <input value="anltcs" id="analytic" class="myinput" type="checkbox" name="ckbox" form="expername">
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <span class="Style4">Video</span>
-                                <input value="vid" id="video" class="myinput" type="checkbox" name="ckbox" form="expername">
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
+                        <div class="d-flex flex-row justify-content-evenly align-items-center">
                             <div class="d-flex align-items-center">
                                 <span class="Style4">Pictorial</span>
                                 <input value="pict" id="pictorial" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                             <div class="d-flex align-items-center">
-                                <span class="Style4">Cardiography</span>
-                                <input value="cardio" id="cardio" class="myinput" type="checkbox" name="ckbox" form="expername">
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row justify-content-evenly align-items-center formmargin">
-                            <div class="d-flex align-items-center">
-                                <span class="Style4">Encephalography</span>
-                                <input value="eeg" id="eeg" class="myinput" type="checkbox" name="ckbox" form="expername">
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <span class="Style4">Sensors</span>
-                                <input value="sens" id="sensors" class="myinput" type="checkbox" name="ckbox" form="expername">
+                                <span class="Style4">Questionaire</span>
+                                <input value="quest" id="quest" class="myinput" type="checkbox" name="ckbox" form="expername">
                             </div>
                         </div>
                     </table>
                 </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                <span>{{ message }}</span>
+                                <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <div class="d-flex justify-content-center align-items-center">
                     <span class="Style3">Start</span>
                     <button id="trigmodal" type="button" class="startbutton" aria-label="Right Arrow" data-bs-toggle="modal" data-bs-target="#newExp">
@@ -155,6 +153,8 @@
                 </p>
             </div>
         </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="{{url_for('static', filename='js/starter.js')}}"></script>
     </body>
