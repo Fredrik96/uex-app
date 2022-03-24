@@ -13,7 +13,7 @@
     <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
-    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 
     <title>Experiments</title>
 
@@ -23,14 +23,14 @@
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-center align-items-center">
-            <a href="{{ url_for('profile') }}" class="Style1">UeX</a>
+            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
             <div class="d-flex">
                 <span class="Style3">{{ parttakers }} partisipants remaining</span>
             </div>
         </div>
         <div class="d-flex justify-content-center">
             <div class="d-flex align-items-center justify-content-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 400px; height: 400px;">
-                <form id="startform" action="{{ url_for('exp_handler', new_exp_id=new_exp_id)}}" method="POST">
+                <form id="startform" action="{{ url_for('main.exp_handler', new_exp_id=new_exp_id)}}" method="POST">
                 {% if parttakers > 0 %}
                     
                     <input type="submit" name="startexp" form="startform" class="btn btn-primary btn-lg rounded-pill" value="Start Experiment">

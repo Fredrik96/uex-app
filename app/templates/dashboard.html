@@ -13,7 +13,7 @@
     <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
-    <link rel="stylesheet" href="{{url_for('.static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 
     <title>Dashboard</title>
 
@@ -21,13 +21,13 @@
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('profile') }}" class="Style1">UeX</a>
+            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
             <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
-                <a href="{{ url_for('about') }}" class="pe-auto Style3">About</a>
-                <a href="{{ url_for('features') }}" class="pe-auto Style3">Features</a>
-                <a href="{{ url_for('support') }}" class="pe-auto Style3">Support</a>
-                <a href="{{ url_for('dashboard') }}" class="pe-auto Style3">Dashboard</a>
-                <a href="{{ url_for('logout') }}" class="pe-auto Style3">LogOut</a>
+                <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('main.support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('main.dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('main.logout') }}" class="pe-auto Style3">LogOut</a>
             </div>
         </div>
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
@@ -41,7 +41,7 @@
                         <span class="Style3">Open</span>
                     </div>
                     <div class="d-flex justify-content-start align-items-center">
-                        <a href="{{ url_for('profile') }}" type="button" class="dashbbtn rounded-pill">new</a>
+                        <a href="{{ url_for('main.profile') }}" type="button" class="dashbbtn rounded-pill">new</a>
                         <button id="recentbtn" type="button" class="dashbbtn rounded-pill" value="recent" onclick="toggleRecent()">recent</button>
                     </div>
                     <div class="d-flex aling-items-start">
@@ -88,7 +88,7 @@
                                     <td> <span>{{ new_exp.expname }}</span></td>
                                     <td><span>{{ new_exp.tools }}</span></td>
                                     <td style="text-align: center;"><span>{{ new_exp.number }}</span></td>
-                                    <td style="text-align: center;"><a href="#">Datalink</a></td>
+                                    <td style="text-align: center;"><a href="{{ url_for('main.dashboard_experiment', row=new_exp.id_table) }}">Datalink</a></td>
                                     <td style="text-align: center;">
                                         <input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#datalinkadd{{ new_exp.id_table }}" value="Add"/>
                                         <input type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#datalinkdel{{ new_exp.id_table }}" value="Delete"/>
@@ -102,12 +102,12 @@
                                             </div>
                                             <div class="modal-footer justify-content-evenly">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <a href="{{ url_for('delete', id=new_exp.id_table) }}" class="btn btn-danger">Delete</a>
+                                                <a href="{{ url_for('main.delete', id=new_exp.id_table) }}" class="btn btn-danger">Delete</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <form id="addnewform" method="POST" action="{{ url_for('add', id=new_exp.id_table) }}">
+                                <form id="addnewform" method="POST" action="{{ url_for('main.add', id=new_exp.id_table) }}">
                                     <div class="modal fade" id="datalinkadd{{ new_exp.id_table }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">

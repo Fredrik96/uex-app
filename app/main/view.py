@@ -1,0 +1,364 @@
+import pandas as pd
+from fitbit.exceptions import BadResponse
+from flask import flash, jsonify, url_for, redirect, render_template, request, Response
+from flask_login import logout_user, login_required, login_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
+
+from app import db
+from app.fitbit_client import fitbit_client, get_permission_screen_url, do_fitbit_auth
+from forms import RegisterForm, LoginForm, DashboardForm
+from app.models import User, UserTable, UserData, get_user_fitbit_credentials
+from . import main
+
+import cv2
+from threading import Thread
+from video import record, gen_frames, switch, getCam
+
+@main.route('/')
+def index():
+    return render_template('index.html')
+
+@main.route('/about')
+def about():
+    return render_template('about.html')
+
+@main.route('/features')
+def features():
+    return render_template('features.html')
+
+@main.route('/support')
+def support():
+    return render_template('support.html')
+
+@main.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for('main.profile'))
+        flash(u'Username or password is incorect', 'error')
+    return render_template('login.html', form=form)
+
+@main.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        users = User.query.filter_by(username=form.username.data).first()
+        mymails = User.query.filter_by(email=form.email.data).first()
+        if users or mymails:
+            #db.session.query(User).delete()
+            #db.session.commit()
+            flash(u'User or email is taken', 'error')
+            return redirect(url_for('signup'))
+
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        form.username.data=''
+        form.email.data=''
+        flash(u'User added successfully!', 'success')
+    my_users = User.query.order_by(User.id)
+    return render_template('signup.html', form=form, my_users=my_users)
+
+@main.route('/profile', methods=['GET','POST'])
+@login_required
+def profile():
+    global mychecks
+    mychecks = DashboardForm()
+
+    if request.method == 'POST':
+        u_id = current_user.id
+        checks = request.form.getlist('ckbox')
+        mychecks.number = int(checks.pop(0))
+        mychecks.expname = checks.pop()
+
+        print(mychecks.tools,flush=True)
+        if checks != [] and mychecks.number > 0:
+            mychecks.tools = ','.join(checks)
+            new_exp = UserTable(users_id=u_id, expname=mychecks.expname, tools=str(mychecks.tools), number=mychecks.number)
+            #sql command to execute for reseting the primary key id for UserTable after a row is deleted
+            #if new_exp.id_table != 1:
+                #print(new_exp.id_table, flush=True)
+                #sql = "ALERT TABLE datatable AUTO_INCREMENT=1"
+                #mycursor = db.engine
+                #mycursor.execute(sql)
+            db.session.add(new_exp)
+            db.session.expire_on_commit=False
+            db.session.commit()
+            new_exp_id = new_exp.id_table
+            return redirect(url_for('main.exp_handler', parttakers=mychecks.number, tools=mychecks.tools, new_exp_id=new_exp_id))
+        else:
+            flash(u'You need to specify at least 1 tool and include 1 participant', 'info')
+            return redirect(url_for('main.profile'))
+
+    user_profile = "Could not access fitbit profile"
+    fitbit_creds = get_user_fitbit_credentials(current_user.id)
+    if fitbit_creds:
+        with fitbit_client(fitbit_creds) as client:
+            try:#delete token if expired or no longer valid
+                # db.session.query(FitbitToken).delete()
+                # db.session.commit()
+                profile_response = client.user_profile_get()
+                user_profile = "{} has been on fitbit since {}".format(
+                    profile_response['user']['fullName'],
+                    profile_response['user']['memberSince']
+                )
+            except BadResponse:
+                print("Api Call Failed", flush=True)
+    return render_template('profile.html', name=current_user.username, user_profile=user_profile, permission_url=get_permission_screen_url())
+
+@main.route('/oauth-redirect', methods=['GET'])
+@login_required
+def handle_redirect():
+    code = request.args.get('code')
+    try:
+        do_fitbit_auth(code, current_user)
+    except:
+        print('Not able to do fitbit auth!', flush=True)
+        redirect(url_for('main.profile'))
+    return redirect(url_for('main.profile'))
+
+@main.route('/experiments/<int:new_exp_id>', methods=['POST','GET'])
+@login_required
+def exp_handler(new_exp_id):
+    global mychecks
+    data_to_exp = UserTable.query.get_or_404(new_exp_id)
+    try:
+        mychecks
+    except NameError:
+        mychecks = None
+
+    if mychecks == None:
+        mychecks = data_to_exp
+    
+    if request.method == 'POST':
+        start_exp = request.form.get('startexp')
+        stop_exp = request.form.get('stopexp')
+
+        if start_exp == "Start Experiment":
+            mychecks.number -= 1
+            exp_list = data_to_exp.tools.split(',')
+            print(exp_list, flush=True)
+
+            if "video" or "analyt" or "time" or "cardio" in exp_list:
+                return redirect(url_for('main.video', new_exp_id=data_to_exp.id_table))
+
+            if "quest" in exp_list:
+                return redirect(url_for('main.quest', new_exp_id=data_to_exp.id_table))
+
+        if stop_exp == "Finnished!":
+            return redirect(url_for('main.dashboard'))
+
+    return render_template('experiments.html', parttakers=mychecks.number, tools=data_to_exp.tools, new_exp_id=data_to_exp.id_table)
+
+@main.route('/quest/<int:new_exp_id>', methods=['GET','POST'])
+@login_required
+def quest(new_exp_id):
+    questions = []
+    data_to_quest = UserTable.query.get_or_404(new_exp_id)
+    numb = data_to_quest.number
+
+    if request.method == 'POST':
+        if 'questsub' in request.form:
+            if not request.form.get('q1'):
+                flash(u'All Questions must be answered', 'warning')
+            elif not request.form.get('q2'):
+                flash(u'All Questions must be answered', 'warning')
+            elif not request.form.get('q3'):
+                flash(u'All Questions must be answered', 'warning')
+            else:
+                q1=request.form['q1']
+                q2=request.form['q2']
+                q3=request.form['q3']
+                questions.append({q1,q2,q3})
+                print(questions, flush=True)
+                return redirect(url_for('main.exp_handler', parttakers=numb, new_exp_id=data_to_quest.id_table))
+
+    return render_template('questionnaire.html', new_exp_id=data_to_quest.id_table)
+
+@main.route('/video/<int:new_exp_id>')
+@login_required
+def video(new_exp_id):
+    data_to_video = UserTable.query.get_or_404(new_exp_id)
+    howMany = []
+    numb = data_to_video.number
+    tools = data_to_video.tools.split(',')
+    for i in range(numb):
+        howMany.append(i+1)
+    return render_template('tasks.html',tools=tools,
+                                        new_exp_id=data_to_video.id_table,
+                                        howMany = howMany)
+
+@main.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@main.route('/tasks/<int:new_exp_id>', methods=['POST','GET'])
+@login_required
+def tasks(new_exp_id):
+    #declare some variables to avoid undefined when reloading page
+    global switch
+    data_to_tasks = UserTable.query.get_or_404(new_exp_id)
+    howMany = []
+    numb = data_to_tasks.number
+    tools = data_to_tasks.tools.split(',')
+    for i in range(numb):
+        howMany.append(i+1)
+    if request.method == 'POST':
+        #getting the session data in order to change the html according to who is in session
+        if request.form.get('stop') == 'Open/Close':
+            if(int(switch)==1):
+                switch=0
+                getCam(0)
+            else:
+                getCam(1)
+                switch=1
+
+        elif request.form.get('rec') == 'start/stop rec':
+            global rec, out
+            rec= not rec
+            if(rec):
+                now=datetime.now() 
+                fourcc = cv2.VideoWriter_fourcc(*'XVID')
+                out = cv2.VideoWriter('vid_{}.avi'.format(str(now).replace(":",'')), fourcc, 20.0, (640, 480))
+                #Start new thread for recording the video
+                thread = Thread(target = record, args=[out,])
+                thread.start()
+            elif(rec==False):
+                out.release()
+
+        if request.form.get('startanlytic') != None:
+            flash(u'Analytics started', 'info')
+        elif request.form.get('starttimer') != None:
+            flash(u'Timer started', 'info')
+        elif request.form.get('next') == 'Next Page':
+            if "quest" in data_to_tasks.tools:
+                return redirect(url_for('main.quest', new_exp_id=data_to_tasks.id_table))
+            else:
+                return redirect(url_for('main.exp_handler', parttakers=numb, new_exp_id=data_to_tasks.id_table))
+    return render_template('tasks.html', tools=tools,
+                                         new_exp_id=data_to_tasks.id_table,
+                                         howMany = howMany,
+                                         numb = numb)
+
+@main.route('/process/<int:new_exp_id>', methods=['POST'])
+def process(new_exp_id):
+    data_table = UserTable.query.get_or_404(new_exp_id)
+    howMany = []
+    numb = data_table.number
+    tools = data_table.tools.split(',')
+    for i in range(numb):
+        howMany.append(i+1)
+
+    if request.method == 'POST':
+        in_session = request.form.get('session')
+
+        if in_session != None:
+            return jsonify({'in_session' : in_session})
+        else:
+            print("Session not sendt")
+
+        if request.form.get('startcardio') != None:
+            yesterday = str((datetime.now() - timedelta(days=1)).strftime("%Y%m%d"))
+            yesterday2 = str((datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"))
+            today = str((datetime.now()- timedelta(hours=20)).strftime("%Y-%m-%d"))
+            fitbit_creds = get_user_fitbit_credentials(current_user.id)
+            if fitbit_creds:
+                with fitbit_client(fitbit_creds) as client:
+                    fitbit_statsHR = client.intraday_time_series('activities/heart', base_date=today, detail_level='1sec')
+            time_list = []
+            val_list = []
+            for i in fitbit_statsHR['activities-heart-intraday']['dataset']:
+                val_list.append(i['value'])
+                time_list.append(i['time'])
+            heartdf = pd.DataFrame({'Heart Rate':val_list,'Time':time_list})
+            print(heartdf.head(10),flush=True)
+            return render_template('tasks.html', heartdf=heartdf, tools=tools,
+                                                 new_exp_id=data_table.id_table,
+                                                 howMany = howMany,numb = numb)
+
+@main.route('/process/done', methods=['POST'])
+def process_done():
+
+    done_session = request.form.get('donesess')
+
+    if done_session != None:
+        personID = done_session[-1]
+        check_done = UserData(check=personID)
+        db.session.add(check_done)
+        db.session.commit()
+        #db.session.query(UserData).delete()
+        #db.session.commit()
+        new_check_done = UserData.query.order_by(UserData.id)
+        print(done_session, flush=True)
+        return jsonify({'done_session' : done_session})
+    else:
+        print("Not retreived done")
+
+
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    current_u_id = current_user.id
+    my_exp = UserTable.query.order_by(UserTable.id_table) 
+
+    return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
+
+@main.route('/delete/<int:id>')
+def delete(id):
+    current_u_id = current_user.id
+    data_to_delete = UserTable.query.get_or_404(id)
+    try:
+        db.session.delete(data_to_delete)
+        db.session.commit()
+        print("Data Deleted Successfully!",id, flush=True)
+        my_exp = UserTable.query.order_by(UserTable.id_table)
+        return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
+    except:
+        print("Not Able To Delete Data", flush=True)
+        return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
+
+@main.route('/add/<int:id>', methods=['GET', 'POST'])
+def add(id):
+    data_to_add = UserTable.query.get_or_404(id)
+    current_numb = data_to_add.number
+    if request.method == 'POST':
+        mychecks.new_number = request.form.get('addnew')
+        updated_numb = current_numb + int(mychecks.new_number)
+        update_db = UserTable(number=updated_numb)
+        db.session.add(update_db)
+        db.session.commit()
+        print(updated_numb, flush=True)
+    return render_template('experiments.html', parttakers=mychecks.new_number)
+
+@main.route('/dashboard/experiment/<int:row>')
+@login_required
+def dashboard_experiment(row):
+    current_u_id = current_user.id
+    my_exp = UserTable.query.get_or_404(row)
+    tools = my_exp.tools.split(',')
+    
+    return render_template('dashboardexp.html', my_exp=my_exp, tools=tools, current_u_id=current_u_id)
+
+@main.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.login'))
+
+#custom error pages
+#invalid url
+@main.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+#internal server error
+@main.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500

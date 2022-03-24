@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <title>Tasks</title>
+    </head>
+
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('main.support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('main.dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('main.logout') }}" class="pe-auto Style3">LogOut</a>
+            </div>
+        </div>
+        <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
+            <div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: auto;">
+                <form id="progform{{number}}" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, postID=number) }}"></form>
+                <table id="ExperimentTab" class="table table-hover table-bordered table-striped table-light">
+                    <thead>
+                        <tr style="font-size: 20px;">
+                            <th scope="col">Participant ID</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Progress</th>
+                        </tr> 
+                    </thead>
+                    <tbody id="ExperimentTabBody">
+                        {% for number in howMany %}
+                            <tr style="font-size: 15px;">
+                                <th scope="row">{{ number }}</th>
+                                <td style="text-align: center;"><a href="#">Datalink</a></td>
+                                <td id="progrow{{number}}" style="text-align: center;">
+                                    <span id="done{{number}}"class='progressdone' style="display: none;">Done</span>
+                                    <span id="session{{number}}" class='sessionform' style="display: none;">In Progress</span>
+                                    <form id="progform{{number}}">
+                                        <div id="sess{{number}}">
+                                            <input type="hidden" style="display: none;" name="session" value="In Session {{number}}"/>
+                                            <input id="start{{number}}" type="button" class="btn btn-outline-success" value="Start Session {{ number }}" style="font-size: 15px;"/>
+                                        </div>
+                                    </form>                                    
+                                </td>
+                            </tr>
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                    var starthr = document.getElementById("startcardiodiv");
+                                    $('#start{{number}}').click(function(e){
+                                        e.preventDefault();
+                                        $.ajax({
+                                            data: $('[name=session]').serialize(),
+                                            type : 'POST',
+                                            url : '{{ url_for("main.process", new_exp_id=new_exp_id) }}',
+                                            success:function(){
+                                                document.getElementById("showSpan").innerHTML = "<span class='Style3'>Participant {{ number }} in session</span>";
+                                                alert("Session {{number}} was sent.");
+                                            }
+                                        })
+                                        .done(function(data){
+                                            if(data){
+                                                $('#done{{number}}').hide();
+                                                $('#session{{number}}').show();
+                                                $('#start{{number}}').hide();
+                                                document.getElementById("donedivin").innerHTML = "<input id='finnish{{number}}' type='button' class='btn btn-primary rounded-pill' value='Finnish'/>";
+                                                //waiting for finnish button to be pressed
+                                                $('#finnish{{number}}').click(function(e){
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        data: $('[name=donesess]').serialize(),
+                                                        type : 'POST',
+                                                        url : '{{ url_for("main.process_done") }}',
+                                                        success:function(){
+                                                            document.getElementById("showSpan").innerHTML = "<span class='Style3'>Waiting for next participant</span>";
+                                                            alert("Done {{number}} was sent.");
+                                                        }
+                                                    })
+                                                    .done(function(data){
+                                                        if(data){
+                                                            $('#done{{number}}').show();
+                                                            $('#session{{number}}').hide();
+                                                            $('#start{{number}}').hide();
+                                                            $('#finnish{{number}}').hide();
+                                                        }
+                                                        else{
+                                                            alert("Not finnished yet!");
+                                                        }
+                                                    });
+                                                });
+                                                if(starthr != "null") {
+                                                    document.getElementById('startcardiodiv').innerHTML = "<input type='hidden' style='display: none;' name='startcardio' value='HR Data'/>"+
+                                                                                                          "<input id='startcardio{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start HR'/>"
+                                                }
+                                                //waiting for cardio button to be pressed
+                                                $('#startcardio{{number}}').click(function(e){
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        data: $('[name=startcardio]').serialize(),
+                                                        type : 'POST',
+                                                        url : '{{ url_for("main.process", new_exp_id=new_exp_id) }}',
+                                                        success:function(){
+                                                            alert("cardio {{number}} sendt");
+                                                        },
+                                                        error:function(){
+                                                            alert("cardio not sendt");
+                                                        }
+                                                    })
+                                                });
+                                            }
+                                            else{
+                                                alert("Session not Working!");
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex flex-column border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: 100vb;">
+                <div id="showSpan"></div>
+                <form id="videoform" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id) }}">
+                    <div class="d-flex justify-content-evenly align-items-center" style="margin-top: 50px;">
+                        <a href="{{ url_for('main.video', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
+                        {% for elem in tools %}
+                            {% if elem == "video" %}
+                            <div class="d-flex flex-column align-items-center">
+                                <img src="{{ url_for('main.video_feed') }}" height="50%" width="50%">
+                                <input type="submit" name="rec" class="btn btn-primary btn-lg rounded-pill" value="start/stop rec"/>
+                                <input type="submit" name="stop" class="btn btn-primary btn-lg rounded-pill" value="Open/Close"/>
+                            </div>
+                            {% endif %}
+                            {% if elem == "analyt" %}
+                            <div class="d-flex">
+                                <input type="button" name="startanlytic" class="btn btn-primary btn-lg rounded-pill" value="Start Analythics"/>
+                            </div>
+                            {% endif %}
+                            {% if elem == "cardio" %}
+                            <div id="startcardiodiv" class="d-flex"></div>
+                            {% endif %}
+                            {% if elem == "time" %}
+                            <div class="d-flex">
+                                <div id="starttimediv"></div></div>
+                                <input type="button" name="starttimer" class="btn btn-primary btn-lg rounded-pill" value="Start Timer"/>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="d-flex">
+                            <input type="submit" name="next" class="btn btn-primary btn-lg rounded-pill" value="Next Page"/>
+                        </div>
+                    </div>
+                </form>
+                <div id="donediv" class="d-flex align-items-center justify-content-center">
+                    <form id="doneform">
+                        <input type="hidden" style="display: none;" name="donesess" value="Done"/>
+                        <div id="donedivin">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center" style="margin-top: 40px;">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    </body>
+</html>
