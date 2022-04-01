@@ -1,0 +1,27 @@
+{
+  "devDependencies": {
+    "@fitbit/sdk": "~6.1.0"
+  },
+  "fitbit": {
+    "appUUID": "8a5f221a-26c2-4e6b-84c6-a26db43c6d41",
+    "appType": "app",
+    "appDisplayName": "UeX",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#607d8b",
+    "requestedPermissions": [
+      "access_heart_rate",
+      "access_internet",
+      "access_activity",
+      "access_user_profile"
+    ],
+    "buildTargets": [
+      "vulcan"
+    ],
+    "i18n": {
+      "en-US": {
+        "name": "UeX"
+      }
+    },
+    "defaultLanguage": "en-US"
+  }
+}

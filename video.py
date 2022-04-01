@@ -7,15 +7,10 @@ rec = 0
 rec_frame = 0
 switch = 0
 
-try:
-    os.mkdir('./src_shots')
-except OSError as error:
-    pass
-
 def getCam(param):
     global camera
     if param == 1:
-        camera = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        camera = cv2.VideoCapture(0, cv2.CAP_MSMF)
     elif param == 0:
         camera.release()
         cv2.destroyAllWindows()
@@ -24,7 +19,7 @@ def getCam(param):
 def record(out):
     global rec_frame
     while(rec):
-        time.sleep(0.05)
+        time.sleep(0.04)
         out.write(rec_frame)
 
 def gen_frames():
@@ -46,4 +41,6 @@ def gen_frames():
             except Exception as e:
                 pass
         else:
+            camera.release()
+            cv2.destroyAllWindows()
             break

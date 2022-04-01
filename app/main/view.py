@@ -13,7 +13,7 @@ from . import main
 
 import cv2
 from threading import Thread
-from video import record, gen_frames, switch, getCam
+from video import record, gen_frames, switch, getCam, rec
 
 @main.route('/')
 def index():
@@ -124,42 +124,10 @@ def handle_redirect():
         redirect(url_for('main.profile'))
     return redirect(url_for('main.profile'))
 
-# @main.route('/experiments/<int:new_exp_id>', methods=['POST','GET'])
-# @login_required
-# def exp_handler(new_exp_id):
-#     global mychecks
-#     data_to_exp = UserTable.query.get_or_404(new_exp_id)
-#     try:
-#         mychecks
-#     except NameError:
-#         mychecks = None
-
-#     if mychecks == None:
-#         mychecks = data_to_exp
-    
-#     if request.method == 'POST':
-#         start_exp = request.form.get('startexp')
-#         stop_exp = request.form.get('stopexp')
-
-#         if start_exp == "Start Experiment":
-#             mychecks.number -= 1
-#             exp_list = data_to_exp.tools.split(',')
-#             print(exp_list, flush=True)
-
-#             if "video" or "analyt" or "time" or "cardio" in exp_list:
-#                 return redirect(url_for('main.video', new_exp_id=data_to_exp.id_table))
-
-#             if "quest" in exp_list:
-#                 return redirect(url_for('main.quest', new_exp_id=data_to_exp.id_table))
-
-#         if stop_exp == "Finnished!":
-#             return redirect(url_for('main.dashboard'))
-
-#     return render_template('experiments.html', parttakers=mychecks.number, tools=data_to_exp.tools, new_exp_id=data_to_exp.id_table)
-
 @main.route('/quest/<int:new_exp_id>', methods=['GET','POST'])
 @login_required
 def quest(new_exp_id):
+    current_u_id = current_user.id
     questions = []
     data_to_quest = UserTable.query.get_or_404(new_exp_id)
     numb = data_to_quest.number
@@ -177,9 +145,8 @@ def quest(new_exp_id):
                 q2=request.form['q2']
                 q3=request.form['q3']
                 questions.append({q1,q2,q3})
-                print(questions, flush=True)
-                return redirect(url_for('main.exp_handler', parttakers=numb, new_exp_id=data_to_quest.id_table))
-
+                my_exp = UserTable.query.order_by(UserTable.id_table)
+                return redirect(url_for('main.dashboard', my_exp=my_exp, current_u_id=current_u_id))
     return render_template('questionnaire.html', new_exp_id=data_to_quest.id_table)
 
 @main.route('/video/<int:new_exp_id>')
@@ -212,7 +179,7 @@ def tasks(new_exp_id):
         howMany.append(i+1)
     if request.method == 'POST':
         #getting the session data in order to change the html according to who is in session
-        if request.form.get('stop') == 'Open/Close':
+        if request.form.get('openclose') == 'open or close':
             if(int(switch)==1):
                 switch=0
                 getCam(0)
@@ -220,9 +187,10 @@ def tasks(new_exp_id):
                 getCam(1)
                 switch=1
 
-        elif request.form.get('rec') == 'start/stop rec':
+        if request.form.get('startstop') == 'rec':
             global rec, out
-            rec= not rec
+            rec = not rec
+            print(rec, flush=True)
             if(rec):
                 now=datetime.now() 
                 fourcc = cv2.VideoWriter_fourcc(*'XVID')
@@ -233,8 +201,6 @@ def tasks(new_exp_id):
             elif(rec==False):
                 out.release()
 
-        if request.form.get('startanlytic') != None:
-            flash(u'Analytics started', 'info')
         elif request.form.get('next') == 'Next Page':
             if "quest" in data_to_tasks.tools:
                 return redirect(url_for('main.quest', new_exp_id=data_to_tasks.id_table))
@@ -284,8 +250,6 @@ def process(new_exp_id):
             return jsonify({'in_session' : in_session})
 
         if request.form.get('startcardio') != None:
-            yesterday = str((datetime.now() - timedelta(days=1)).strftime("%Y%m%d"))
-            yesterday2 = str((datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"))
             today = str((datetime.now()- timedelta(hours=20)).strftime("%Y-%m-%d"))
             fitbit_creds = get_user_fitbit_credentials(current_user.id)
             if fitbit_creds:
@@ -326,8 +290,10 @@ def dashboard():
 @login_required
 def delete(id):
     current_u_id = current_user.id
-    data_to_delete = UserTable.query.get_or_404(id)
+    row_to_delete = UserTable.query.get_or_404(id)
+    data_to_delete = UserData.query.filter_by(users_table_id = id)
     try:
+        db.session.delete(row_to_delete)
         db.session.delete(data_to_delete)
         db.session.commit()
         print("Data Deleted Successfully!",id, flush=True)
@@ -335,6 +301,7 @@ def delete(id):
         return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
     except:
         print("Not Able To Delete Data", flush=True)
+        my_exp = UserTable.query.order_by(UserTable.id_table)
         return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
 
 @main.route('/add/<int:id>', methods=['GET', 'POST'])

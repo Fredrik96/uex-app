@@ -67,7 +67,9 @@
                             <script type="text/javascript">
                                 $(document).ready(function() {
                                     var starthr = $("#startcardiodiv");
+                                    var startanalyt = $("#startanalytdiv");
                                     var starttime = $("#starttimediv");
+                                    var startvideo = $("#startvideodiv");
                                     var counter = 0;
                                     $('#start{{number}}').click(function(e){
                                         e.preventDefault();
@@ -87,14 +89,21 @@
                                                 $('#start{{number}}').hide();
                                                 $('#toolsdiv').removeClass("justify-content-center").addClass("justify-content-evenly");
                                                 $("#donedivin").html("<input id='finnish{{number}}' type='button' class='btn btn-primary rounded-pill' value='Finnish'/>");
-                                                if( '{{ toolsstr }}' == "cardio") {
-                                                    starthr.html("<input type='hidden' style='display: none;' name='startcardio' value='HR Data'/>"+
-                                                                "<input id='startcardio{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start HR'/>");
-                                                }
-                                                if( '{{ toolsstr }}' == "time") {
-                                                    starttime.html("<input type='hidden' style='display: none;' name='starttime' value='Time Data'/>"+
-                                                                "<input id='timer{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Timer'/>");
-                                                }
+                                                
+                                                startanalyt.html("<input type='hidden' style='display: none;' name='startanalyt' value='Analytics Data'/>"+
+                                                            "<input id='analyt{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Analytics'/>");
+
+                                                starthr.html("<input type='hidden' style='display: none;' name='startcardio' value='HR Data'/>"+
+                                                            "<input id='startcardio{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start HR'/>");
+
+                                                starttime.html("<input type='hidden' style='display: none;' name='startanalyt' value='Time Data'/>"+
+                                                            "<input id='timer{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Timer'/>");
+
+                                                startvideo.html("<input type='hidden' style='display: none;' name='openclose' value='open or close'/>"+
+                                                    "<input id='video{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Open Video'/></br>"+
+                                                    "<input type='hidden' style='display: none;' name='startstop' value='rec'/>"+
+                                                    "<input id='videorec{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Recording'/>");
+                                                
                                                 //waiting for finnish button to be pressed
                                                 $('#finnish{{number}}').click(function(e){
                                                     e.preventDefault();
@@ -117,6 +126,7 @@
                                                             $('#session{{number}}').css("display","none");
                                                             $('#start{{number}}').css("display","none");
                                                             $('#timer{{number}}').css("display","none");
+                                                            $('#analyt{{number}}').css("display","none");
                                                             $('#startcardio{{number}}').css("display","none");
                                                             $('#finnish{{number}}').css("display","none");
                                                             $("#timerSpan").css("display","none");
@@ -186,6 +196,67 @@
                                                         }
                                                     });
                                                 });
+                                                //waiting for analytics button to be pressed
+                                                $('#analyt{{number}}').on('click',function(e){
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        data: $('[name=startanalyt]').serialize(),
+                                                        type : 'POST',
+                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
+                                                        success:function(){
+                                                            alert("Success!");
+                                                        },
+                                                        error:function(){
+                                                            alert("Analytics not sendt");
+                                                        }
+                                                    })
+                                                });
+                                                $('#video{{number}}').on('click',function(e){
+                                                    var toggle = $('#video{{number}}'), val = toggle.val();
+                                                    if(val=="Open Video"){
+                                                        $('#videoimage').html('<img src="{{ url_for("main.video_feed") }}" height="100%" width="50%">');
+                                                    }
+                                                    else{
+                                                        $('#videoimage').hide();
+                                                        $('#videoimage').css("display","none");
+                                                    }
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        data: $('[name=openclose]').serialize(),
+                                                        type : 'POST',
+                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
+                                                        success:function(){
+                                                        },
+                                                        error:function(){
+                                                            alert("Video not sendt");
+                                                        }
+                                                    })
+                                                    .done(function(data){
+                                                        if(data){
+                                                            toggle.val(val === "Open Video" ? "Close Video" : "Open Video");
+                                                        }
+                                                    });
+                                                });
+
+                                                $('#videorec{{number}}').on('click',function(e){
+                                                    var toggle = $('#videorec{{number}}'), val = toggle.val();
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                        data: $('[name=startstop]').serialize(),
+                                                        type : 'POST',
+                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
+                                                        success:function(){
+                                                        },
+                                                        error:function(){
+                                                            alert("Video not sendt");
+                                                        }
+                                                    })
+                                                    .done(function(data){
+                                                        if(data){
+                                                            toggle.val(val === "Start Recording" ? "Stop Recording" : "Start Recording");
+                                                        }
+                                                    });
+                                                });
                                             }
                                             else{
                                                 alert("Session not Working!");
@@ -206,14 +277,10 @@
                             <a href="{{ url_for('main.video', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
                             {% for elem in tools %}
                                 {% if elem == "video" %}
-                                <div class="d-flex flex-column align-items-center">
-                                    <img src="{{ url_for('main.video_feed') }}" height="50%" width="50%">
-                                    <input type="submit" name="rec" class="btn btn-primary btn-lg rounded-pill" value="start/stop rec"/>
-                                    <input type="submit" name="stop" class="btn btn-primary btn-lg rounded-pill" value="Open/Close"/>
-                                </div>
+                                <div id="startvideodiv" class="d-flex flex-column align-items-center"></div>
                                 {% endif %}
-                                {% if elem == "analyt" %}
-                                    <input type="button" name="startanlytic" class="btn btn-primary btn-lg rounded-pill" value="Start Analythics"/>
+                                {% if elem == "analyt" %}   
+                                    <div id="startanalytdiv" class="d-flex"></div>
                                 {% endif %}
                                 {% if elem == "cardio" %}
                                     <div id="startcardiodiv" class="d-flex"></div>
@@ -221,7 +288,7 @@
                                 {% if elem == "time" %}
                                     <div id="starttimediv" class="d-flex"></div>
                                 {% endif %}
-                            {% endfor %}
+                            {% endfor %} 
                             <div class="d-flex">
                                 <input type="submit" name="next" class="btn btn-primary btn-lg rounded-pill" value="Next Page"/>
                             </div>
@@ -239,6 +306,7 @@
                         <input id="timerInput" type="text" name="timerInput" style="display: none;" value="Init"/>
                         <span id="timerSpan" name="timerSpan" type="text" class="styletimer" style="display: none;"></span>
                     </div>
+                    <div id="videoimage" class="d-flex align-items-center justify-content-center"></div>
                 </div>
             </div>
         </div>
