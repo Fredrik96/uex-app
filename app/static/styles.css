@@ -180,6 +180,20 @@ select.form-control {
   -webkit-appearance: none;
   appearance: none;
 }
+
+.modaladdinput {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid gray;
+  width: 30px;
+  text-align: center;
+}
+
+.modaladdinput:focus::placeholder {
+  color: transparent;
+}
+
 /*---------------- forms ----------------------*/
 
 /*---------------- text styles ----------------------*/
@@ -292,6 +306,16 @@ textarea {
 
 .progressdone:hover {
   cursor: default;
+}
+
+.styletimer {
+  font-size: 40px;
+  margin: 10px;
+  padding: 5px;
+  width: fit-content;
+  height: fit-content;
+  color: rgb(226, 11, 11);
+  background: #C0FFEE;
 }
 /*---------------- text styles ----------------------*/
 

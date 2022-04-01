@@ -24,13 +24,11 @@ class UserTable(db.Model):
     __tablename__ = 'datatable'
     id_table = db.Column(db.Integer, primary_key=True)
     users_id = db.Column(db.Integer, db.ForeignKey('userlogs.id'))
-    users_data_id = db.Column(db.Integer, db.ForeignKey('user_data.id'))
     date_time_added = db.Column(db.DateTime, default=datetime.utcnow)
     expname = db.Column(db.String(20))
     tools = db.Column(db.String(40))
     number = db.Column(db.Integer)
-    userdata = db.relationship("UserData", backref="user_data")
-    user = db.relationship("User", backref="userlogs")
+    data = db.relationship("UserData", backref=db.backref("data", uselist=False), lazy = 'joined')
 
 class User(UserMixin, db.Model):
     __tablename__ = 'userlogs'
@@ -39,17 +37,22 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(200))
     #backref used to get anything in this class, example: userdata.username
-    user_data = db.relationship('UserTable', back_populates='user', lazy='dynamic')
+    usertables = db.relationship("UserTable", backref="datatable")
 
 class UserData(db.Model):
     __tablename__ = 'user_data'
     id = db.Column(db.Integer, primary_key=True)
+    users_table_id = db.Column(db.Integer, db.ForeignKey('datatable.id_table'))
     video_file = db.Column(db.LargeBinary)
     picture_file = db.Column(db.LargeBinary)
     analytics = db.Column(db.Integer) 
     cardio_file = db.Column(db.Float(4))
     quest_file = db.Column(db.String(200))
+    timer = db.Column(db.String(15))
     check = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<timer %r>' % self.timer
     
 class FitbitToken(db.Model):
     __tablename__ = 'fitbit_tokens'

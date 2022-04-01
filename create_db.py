@@ -8,7 +8,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 
-#mycursor.execute("CREATE DATABASE app_users_table")
+#mycursor.execute("CREATE DATABASE app_users")
 
 mycursor.execute("SHOW DATABASES")
 for db in mycursor:

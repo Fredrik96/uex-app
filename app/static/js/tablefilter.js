@@ -212,7 +212,6 @@ function toggleSort() {
     toggle ? SortByDateAsc() : SortByDateDesc();
 }
 
-document.querySelector("datebtn").addEventListener("click", toggleSort);
 
 var toggleR = true;
 
@@ -259,5 +258,3 @@ function DisableRecent() {
 function toggleRecent() {
     toggleR ? DisableRecent() : ShowRecent();
 }
-
-document.querySelector("recentbtn").addEventListener("click", toggleRecent);

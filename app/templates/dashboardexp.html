@@ -43,16 +43,23 @@
                                 </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td> <span>2</span></td>
-                                <td><span>3</span></td>
-                            </tr>
+                            {% for number in howMany %}
+                                <tr>
+                                    <th scope="row">{{ number }}</th>
+                                    <td> <span></span></td>
+                                    {% if 'timer' in tools %}
+                                        <td> <span>{{my_exp.data[number-1].timer}}</span></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        {% for all in my_exp2 %}
+            {{all.timer}}                
+        {% endfor %}
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>

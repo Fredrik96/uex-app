@@ -1,6 +1,6 @@
 import pandas as pd
 from fitbit.exceptions import BadResponse
-from flask import flash, jsonify, url_for, redirect, render_template, request, Response
+from flask import flash, jsonify, url_for, redirect, render_template, request, Response, json
 from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
@@ -92,7 +92,7 @@ def profile():
             db.session.expire_on_commit=False
             db.session.commit()
             new_exp_id = new_exp.id_table
-            return redirect(url_for('main.exp_handler', parttakers=mychecks.number, tools=mychecks.tools, new_exp_id=new_exp_id))
+            return redirect(url_for('main.tasks', parttakers=mychecks.number, tools=mychecks.tools, new_exp_id=new_exp_id))
         else:
             flash(u'You need to specify at least 1 tool and include 1 participant', 'info')
             return redirect(url_for('main.profile'))
@@ -124,38 +124,38 @@ def handle_redirect():
         redirect(url_for('main.profile'))
     return redirect(url_for('main.profile'))
 
-@main.route('/experiments/<int:new_exp_id>', methods=['POST','GET'])
-@login_required
-def exp_handler(new_exp_id):
-    global mychecks
-    data_to_exp = UserTable.query.get_or_404(new_exp_id)
-    try:
-        mychecks
-    except NameError:
-        mychecks = None
+# @main.route('/experiments/<int:new_exp_id>', methods=['POST','GET'])
+# @login_required
+# def exp_handler(new_exp_id):
+#     global mychecks
+#     data_to_exp = UserTable.query.get_or_404(new_exp_id)
+#     try:
+#         mychecks
+#     except NameError:
+#         mychecks = None
 
-    if mychecks == None:
-        mychecks = data_to_exp
+#     if mychecks == None:
+#         mychecks = data_to_exp
     
-    if request.method == 'POST':
-        start_exp = request.form.get('startexp')
-        stop_exp = request.form.get('stopexp')
+#     if request.method == 'POST':
+#         start_exp = request.form.get('startexp')
+#         stop_exp = request.form.get('stopexp')
 
-        if start_exp == "Start Experiment":
-            mychecks.number -= 1
-            exp_list = data_to_exp.tools.split(',')
-            print(exp_list, flush=True)
+#         if start_exp == "Start Experiment":
+#             mychecks.number -= 1
+#             exp_list = data_to_exp.tools.split(',')
+#             print(exp_list, flush=True)
 
-            if "video" or "analyt" or "time" or "cardio" in exp_list:
-                return redirect(url_for('main.video', new_exp_id=data_to_exp.id_table))
+#             if "video" or "analyt" or "time" or "cardio" in exp_list:
+#                 return redirect(url_for('main.video', new_exp_id=data_to_exp.id_table))
 
-            if "quest" in exp_list:
-                return redirect(url_for('main.quest', new_exp_id=data_to_exp.id_table))
+#             if "quest" in exp_list:
+#                 return redirect(url_for('main.quest', new_exp_id=data_to_exp.id_table))
 
-        if stop_exp == "Finnished!":
-            return redirect(url_for('main.dashboard'))
+#         if stop_exp == "Finnished!":
+#             return redirect(url_for('main.dashboard'))
 
-    return render_template('experiments.html', parttakers=mychecks.number, tools=data_to_exp.tools, new_exp_id=data_to_exp.id_table)
+#     return render_template('experiments.html', parttakers=mychecks.number, tools=data_to_exp.tools, new_exp_id=data_to_exp.id_table)
 
 @main.route('/quest/<int:new_exp_id>', methods=['GET','POST'])
 @login_required
@@ -235,17 +235,38 @@ def tasks(new_exp_id):
 
         if request.form.get('startanlytic') != None:
             flash(u'Analytics started', 'info')
-        elif request.form.get('starttimer') != None:
-            flash(u'Timer started', 'info')
         elif request.form.get('next') == 'Next Page':
             if "quest" in data_to_tasks.tools:
                 return redirect(url_for('main.quest', new_exp_id=data_to_tasks.id_table))
             else:
-                return redirect(url_for('main.exp_handler', parttakers=numb, new_exp_id=data_to_tasks.id_table))
+                current_u_id = current_user.id
+                my_exp = UserTable.query.order_by(UserTable.id_table)
+                return redirect(url_for('main.dashboard', my_exp=my_exp, current_u_id=current_u_id))
     return render_template('tasks.html', tools=tools,
                                          new_exp_id=data_to_tasks.id_table,
                                          howMany = howMany,
-                                         numb = numb)
+                                         numb = numb, toolsstr=data_to_tasks.tools)
+
+@main.route('/process/timer/<int:new_exp_id>', methods=['GET'])
+def process_timer(new_exp_id):
+    data_table = UserTable.query.get_or_404(new_exp_id)
+    howMany = []
+    numb = data_table.number
+    tools = data_table.tools.split(',')
+    for i in range(numb):
+        howMany.append(i+1)
+
+    if request.method == 'GET':
+        timer = request.args.get('timerInput')
+        print(timer,flush=True)
+        if(timer!=""):    
+            new_data = UserData(timer=timer, users_table_id=data_table.id_table)
+            db.session.add(new_data)
+            db.session.commit()
+            print("Timer commited to UserData", flush=True)
+    return render_template('tasks.html',tools=tools,
+                                        new_exp_id=data_table.id_table,
+                                        howMany = howMany,numb = numb)
 
 @main.route('/process/<int:new_exp_id>', methods=['POST'])
 def process(new_exp_id):
@@ -261,8 +282,6 @@ def process(new_exp_id):
 
         if in_session != None:
             return jsonify({'in_session' : in_session})
-        else:
-            print("Session not sendt")
 
         if request.form.get('startcardio') != None:
             yesterday = str((datetime.now() - timedelta(days=1)).strftime("%Y%m%d"))
@@ -272,30 +291,23 @@ def process(new_exp_id):
             if fitbit_creds:
                 with fitbit_client(fitbit_creds) as client:
                     fitbit_statsHR = client.intraday_time_series('activities/heart', base_date=today, detail_level='1sec')
+                    fitbit_statsHR1 = client
             time_list = []
             val_list = []
             for i in fitbit_statsHR['activities-heart-intraday']['dataset']:
                 val_list.append(i['value'])
                 time_list.append(i['time'])
             heartdf = pd.DataFrame({'Heart Rate':val_list,'Time':time_list})
-            print(heartdf.head(10),flush=True)
-            return render_template('tasks.html', heartdf=heartdf, tools=tools,
-                                                 new_exp_id=data_table.id_table,
-                                                 howMany = howMany,numb = numb)
+            print(heartdf.head(10).to_html(),flush=True)
+            hr_html = heartdf.head(10).to_html(classes='table table-stripped')
+        return render_template('tasks.html',heartdf=heartdf, tools=tools,
+                                            new_exp_id=data_table.id_table,
+                                            howMany = howMany,numb = numb,hr_html=hr_html)
 
 @main.route('/process/done', methods=['POST'])
 def process_done():
-
     done_session = request.form.get('donesess')
-
     if done_session != None:
-        personID = done_session[-1]
-        check_done = UserData(check=personID)
-        db.session.add(check_done)
-        db.session.commit()
-        #db.session.query(UserData).delete()
-        #db.session.commit()
-        new_check_done = UserData.query.order_by(UserData.id)
         print(done_session, flush=True)
         return jsonify({'done_session' : done_session})
     else:
@@ -311,6 +323,7 @@ def dashboard():
     return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
 
 @main.route('/delete/<int:id>')
+@login_required
 def delete(id):
     current_u_id = current_user.id
     data_to_delete = UserTable.query.get_or_404(id)
@@ -325,26 +338,54 @@ def delete(id):
         return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
 
 @main.route('/add/<int:id>', methods=['GET', 'POST'])
+@login_required
 def add(id):
     data_to_add = UserTable.query.get_or_404(id)
     current_numb = data_to_add.number
+    tools = data_to_add.tools.split(',')
+    howMany = []
+
     if request.method == 'POST':
-        mychecks.new_number = request.form.get('addnew')
-        updated_numb = current_numb + int(mychecks.new_number)
-        update_db = UserTable(number=updated_numb)
-        db.session.add(update_db)
-        db.session.commit()
+        new_number = request.form.get('addnew')
+        updated_numb = current_numb + int(new_number)
+        for i in range(int(new_number)):
+            howMany.append(i+1+current_numb)
+        data_to_add.number = updated_numb
         print(updated_numb, flush=True)
-    return render_template('experiments.html', parttakers=mychecks.new_number)
+        try:
+            db.session.commit()
+            return render_template('tasks.html', 
+                new_exp_id=data_to_add.id_table, 
+                howMany = howMany, 
+                tools=tools, toolsstr = 
+                data_to_add.tools)
+        except:
+            return render_template('tasks.html', 
+                new_exp_id=data_to_add.id_table, 
+                howMany = howMany, 
+                tools=tools, 
+                toolsstr = data_to_add.tools)
+    else:
+        return render_template('tasks.html', 
+            new_exp_id=data_to_add.id_table, 
+            howMany = howMany, 
+            tools=tools, 
+            toolsstr = data_to_add.tools)
 
 @main.route('/dashboard/experiment/<int:row>')
 @login_required
 def dashboard_experiment(row):
     current_u_id = current_user.id
     my_exp = UserTable.query.get_or_404(row)
+    my_exp2 = UserData.query.filter_by(users_table_id = my_exp.id_table)
+
+    howMany = []
+    numb = my_exp.number
     tools = my_exp.tools.split(',')
-    
-    return render_template('dashboardexp.html', my_exp=my_exp, tools=tools, current_u_id=current_u_id)
+    for i in range(numb):
+        howMany.append(i+1)
+    print(my_exp.data,flush=True)
+    return render_template('dashboardexp.html', my_exp=my_exp, my_exp2=my_exp2, howMany=howMany, tools=tools, current_u_id=current_u_id)
 
 @main.route('/logout')
 @login_required
