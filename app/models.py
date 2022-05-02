@@ -48,7 +48,7 @@ class UserData(db.Model):
     analytics = db.Column(db.Integer) 
     cardio_file = db.Column(db.Float(4))
     quest_file = db.Column(db.String(200))
-    timer = db.Column(db.String(15))
+    timer = db.Column(db.String(80))
     check = db.Column(db.Integer)
 
     def __repr__(self):

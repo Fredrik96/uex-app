@@ -1,6 +1,5 @@
 import cv2
-from datetime import datetime, time
-import os
+from datetime import time
 
 global rec, rec_frame, out, switch, camera
 rec = 0
@@ -10,7 +9,7 @@ switch = 0
 def getCam(param):
     global camera
     if param == 1:
-        camera = cv2.VideoCapture(0, cv2.CAP_MSMF)
+        camera = cv2.VideoCapture(0)
     elif param == 0:
         camera.release()
         cv2.destroyAllWindows()
@@ -19,7 +18,7 @@ def getCam(param):
 def record(out):
     global rec_frame
     while(rec):
-        time.sleep(0.04)
+        time.sleep(0.5)
         out.write(rec_frame)
 
 def gen_frames():
@@ -29,9 +28,8 @@ def gen_frames():
         success, frame = camera.read()
         if success:
             if(rec):
+                print("Recording!", flush=True)
                 rec_frame=frame
-                frame= cv2.putText(cv2.flip(frame,1),"Recording...", (0,25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255),4)
-                frame=cv2.flip(frame,1)
             
             try:
                 ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
@@ -41,6 +39,4 @@ def gen_frames():
             except Exception as e:
                 pass
         else:
-            camera.release()
-            cv2.destroyAllWindows()
             break

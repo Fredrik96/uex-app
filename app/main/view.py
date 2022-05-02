@@ -1,9 +1,9 @@
 import pandas as pd
 from fitbit.exceptions import BadResponse
-from flask import flash, jsonify, url_for, redirect, render_template, request, Response, json
+from flask import flash, jsonify, url_for, redirect, render_template, request, Response
 from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 from app import db
 from app.fitbit_client import fitbit_client, get_permission_screen_url, do_fitbit_auth
@@ -12,8 +12,10 @@ from app.models import User, UserTable, UserData, get_user_fitbit_credentials
 from . import main
 
 import cv2
-from threading import Thread
-from video import record, gen_frames, switch, getCam, rec
+from camera import VideoCamera
+
+video_camera = None
+global_frame = None
 
 @main.route('/')
 def index():
@@ -130,7 +132,6 @@ def quest(new_exp_id):
     current_u_id = current_user.id
     questions = []
     data_to_quest = UserTable.query.get_or_404(new_exp_id)
-    numb = data_to_quest.number
 
     if request.method == 'POST':
         if 'questsub' in request.form:
@@ -149,59 +150,72 @@ def quest(new_exp_id):
                 return redirect(url_for('main.dashboard', my_exp=my_exp, current_u_id=current_u_id))
     return render_template('questionnaire.html', new_exp_id=data_to_quest.id_table)
 
-@main.route('/video/<int:new_exp_id>')
-@login_required
-def video(new_exp_id):
-    data_to_video = UserTable.query.get_or_404(new_exp_id)
-    howMany = []
-    numb = data_to_video.number
-    tools = data_to_video.tools.split(',')
-    for i in range(numb):
-        howMany.append(i+1)
-    return render_template('tasks.html',tools=tools,
-                                        new_exp_id=data_to_video.id_table,
-                                        howMany = howMany)
 
-@main.route('/video_feed')
-def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@main.route('/record_status/<int:number>', methods=['POST'])
+@login_required
+def record_status(number):
+    global video_camera
+    if video_camera == None:
+        video_camera = VideoCamera(number)
+
+    json = request.get_json()
+    status = json['status']
+
+    if status == "true":
+        if video_camera == None:
+            video_camera.start_cam()
+        print("recording", flush=True)
+        video_camera.start_record(number)
+        return jsonify(result="started")
+    else:
+        video_camera.stop_record()
+        print(video_camera.is_open,flush=True)
+        return jsonify(result="stopped")
+
+def video_stream(number):
+    global video_camera 
+    global global_frame
+    
+    if video_camera == None:
+        video_camera = VideoCamera(number)
+        
+    while True:
+        frame = video_camera.get_frame()
+        if video_camera.is_open == False:
+            break
+        if frame != None:
+            global_frame = frame
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        else:
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + global_frame + b'\r\n\r\n')
+    cv2.destroyAllWindows()
+    video_camera.is_open = True
+        
+
+@main.route('/video_viewer/<int:number>')
+def video_viewer(number):
+    return Response(video_stream(number), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@main.route('/recording/<int:number>')
+@login_required
+def recording(number):
+    file = ["video{}.mp4".format(str(number))]
+    return render_template('recording.html', file=file, number=number)
 
 @main.route('/tasks/<int:new_exp_id>', methods=['POST','GET'])
 @login_required
 def tasks(new_exp_id):
     #declare some variables to avoid undefined when reloading page
-    global switch
     data_to_tasks = UserTable.query.get_or_404(new_exp_id)
     howMany = []
     numb = data_to_tasks.number
     tools = data_to_tasks.tools.split(',')
     for i in range(numb):
         howMany.append(i+1)
+    
     if request.method == 'POST':
         #getting the session data in order to change the html according to who is in session
-        if request.form.get('openclose') == 'open or close':
-            if(int(switch)==1):
-                switch=0
-                getCam(0)
-            else:
-                getCam(1)
-                switch=1
-
-        if request.form.get('startstop') == 'rec':
-            global rec, out
-            rec = not rec
-            print(rec, flush=True)
-            if(rec):
-                now=datetime.now() 
-                fourcc = cv2.VideoWriter_fourcc(*'XVID')
-                out = cv2.VideoWriter('vid_{}.avi'.format(str(now).replace(":",'')), fourcc, 20.0, (640, 480))
-                #Start new thread for recording the video
-                thread = Thread(target = record, args=[out,])
-                thread.start()
-            elif(rec==False):
-                out.release()
-
-        elif request.form.get('next') == 'Next Page':
+        if request.form.get('next') == 'Next Page':
             if "quest" in data_to_tasks.tools:
                 return redirect(url_for('main.quest', new_exp_id=data_to_tasks.id_table))
             else:
@@ -211,7 +225,7 @@ def tasks(new_exp_id):
     return render_template('tasks.html', tools=tools,
                                          new_exp_id=data_to_tasks.id_table,
                                          howMany = howMany,
-                                         numb = numb, toolsstr=data_to_tasks.tools)
+                                         toolsstr=data_to_tasks.tools)
 
 @main.route('/process/timer/<int:new_exp_id>', methods=['GET'])
 def process_timer(new_exp_id):
@@ -248,25 +262,25 @@ def process(new_exp_id):
 
         if in_session != None:
             return jsonify({'in_session' : in_session})
-
-        if request.form.get('startcardio') != None:
-            today = str((datetime.now()- timedelta(hours=20)).strftime("%Y-%m-%d"))
-            fitbit_creds = get_user_fitbit_credentials(current_user.id)
-            if fitbit_creds:
-                with fitbit_client(fitbit_creds) as client:
-                    fitbit_statsHR = client.intraday_time_series('activities/heart', base_date=today, detail_level='1sec')
-                    fitbit_statsHR1 = client
-            time_list = []
-            val_list = []
-            for i in fitbit_statsHR['activities-heart-intraday']['dataset']:
-                val_list.append(i['value'])
-                time_list.append(i['time'])
-            heartdf = pd.DataFrame({'Heart Rate':val_list,'Time':time_list})
-            print(heartdf.head(10).to_html(),flush=True)
-            hr_html = heartdf.head(10).to_html(classes='table table-stripped')
-        return render_template('tasks.html',heartdf=heartdf, tools=tools,
-                                            new_exp_id=data_table.id_table,
-                                            howMany = howMany,numb = numb,hr_html=hr_html)
+        # if request.form.get('startcardio') != None:
+        #     today = str((datetime.now()- timedelta(hours=20)).strftime("%Y-%m-%d"))
+        #     fitbit_creds = get_user_fitbit_credentials(current_user.id)
+        #     if fitbit_creds:
+        #         with fitbit_client(fitbit_creds) as client:
+        #             fitbit_statsHR = client.intraday_time_series('activities/heart', base_date=today, detail_level='1sec')
+        #             fitbit_statsHR1 = client
+        #     time_list = []
+        #     val_list = []
+        #     for i in fitbit_statsHR['activities-heart-intraday']['dataset']:
+        #         val_list.append(i['value'])
+        #         time_list.append(i['time'])
+        #     heartdf = pd.DataFrame({'Heart Rate':val_list,'Time':time_list})
+        #     print(heartdf.head(10).to_html(),flush=True)
+        #     hr_html = heartdf.head(10).to_html(classes='table table-stripped')
+    return render_template('tasks.html',tools=tools,
+                                        new_exp_id=data_table.id_table,
+                                        howMany = howMany,
+                                        numb=numb)
 
 @main.route('/process/done', methods=['POST'])
 def process_done():
@@ -291,10 +305,8 @@ def dashboard():
 def delete(id):
     current_u_id = current_user.id
     row_to_delete = UserTable.query.get_or_404(id)
-    data_to_delete = UserData.query.filter_by(users_table_id = id)
     try:
         db.session.delete(row_to_delete)
-        db.session.delete(data_to_delete)
         db.session.commit()
         print("Data Deleted Successfully!",id, flush=True)
         my_exp = UserTable.query.order_by(UserTable.id_table)
@@ -339,7 +351,7 @@ def add(id):
             tools=tools, 
             toolsstr = data_to_add.tools)
 
-@main.route('/dashboard/experiment/<int:row>')
+@main.route('/dashboard/experiment/<int:row>', methods=['POST','GET'])
 @login_required
 def dashboard_experiment(row):
     current_u_id = current_user.id
@@ -352,7 +364,16 @@ def dashboard_experiment(row):
     for i in range(numb):
         howMany.append(i+1)
     print(my_exp.data,flush=True)
-    return render_template('dashboardexp.html', my_exp=my_exp, my_exp2=my_exp2, howMany=howMany, tools=tools, current_u_id=current_u_id)
+
+    if request.method == "POST":
+        hr = request.form.get("hrmeter")
+        print(hr,flush=True)
+            
+    return render_template('dashboardexp.html', my_exp=my_exp, my_exp2=my_exp2, howMany=howMany, tools=tools, current_u_id=current_u_id, row=row)
+
+@main.route('/indexing')
+def indexing():  
+    return render_template('indexing.html')
 
 @main.route('/logout')
 @login_required

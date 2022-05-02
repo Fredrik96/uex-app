@@ -32,15 +32,13 @@
         </div>
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
             <div class="d-flex" style="margin-top: 80px;">
-                <div class="d-flex flex-column justify-content-start border1 shadow p-3 mb-5 bg-body rounded-3 table-responsive" style ="width: auto; height: 400px;">
-                    <input type="button" class="btn btn-primary rounded-pill" onclick="hrmeter()" value="Start HR"/></br>
-                    <input type="button" class="btn btn-primary rounded-pill" onclick="stophrmeter()" value="Stop HR"/></br>
-                    <table id="DataTab" class="table table-hover table-bordered table-striped table-light">
+                <div class="d-flex flex-column justify-content-start border1 shadow table-responsive" style ="height: 400px;">
+                    <table id="DataTabExp" class="table table-hover table-bordered table-striped table-light">
                         <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Subject</th>
                                     {% for tool in tools%}
-                                        <th scope="col">{{tool}}</th>
+                                        <th style="text-align: center;" scope="col">{{tool}}</th>
                                     {% endfor %}
                                 </tr>
                         </thead>
@@ -58,6 +56,9 @@
                                         {% if tool == "time" %}
                                             <td> <span>{{my_exp.data[number-1].timer}}</span></td>
                                         {% endif %}
+                                        {% if tool == "video" %}
+                                            <td> <a href="{{ url_for('main.recording', number=number) }}"> Video File </a></td>
+                                        {% endif %}
                                     {% endfor %}
                                 </tr>
                             {% endfor %}
@@ -69,8 +70,8 @@
         {% for all in my_exp2 %}
             {{all.timer}}                
         {% endfor %}
+        
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script type="module" src="{{url_for('static', filename='js/index.js')}}"></script>
     </body>
 </html>

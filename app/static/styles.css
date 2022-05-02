@@ -322,7 +322,31 @@ textarea {
 /*---------------- tables ----------------------*/
 .border1
 {
+  border-radius: 10%;
+  width: fit-content;
 	background-color: #FFF;
+}
+
+#DataTabExp {
+  border-collapse: collapse;
+  font-size: 18px;
+}
+
+#DataTabExp th, #DataTabexp td {
+  text-align: center;
+  padding: 12px; 
+}
+
+#DataTabExp tr :last-child{
+  border-left: #fff;
+  border-right: #fff;
+}
+#DataTabExp tr :first-child{
+  border-left: #fff;
+  border-right: #fff;
+}
+#DataTabExp thead{
+  border-top: #fff;
 }
 
 #DataTab {

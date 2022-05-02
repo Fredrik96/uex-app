@@ -69,7 +69,8 @@
                                     var starthr = $("#startcardiodiv");
                                     var startanalyt = $("#startanalytdiv");
                                     var starttime = $("#starttimediv");
-                                    var startvideo = $("#startvideodiv");
+                                    var videoimage = $("#videoimage");
+                                    var recorder = $("#recorder");
                                     var counter = 0;
                                     $('#start{{number}}').click(function(e){
                                         e.preventDefault();
@@ -98,12 +99,10 @@
 
                                                 starttime.html("<input type='hidden' style='display: none;' name='startanalyt' value='Time Data'/>"+
                                                             "<input id='timer{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Timer'/>");
-
-                                                startvideo.html("<input type='hidden' style='display: none;' name='openclose' value='open or close'/>"+
-                                                    "<input id='video{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Open Video'/></br>"+
-                                                    "<input type='hidden' style='display: none;' name='startstop' value='rec'/>"+
-                                                    "<input id='videorec{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Recording'/>");
-                                                
+                                                recorder.html("<button id='startrecord{{number}}' class='btn btn-primary rounded-pill'>Record</button>"+
+                                                              "<button id='stoprecord{{number}}' class='btn btn-primary rounded-pill' disabled>Stop</button>"+
+                                                              "<a id='download{{number}}'></a>");
+                                                videoimage.html("<img id='videosrc{{number}}' src='{{ url_for('main.video_viewer', number=number) }}'>")
                                                 //waiting for finnish button to be pressed
                                                 $('#finnish{{number}}').click(function(e){
                                                     e.preventDefault();
@@ -130,6 +129,8 @@
                                                             $('#startcardio{{number}}').css("display","none");
                                                             $('#finnish{{number}}').css("display","none");
                                                             $("#timerSpan").css("display","none");
+                                                            videoimage.html("")
+                                                            recorder.css("display","none");
                                                         }
                                                         else{
                                                             alert("Not finnished yet!");
@@ -211,52 +212,50 @@
                                                         }
                                                     })
                                                 });
-                                                $('#video{{number}}').on('click',function(e){
-                                                    var toggle = $('#video{{number}}'), val = toggle.val();
-                                                    if(val=="Open Video"){
-                                                        $('#videoimage').html('<img src="{{ url_for("main.video_feed") }}" height="100%" width="50%">');
-                                                    }
-                                                    else{
-                                                        $('#videoimage').hide();
-                                                        $('#videoimage').css("display","none");
-                                                    }
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: $('[name=openclose]').serialize(),
-                                                        type : 'POST',
-                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
-                                                        success:function(){
-                                                        },
-                                                        error:function(){
-                                                            alert("Video not sendt");
-                                                        }
-                                                    })
-                                                    .done(function(data){
-                                                        if(data){
-                                                            toggle.val(val === "Open Video" ? "Close Video" : "Open Video");
-                                                        }
-                                                    });
-                                                });
+                                                var buttonRecord = document.getElementById("startrecord{{number}}");
+                                                var buttonStop = document.getElementById("stoprecord{{number}}");
+                                                buttonStop.disabled = true;
+                                            
+                                                buttonRecord.onclick = function() {
+                                                    buttonRecord.disabled = true;
+                                                    buttonStop.disabled = false;
+                                                    
+                                                    // disable download link
+                                                    var downloadLink = document.getElementById("download{{number}}");
+                                                    downloadLink.text = "";
+                                                    downloadLink.href = "";
 
-                                                $('#videorec{{number}}').on('click',function(e){
-                                                    var toggle = $('#videorec{{number}}'), val = toggle.val();
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: $('[name=startstop]').serialize(),
-                                                        type : 'POST',
-                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
-                                                        success:function(){
-                                                        },
-                                                        error:function(){
-                                                            alert("Video not sendt");
+                                                    // XMLHttpRequest
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.onreadystatechange = function() {
+                                                        if (xhr.readyState == 4 && xhr.status == 200) {
                                                         }
-                                                    })
-                                                    .done(function(data){
-                                                        if(data){
-                                                            toggle.val(val === "Start Recording" ? "Stop Recording" : "Start Recording");
+                                                    }
+                                                    xhr.open("POST", "/record_status/{{number}}");
+                                                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                                    xhr.send(JSON.stringify({ status: "true" }));
+                                                };
+
+                                                buttonStop.onclick = function() {
+                                                    buttonRecord.disabled = false;
+                                                    buttonStop.disabled = true;    
+
+                                                    // XMLHttpRequest
+                                                    var xhr = new XMLHttpRequest();
+                                                    xhr.onreadystatechange = function() {
+                                                        if (xhr.readyState == 4 && xhr.status == 200) {
+                                                            // alert(xhr.responseText);
+
+                                                            // enable download link
+                                                            var downloadLink = document.getElementById("download{{number}}");
+                                                            downloadLink.text = "Download Video";
+                                                            downloadLink.href = "/static/videos/video{{number}}.mp4";
                                                         }
-                                                    });
-                                                });
+                                                    }
+                                                    xhr.open("POST", "/record_status/{{number}}");
+                                                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                                    xhr.send(JSON.stringify({ status: "false" }));
+                                                };
                                             }
                                             else{
                                                 alert("Session not Working!");
@@ -274,10 +273,10 @@
                     <div id="showSpan"></div>
                     <form id="videoform" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id) }}">
                         <div id="toolsdiv" class="d-flex justify-content-center align-items-center" style="margin-top: 50px;">
-                            <a href="{{ url_for('main.video', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
+                            <a href="{{ url_for('main.tasks', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
                             {% for elem in tools %}
                                 {% if elem == "video" %}
-                                <div id="startvideodiv" class="d-flex flex-column align-items-center"></div>
+                                    <div id="recorder" class="d-flex"></div>
                                 {% endif %}
                                 {% if elem == "analyt" %}   
                                     <div id="startanalytdiv" class="d-flex"></div>
@@ -296,7 +295,7 @@
                     </form>
                     <div class="d-flex align-items-center justify-content-center">
                         <form>
-                            <input style='display: none;' name='donesess' type='hidden' value='Done{{number}}'/>
+                            <input style='display: none;' name='donesess' type='hidden' value='Done'/>
                             <div id="donedivin" style="margin: 10px;"></div>
                         </form>
                     </div>
@@ -306,7 +305,11 @@
                         <input id="timerInput" type="text" name="timerInput" style="display: none;" value="Init"/>
                         <span id="timerSpan" name="timerSpan" type="text" class="styletimer" style="display: none;"></span>
                     </div>
-                    <div id="videoimage" class="d-flex align-items-center justify-content-center"></div>
+                    {% for elem in tools %}
+                        {% if elem == "video" %}
+                            <div id="videoimage" class="d-flex align-items-center justify-content-center"></div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
