@@ -8,42 +8,263 @@
 
     <!-- Bootstrap CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <!-- Fonts CSS -->
     <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 
-    <title>Experiments</title>
+    <!-- Template js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- My js-->
+    {{ moment.include_moment() }}
+
+    <title>Experiments</title>
     
     </head>
 
     <body class="d-flex flex-column text-center">
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
-            <div class="d-flex">
-                <span class="Style3">{{ parttakers }} partisipants remaining</span>
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('main.support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('main.dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('main.logout') }}" class="pe-auto Style3">LogOut</a>
             </div>
         </div>
-        <div class="d-flex justify-content-center">
-            <div class="d-flex align-items-center justify-content-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 400px; height: 400px;">
-                <form id="startform" action="{{ url_for('main.exp_handler', new_exp_id=new_exp_id)}}" method="POST">
-                {% if parttakers > 0 %}
-                    
-                    <input type="submit" name="startexp" form="startform" class="btn btn-primary btn-lg rounded-pill" value="Start Experiment">
-                   
-                {% else %}
-                    
-                    <input type="submit" name="stopexp" class="btn btn-primary btn-lg rounded-pill" value="Finnished!">
-                      
-                {% endif %}
-                </form>
+        <div class="d-flex justify-content-center text-center" style="margin: 80px;">
+            <div class="d-flex flex-column" style="margin-right: 100px;">
+                <div class="d-flex border3 justify-content-evenly shadow justify-content-center" style ="width: 600px; height: fit-content; margin-bottom: 40px; background-color: rgb(246, 246, 90);">
+                    <span class="Style4">name: {{new_exp_name}}</span>
+                    <span class="Style4">Exp nr. {{new_exp_id}}</span>
+                </div>
+                <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
+                    <div class="d-flex flex-row justify-content-evenly" style="margin: 30px 0px 0px 40px;">
+                        <div class="d-flex flex-column align-items-start">
+                            <span>Sample</span>
+                            </br>
+                            <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
+                                <span>{{number}}/{{numb}}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column align-items-start">
+                            <span>Experiment Timer</span>
+                            </br>
+                            {% if "time" in tools%}
+                                <input id="ststptimer" value="Start Timer" type="button" class="btn startstopBtn rounded-pill">
+                            {% else %}
+                                <input value="Start/Stop" type="button" class="btn startstopBtn rounded-pill" disabled>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row" style="margin: 30px 0px 0px 40px;">
+                        <div class="d-flex flex-column align-items-start">
+                            <span>Controls</span>
+                            </br>
+                            {% if "analyt" in tools %}
+                                <form id="analytform" method="POST">
+                                    <input name="startanalytics" value="{{new_exp_id}}" style="display: none;" >
+                                    <button id="analytstartstop" type="submit" class="dashbbtn rounded-pill" style="width: 230px;">Analytics Start/Stop</button>
+                                </form>
+                            {% else %}
+                                <button name="startanalytics" type="button" class="btn startstopBtn rounded-pill" style="width: 230px;" disabled>Analytics Start/Stop</button>
+                            {% endif %}
+                            {% if quests != [''] %}
+                                <div class="dropdown" id="questformatmenu">
+                                    <input value="Open Questionnaires" class="dashbbtn rounded-pill" type="button" id="formatbtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 250px;">
+                                    <div class="dropdown-menu" aria-labelledby="formatbtn">
+                                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#microsoft_modal">Microsoft Form</button>
+                                        <button class="dropdown-item" type="button" data-toggle="modal" data-target="#google_modal">Google Form</button>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <button type="button" class="btn startstopBtn rounded-pill" style="width: 250px;" disabled>Open Questionnaires</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row" style="margin: 160px 0px 0px 40px;">
+                        <input id="savesess" value="Save Session" type="button" class="dashbbtn rounded-pill" style="width: 150px;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="microsoft_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-head">
+                            <span>Questionnaires</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex flex-row">
+                                {% for scale in quests %}
+                                    <button id="{{scale}}" class="questformBtn rounded-pill" name="scale"><span style="margin: 0px 10px 0px 10px;">{{scale}}</span></button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="google_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-head">
+                            <span>Questionnaires</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex flex-row">
+                                {% for scale in quests %}
+                                    <input value="{{scale}}" id="{{scale}}" type="button" class="dashbbtn rounded-pill" name="scale"> 
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 800px; height: 800px;">
+                    <div class="d-flex flex-column align-items-start" style="margin: 30px 0px 0px 40px;">
+                        <span>Video</span>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <div class="d-flex flex-column border5 shadow align-items-center" style ="width: 680px; height: 508px;">
+                            {% if "video" in tools%}
+                            <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number) }}" style="margin-top: 13px;">
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-row">
+                            {% if "video" in tools%}
+                                <button id="startvideo" class="btn startstopBtn rounded-pill">Start Record</button>
+                                <button id="stopvideo" class="btn startstopBtn rounded-pill">Stop Record</button>
+                            {% else %}
+                                <button id="startrecord" class="btn startstopBtn rounded-pill" disabled>Start Record</button>
+                                <button id="stoprecord" class="btn startstopBtn rounded-pill" disabled>Start Record</button>
+                            {% endif %}
+                        </div>
+                        {% if "time" in tools%}
+                        <div id="starttimediv">
+                            <input id="timerInput" type="text" name="savesession" style="display: none;" value="Init"/>
+                            <span id="timerSpan" name="timerSpan" type="text" class="styletimer" style="display: none;"></span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-    <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="{{url_for('static', filename='js/starter.js')}}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var buttonRecord = document.getElementById("startvideo");
+                var buttonStop = document.getElementById("stopvideo");
+                
+                $('#ststptimer').on('click',function(){
+                    var timer;
+                    var counter = 0;
+                    var toggle = $('#ststptimer'), val = toggle.val();
+                    var timerSpan = $("#timerSpan").text();
+                    var timerInput = $("#timerInput").val(timerSpan);
+                    JSON.stringify(timerInput);
+                    
+                    function startTime() {
+                        timer = moment();
+                        $("#timerSpan").css("display","block")
+                        $("#timerSpan").html(timer.hour(0).minute(0).second(0).milliseconds(counter).format('HH : mm : ss : S'));
+                        counter = counter + 100
+                    };
+                    
+                    if(val == "Start Timer") {
+                        timeInter = setInterval(startTime, 100);
+                        timerInput.val("")
+                    }
+                    else {
+                        clearInterval(timeInter);
+                    }
+                    
+                    toggle.val(val === "Stop Timer" ? "Start Timer" : "Stop Timer");
+                });
+                if(buttonRecord != null){
+                    buttonRecord.onclick = function() {
+
+                    buttonRecord.disabled = true;
+                    buttonStop.disabled = false;
+
+                    // XMLHttpRequest
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+
+                        }
+                    }
+                    xhr.open("POST", "/record_status/{{number}}");
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhr.send(JSON.stringify({ status: "true" }));
+
+                    };
+
+                    buttonStop.onclick = function() {  
+                    buttonStop.disabled = true;
+
+                    // XMLHttpRequest
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == 4 && xhr.status == 200) {
+                            // alert(xhr.responseText);
+                        }
+                    }
+                    xhr.open("POST", "/record_status/{{number}}");
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhr.send(JSON.stringify({ status: "false" }));
+                    };
+                }
+
+                $('#savesess').on('click',function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        data: $('[name=savesession]').serialize(),
+                        type : 'POST',
+                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id, number=number) }}',
+                        success:function(){
+                            alert("Session Sendt");
+                        },
+                        error:function(){
+                            alert("Not able to send..");
+                        }
+                    })
+                    .done(function(data){
+                        if(data){
+                            window.location.replace("{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}");
+                        }
+                    });
+                });
+
+                $('#analytstartstop').on('click',function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        data: $('[name=startanalytics]').serialize(),
+                        type : 'GET',
+                        url : '{{ url_for("main.dashboard") }}',
+                        success:function(){
+                            alert("analyt sendt!");
+                        },
+                        error:function(){
+                            alert("Not able to send..");
+                        }
+                    })
+                    .done(function(data){
+                        if(data){
+                            $('#analytform').html('<button id="analytstartstop" type="submit" class="analytWaitBtn rounded-pill" style="width: 230px;">Waiting for data..</button>')
+                        }
+                    });
+                });
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>
 </html>

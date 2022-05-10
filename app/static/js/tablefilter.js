@@ -21,18 +21,12 @@ function SortByName() {
 function SortByTools(newId){
     var table, tr, td, i, txtValue;
     var id_vid = document.getElementById("drop-vid");
-    var id_pict = document.getElementById("drop-pict");
     var id_analyt = document.getElementById("drop-analyt");
     var id_time = document.getElementById("drop-time");
-    var id_cardio = document.getElementById("drop-cardio");
-    var id_quest = document.getElementById("drop-quest");
     
     var filter1 = id_vid.value.toUpperCase();
-    var filter2 = id_pict.value.toUpperCase();
-    var filter3 = id_analyt.value.toUpperCase();
-    var filter4 = id_time.value.toUpperCase();
-    var filter5 = id_cardio.value.toUpperCase();
-    var filter6 = id_quest.value.toUpperCase();
+    var filter2 = id_analyt.value.toUpperCase();
+    var filter3 = id_time.value.toUpperCase();
 
     table = document.getElementById("DataTab");
     tr = table.getElementsByTagName("tr");
@@ -69,39 +63,6 @@ function SortByTools(newId){
             {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter3) > -1) {
-                    tr[i].style.display = "";
-                }
-                else 
-                {
-                    tr[i].style.display = "none";
-                }
-            }
-            if (td && newId == filter4) 
-            {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter4) > -1) {
-                    tr[i].style.display = "";
-                }
-                else 
-                {
-                    tr[i].style.display = "none";
-                }
-            }
-            if (td && newId == filter5) 
-            {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter5) > -1) {
-                    tr[i].style.display = "";
-                }
-                else 
-                {
-                    tr[i].style.display = "none";
-                }
-            }
-            if (td && newId == filter6) 
-            {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter6) > -1) {
                     tr[i].style.display = "";
                 }
                 else 

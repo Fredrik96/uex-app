@@ -17,7 +17,10 @@ Login
 {% block content %}
 <body class="d-flex flex-column text-center">
   <div class="d-flex justify-content-between align-items-center">
-    <span class="Style1">UeX</span>
+    <div class="d-flex flex-column">
+      <span class="Style1">STUX</span>
+      <span class="Style8">Sense-IT Toolbox for</br>evaluating User Experience</span>
+    </div>
     <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
       <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
       <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
@@ -25,9 +28,11 @@ Login
     </div>
   </div>
   <div class="container-fluid w-100 h-100 d-flex justify-content-between align-items-center">
-    <div class="d-flex justify-content-center align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 450px; height: auto;">
+    <div class="d-flex justify-content-center align-items-center border1 shadow" style ="width: 450px; height: auto;">
       <form class="form-signin" method="POST" action="/login">
-        <h2 class="form-signin-heading" style="font-size: 38px;">Sign in</h2>
+        <div class="border2">
+          <h2 class="form-signin-heading">Sign in</h2>
+        </div>
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username, class="form-control bigtext") }}
         {{ wtf.form_field(form.password, class="form-control bigtext") }}

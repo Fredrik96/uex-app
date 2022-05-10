@@ -93,6 +93,50 @@ body {
   font-weight: 900;
 }
 
+.questformBtn {
+  background-color: #E6FE55;
+  font-weight: 900;
+  padding: 0px;
+  font-size: 24px;
+  font-family : Rubik-Regular;
+  text-decoration: none;
+  color: #003E33; 
+  vertical-align: middle;
+  text-align: center;
+  width: fit-content;
+  margin: 10px;
+  height: 40px;
+  border: none;
+}
+
+.questformBtn:hover {
+  cursor: pointer;
+  color: #00614f;
+  background-color: #e8f834;
+  text-decoration: none;
+  }
+
+  .analytWaitBtn {
+    background-color: #E6FE55;
+    cursor: regular;
+    font-weight: 900;
+    padding: 0px;
+    margin: 10px;
+    font-size: 24px;
+    font-family : Rubik-Regular;
+    text-decoration: none;
+    color: #003E33; 
+    vertical-align: middle;
+    text-align: center;
+    width: 80px;
+    height: 40px;
+    border: none;
+  }
+
+  .analytWaitBtn:hover {
+    cursor: default;
+    }
+
 .dashbbtn {
   background-color: #E6FE55;
   font-weight: 900;
@@ -114,6 +158,27 @@ cursor: pointer;
 font-size: 26px;
 color: #00614f;
 text-decoration: none;
+}
+
+.startstopBtn {
+  background-color: #E6FE55;
+  font-weight: 900;
+  padding: 0px;
+  margin: 10px;
+  font-size: 24px;
+  font-family : Rubik-Regular;
+  color: #003E33; 
+  vertical-align: middle;
+  text-align: center;
+  width: 150px;
+  height: 40px;
+  border: none;
+}
+
+.startstopBtn:hover{
+cursor: pointer;
+font-size: 26px;
+color: #00614f;
 }
 
 .indexbtn {
@@ -138,6 +203,110 @@ text-decoration: none;
   background-color: #F0EC10;
   text-decoration: none;
   }
+
+.questBtn {
+  margin:4px;
+  background-color:#ffffff;
+  border-radius:4px;
+  border:1px solid #ffffff;
+  overflow:auto;
+  float:left;
+}
+.questBtn:hover {
+  margin:4px;
+  background-color:#EFEFEF;
+  border-radius:4px;
+  border:1px solid black;
+  overflow:auto;
+  float:left;
+  color:black;
+}
+
+.questBtn label {
+  float: left;
+  width:fit-content;
+  border: 1px solid black;
+}
+
+.questBtn label span {
+  text-align:center;
+  padding-left: 8px;
+  padding-right: 8px;
+  display:block;
+}
+
+.questBtn label input {
+  position:absolute;
+  display: none;
+  top:-20px;
+}
+
+.questBtn input:checked + span{
+  background-color:rgb(41, 188, 0);
+  color:rgb(0, 0, 0);
+}
+
+.toolBtn {
+  border-radius: 20pt;
+  font-size: 24px;
+  font-family : Rubik-Regular;
+  font-weight: 900;
+  text-decoration: none;
+  color: #003E33; 
+  vertical-align: middle;
+  text-align: center;
+  margin:4px;
+  background-color:#E6FE55;
+}
+
+.toolBtn:hover {
+  outline: 0pt;
+  border-radius: 20pt;
+  background-color:#E6FE55;
+  overflow:auto;
+  float:left;
+  color: #00614f;
+  cursor: pointer;
+  font-size: 26px;
+  text-decoration: none;
+}
+
+.toolBtn label {
+  float: left;
+  width: 80px;
+  height: 40px;
+  border: 1px solid black;
+}
+
+.toolBtn label span {
+  text-align:center;
+  padding-left: 8px;
+  padding-right: 8px;
+  display:block;
+}
+
+.toolBtn label input{
+  display: none;
+  position:absolute;
+  top:-20px;
+  border-width: 0px;
+  outline:0; /* I have also tried outline:none */
+}
+
+.toolBtn input:focus{
+  border-width: 0px;
+  outline:0; /* I have also tried outline:none */
+  -webkit-appearance:none;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.toolBtn input:checked + span{
+  border-radius: 20pt;
+  background-color:rgb(41, 188, 0);
+  color:rgb(0, 0, 0);
+}
 /*---------------- buttons ----------------------*/
 
 /*---------------- forms ----------------------*/
@@ -145,8 +314,13 @@ text-decoration: none;
   width: 100%;
   max-width: 330px;
   font-size: 20px;
-  padding: 15px;
-  margin: auto;
+  padding-bottom: 26px;
+  padding-top: 0px;
+}
+
+.form-signin-heading {
+  width: 100%;
+  font-size: 38px;
 }
 
 .form-signin .form-floating:focus-within {
@@ -194,6 +368,10 @@ select.form-control {
   color: transparent;
 }
 
+.experinput:focus-within {
+ outline: none;
+}
+
 /*---------------- forms ----------------------*/
 
 /*---------------- text styles ----------------------*/
@@ -223,9 +401,8 @@ select.form-control {
 .Style3
 {
 	font-family : Rubik-Regular;
-	font-size : 24px;
-	color : #003E33;
-	color : rgb(0, 62, 51);
+	font-size : 26px;
+	color : #000000;
 	text-decoration: none!important;
 }
 
@@ -233,8 +410,7 @@ select.form-control {
 {
 	font-family : sans-serif;
 	font-size : 25px;
-	color : #003E33;
-	color : rgb(0, 62, 51);
+	color : #000000;
 	text-decoration: none!important;
 }
 
@@ -263,6 +439,15 @@ select.form-control {
 	color : #000000;
 	color : rgb(0, 0, 0);
 	text-decoration: none!important;
+}
+
+.Style8
+{
+	font-family : Rubik-light;
+	font-size : 18px;
+  font-weight: 600;
+	color : #003E33;
+	color : rgb(0, 62, 51);
 }
 
 .smaltext
@@ -325,10 +510,46 @@ textarea {
   border-radius: 10%;
   width: fit-content;
 	background-color: #FFF;
+  overflow: hidden;
+}
+
+.border2
+{
+  background-color: #E6FE55;
+  margin-top: 0px;
+  align-items: center;
+  width: 450px;
+  height: auto;
+  transform: translateX(-50%);
+  margin-left: 50%;
+  border-bottom: solid #000000 3px;
+}
+
+.border3
+{
+  border-radius: 30px;
+  width: fit-content;
+	background-color: #FFF;
+  overflow: hidden;
+}
+
+.border4
+{
+  border-radius: 30px;
+  width: fit-content;
+	background-color: #FFF;
+}
+
+.border5
+{
+  border-radius: 30px;
+  width: fit-content;
+	background-color: rgb(252, 243, 223);
 }
 
 #DataTabExp {
   border-collapse: collapse;
+  border: 1px solid #ddd;
   font-size: 18px;
 }
 
@@ -337,16 +558,16 @@ textarea {
   padding: 12px; 
 }
 
-#DataTabExp tr :last-child{
-  border-left: #fff;
-  border-right: #fff;
+#DataTabTask {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  font-size: 18px;
+  height: fit-content;
 }
-#DataTabExp tr :first-child{
-  border-left: #fff;
-  border-right: #fff;
-}
-#DataTabExp thead{
-  border-top: #fff;
+
+#DataTabTask th, #DataTabTask td {
+  text-align: center;
+  padding: 12px;
 }
 
 #DataTab {
@@ -363,4 +584,5 @@ textarea {
 #DataTab tr {
   border-bottom: 1px solid #ddd;
 }
+
 /*---------------- tables ----------------------*/

@@ -21,7 +21,7 @@
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
+            <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
             <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
                 <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
                 <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
@@ -31,9 +31,9 @@
             </div>
         </div>
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
-            <div class="d-flex" style="margin-top: 80px;">
-                <div class="d-flex flex-column justify-content-start border1 shadow table-responsive" style ="height: 400px;">
-                    <table id="DataTabExp" class="table table-hover table-bordered table-striped table-light">
+            <div class="d-flex flex-column" style="width: auto; margin-top: 80px;">
+                <div class="d-flex flex-column justify-content-start border3 shadow table-responsive" style ="height: 400px; overflow-y: scroll;">
+                    <table id="DataTabExp" class="table table-hover table-bordered table-striped table-light" style="width: fit-content; margin: 25px;">
                         <thead>
                                 <tr>
                                     <th scope="col">Subject</th>
@@ -44,33 +44,70 @@
                         </thead>
                         <tbody>
                             {% for number in howMany %}
-                                <tr>
-                                    <th scope="row">{{ number }}</th>
-                                    {% for tool in tools%}
-                                        {% if tool == "analyt" %}
-                                            <td> <span>None</span></td>
+                                {%  if my_exp_table.users_id == current_u_id %}
+                                    <tr>
+                                        {% if part_id != [] %}
+                                            <th scope="row">{{ part_id[number-1] }}</th>
+                                        {% else %}
+                                            <th scope="row">{{ number }}</th>
                                         {% endif %}
-                                        {% if tool == "cardio" %}
-                                            <td> <span>None</span></td>
-                                        {% endif %}
-                                        {% if tool == "time" %}
-                                            <td> <span>{{my_exp.data[number-1].timer}}</span></td>
-                                        {% endif %}
-                                        {% if tool == "video" %}
-                                            <td> <a href="{{ url_for('main.recording', number=number) }}"> Video File </a></td>
-                                        {% endif %}
-                                    {% endfor %}
-                                </tr>
+                                        {% for tool in tools%}
+                                            {% if tool == "time" and timer != []%}
+                                                <td> <span>{{ timer[number-1] }}</span></td>
+                                            {% endif %}
+                                            {% if tool == "video" %}
+                                                <td> <a href="/static/videos/video{{part_id[number-1]}}user{{current_u_id}}.mp4" download>Download Video</a></td>
+                                            {% endif %}
+                                            {% if tool == "analyt" %}
+                                                <td> <span></span>{{analytics[number-1]}}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    {% if my_exp_table.data.quest_file != None %}
+                        <div class="d-flex flex-column justify-content-center align-items-center border3 shadow" style ="width: 100%; height: fit-content; margin-top: 40px;">
+                            <div class="d-flex align-items-start justify-content-start" style="width: 100%; padding-left: 8pt;">
+                                <span> Questionnaires:</span>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center border3" style ="width: fit-content; height: fit-content; background-color: rgb(213, 212, 212); margin-bottom: 5px;">
+                                <span style="margin: 10px;"> {{ quest[0] }} </span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <a class="dashbbtn rounded-pill" type="button" href="{{url_for('main.dashboard')}}">Back</a>
+                </div>
             </div>
         </div>
-        {% for all in my_exp2 %}
-            {{all.timer}}                
-        {% endfor %}
-        
+        <script type="text/javascript">
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("DataTabExp");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+
+                    x = rows[i].getElementsByTagName("td")[0];
+                    y = rows[i + 1].getElementsByTagName("td")[0];
+
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     </body>

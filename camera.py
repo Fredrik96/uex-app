@@ -2,6 +2,7 @@ import cv2
 import threading
 import multiprocessing
 import time
+from flask_login import current_user
 
 class RecordingThread (threading.Thread):
     def __init__(self, name, camera, number):
@@ -14,7 +15,7 @@ class RecordingThread (threading.Thread):
         h = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         #use -1 instead of fourcc. -1 means the videowriter choose for you
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        self.out = cv2.VideoWriter('app/static/videos/video{}.mp4'.format(str(number)),-1, 20.0, (int(w),int(h)))
+        self.out = cv2.VideoWriter('app/static/videos/video{}user{}.mp4'.format(str(number),str(current_user.id)),-1, 20.0, (int(w),int(h)))
         print(number, flush=True)
 
     def run(self):

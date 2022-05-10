@@ -18,3 +18,4 @@ class DashboardForm():
     new_number = None
     tools = []
     expname = []
+    quests = []

@@ -27,7 +27,7 @@
     <body>
         <div class="d-flex flex-column text-center">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
+                <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
                 <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
                     <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
                     <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
@@ -38,9 +38,57 @@
             </div>
         </div>
         <div class="d-flex justify-content-evenly text-center">
-            <div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: fit-content;">
-                <form id="progform{{number}}" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, postID=number) }}"></form>
-                <table id="ExperimentTab" class="table table-hover table-bordered table-striped table-light">
+            <div class="d-flex flex-column">
+                <div class="d-flex border3 shadow justify-content-center" style ="width: 600px; height: fit-content; margin-bottom: 40px; background-color: rgb(246, 246, 90);">
+                    <span class="Style4">{{new_exp_name}}</span>
+                </div>
+                
+                <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
+                    <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
+                        <div class="d-flex align-items-start">
+                            <span>Progress</span>
+                        </div>
+                        </br>
+                        <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
+                            <span>{{progress}}/{{numb}}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
+                        <div class="d-flex align-items-start">
+                            <span>Tools</span>
+                        </div>
+                        </br>
+                        <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
+                            {% if tools == [] %}
+                                <span>None</span>
+                            {% else %}
+                                <span>{{ tools }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
+                        <div class="d-flex align-items-start">
+                            <span>Questionnaires</span>
+                        </div>
+                        </br>
+                        <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
+                            {% if quests == [] %}
+                                <span>None</span>
+                            {% else %}
+                                <span>{{ quests }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}">
+                        <div class="d-flex justify-content-center" style="margin-top: 150px;">
+                            <input type="submit" name="next" class="btn startstopBtn rounded-pill" value="To Dashboard" style="width: 180px;"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex border3 shadow" style ="width: auto; height: 500px; overflow: auto;">
+                <form id="progform{{number}}" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, postID=number, number=number) }}"></form>
+                <table id="DataTabTask" class="table table-hover table-bordered table-striped table-light" style="margin: 20px;">
                     <thead>
                         <tr style="font-size: 20px;">
                             <th scope="col">Participant ID</th>
@@ -52,265 +100,23 @@
                         {% for number in howMany %}
                             <tr style="font-size: 15px;">
                                 <th scope="row">{{ number }}</th>
-                                <td style="text-align: center;"><a href="#">Datalink</a></td>
+                                <td style="text-align: center;"><a href="{{url_for('main.dashboard_experiment', row=new_exp_id)}}">Datalink</a></td>
                                 <td id="progrow{{number}}" style="text-align: center;">
-                                    <span id="done{{number}}" class='progressdone' style="display: none;">Done</span>
-                                    <span id="session{{number}}" class='sessionform' style="display: none;">In Progress</span>
-                                    <form id="progform{{number}}">
-                                        <div id="sess{{number}}">
-                                            <input type="hidden" style="display: none;" name="session" value="In Session {{number}}"/>
-                                            <input id="start{{number}}" type="button" class="btn btn-outline-success" value="Start Session {{ number }}" style="font-size: 15px;"/>
-                                        </div>
+                                    <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}">
+                                        {% if data_to_tasks.data == [] or number not in data_number %}
+                                            <input id="sessiontest{{number}}" name="sessiontest" type="submit" class="btn btn-outline-success" value="Start Session {{ number }}" style="font-size: 15px;"/>
+                                        {% endif %}
+                                        {% for elem in data_to_tasks.data %}
+                                            {% if elem.check == number %}
+                                                <span id="done{{number}}" class='progressdone'>Done</span>
+                                            {% endif %}
+                                        {% endfor %}
                                     </form>                                    
                                 </td>
                             </tr>
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    var starthr = $("#startcardiodiv");
-                                    var startanalyt = $("#startanalytdiv");
-                                    var starttime = $("#starttimediv");
-                                    var videoimage = $("#videoimage");
-                                    var recorder = $("#recorder");
-                                    var counter = 0;
-                                    $('#start{{number}}').click(function(e){
-                                        e.preventDefault();
-                                        $.ajax({
-                                            data: $('[name=session]').serialize(),
-                                            type : 'POST',
-                                            url : '{{ url_for("main.process", new_exp_id=new_exp_id) }}',
-                                            success:function(){
-                                                document.getElementById("showSpan").innerHTML = "<span class='Style3'>Participant {{ number }} in session</span>";
-                                                alert("Session {{number}} was sent.");
-                                            }
-                                        })
-                                        .done(function(data){
-                                            if(data){
-                                                $('#done{{number}}').hide();
-                                                $('#session{{number}}').show();
-                                                $('#start{{number}}').hide();
-                                                $('#toolsdiv').removeClass("justify-content-center").addClass("justify-content-evenly");
-                                                $("#donedivin").html("<input id='finnish{{number}}' type='button' class='btn btn-primary rounded-pill' value='Finnish'/>");
-                                                
-                                                startanalyt.html("<input type='hidden' style='display: none;' name='startanalyt' value='Analytics Data'/>"+
-                                                            "<input id='analyt{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Analytics'/>");
-
-                                                starthr.html("<input type='hidden' style='display: none;' name='startcardio' value='HR Data'/>"+
-                                                            "<input id='startcardio{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start HR'/>");
-
-                                                starttime.html("<input type='hidden' style='display: none;' name='startanalyt' value='Time Data'/>"+
-                                                            "<input id='timer{{number}}' class='btn btn-primary btn-lg rounded-pill' type='button' value='Start Timer'/>");
-                                                recorder.html("<button id='startrecord{{number}}' class='btn btn-primary rounded-pill'>Record</button>"+
-                                                              "<button id='stoprecord{{number}}' class='btn btn-primary rounded-pill' disabled>Stop</button>"+
-                                                              "<a id='download{{number}}'></a>");
-                                                videoimage.html("<img id='videosrc{{number}}' src='{{ url_for('main.video_viewer', number=number) }}'>")
-                                                //waiting for finnish button to be pressed
-                                                $('#finnish{{number}}').click(function(e){
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: $('[name=donesess]').serialize(),
-                                                        type : 'POST',
-                                                        url : '{{ url_for("main.process_done") }}',
-                                                        success:function(){
-                                                            document.getElementById("showSpan").innerHTML = "<span class='Style3'>Waiting for next participant</span>";
-                                                            alert("Done {{number}} was sent.");
-                                                        },
-                                                        error:function(){
-                                                            alert("Done {{number}} not sent.");
-                                                        }
-                                                    })
-                                                    .done(function(data){
-                                                        if(data){
-                                                            $('#done{{number}}').show();
-                                                            $('#toolsdiv').removeClass("justify-content-evenly").addClass("justify-content-center");
-                                                            $('#session{{number}}').css("display","none");
-                                                            $('#start{{number}}').css("display","none");
-                                                            $('#timer{{number}}').css("display","none");
-                                                            $('#analyt{{number}}').css("display","none");
-                                                            $('#startcardio{{number}}').css("display","none");
-                                                            $('#finnish{{number}}').css("display","none");
-                                                            $("#timerSpan").css("display","none");
-                                                            videoimage.html("")
-                                                            recorder.css("display","none");
-                                                        }
-                                                        else{
-                                                            alert("Not finnished yet!");
-                                                        }
-                                                    });
-                                                });
-
-                                                //waiting for cardio button to be pressed
-                                                $('#startcardio{{number}}').click(function(e){
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: $('[name=startcardio]').serialize(),
-                                                        type : 'POST',
-                                                        url : '{{ url_for("main.process", new_exp_id=new_exp_id) }}',
-                                                        success:function(){
-                                                            alert("cardio {{number}} sendt");
-                                                        },
-                                                        error:function(){
-                                                            alert("cardio not sendt");
-                                                        }
-                                                    })
-                                                });
-
-                                                //waiting for timer button to be pressed
-                                                let timeInter = null;
-                                                $('#timer{{number}}').on('click',function(e){
-                                                    var timer;
-                                                    var counter = 0;
-                                                    var toggle = $('#timer{{number}}'), val = toggle.val();
-                                                    var timerSpan = $("#timerSpan").text();
-                                                    var timerInput = $("#timerInput").val(timerSpan);
-                                                    JSON.stringify(timerInput);
-                                                    
-                                                    function startTime() {
-                                                        timer = moment();
-                                                        $("#timerSpan").css("display","block")
-                                                        $("#timerSpan").html(timer.hour(0).minute(0).second(0).milliseconds(counter).format('HH : mm : ss : S'));
-                                                        counter = counter + 100
-                                                    };
-                                                    
-                                                    if(val == "Start Timer") {
-                                                        timeInter = setInterval(startTime, 100);
-                                                        timerInput.val("")
-                                                    }
-                                                    else {
-                                                        clearInterval(timeInter);
-                                                    }
-                                                    
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: timerInput.serialize(),
-                                                        type : 'GET',
-                                                        url : '{{ url_for("main.process_timer", new_exp_id=new_exp_id) }}',
-                                                        success:function(){
-                                                            alert(val);
-                                                        },
-                                                        error:function(){
-                                                            alert("Timer not sendt");
-                                                        }
-                                                    })
-                                                    .done(function(data){
-                                                        if(data){
-                                                            toggle.val(val === "Stop Timer" ? "Start Timer" : "Stop Timer");
-                                                        }
-                                                    });
-                                                });
-                                                //waiting for analytics button to be pressed
-                                                $('#analyt{{number}}').on('click',function(e){
-                                                    e.preventDefault();
-                                                    $.ajax({
-                                                        data: $('[name=startanalyt]').serialize(),
-                                                        type : 'POST',
-                                                        url : '{{ url_for("main.tasks", new_exp_id=new_exp_id) }}',
-                                                        success:function(){
-                                                            alert("Success!");
-                                                        },
-                                                        error:function(){
-                                                            alert("Analytics not sendt");
-                                                        }
-                                                    })
-                                                });
-                                                var buttonRecord = document.getElementById("startrecord{{number}}");
-                                                var buttonStop = document.getElementById("stoprecord{{number}}");
-                                                buttonStop.disabled = true;
-                                            
-                                                buttonRecord.onclick = function() {
-                                                    buttonRecord.disabled = true;
-                                                    buttonStop.disabled = false;
-                                                    
-                                                    // disable download link
-                                                    var downloadLink = document.getElementById("download{{number}}");
-                                                    downloadLink.text = "";
-                                                    downloadLink.href = "";
-
-                                                    // XMLHttpRequest
-                                                    var xhr = new XMLHttpRequest();
-                                                    xhr.onreadystatechange = function() {
-                                                        if (xhr.readyState == 4 && xhr.status == 200) {
-                                                        }
-                                                    }
-                                                    xhr.open("POST", "/record_status/{{number}}");
-                                                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                                    xhr.send(JSON.stringify({ status: "true" }));
-                                                };
-
-                                                buttonStop.onclick = function() {
-                                                    buttonRecord.disabled = false;
-                                                    buttonStop.disabled = true;    
-
-                                                    // XMLHttpRequest
-                                                    var xhr = new XMLHttpRequest();
-                                                    xhr.onreadystatechange = function() {
-                                                        if (xhr.readyState == 4 && xhr.status == 200) {
-                                                            // alert(xhr.responseText);
-
-                                                            // enable download link
-                                                            var downloadLink = document.getElementById("download{{number}}");
-                                                            downloadLink.text = "Download Video";
-                                                            downloadLink.href = "/static/videos/video{{number}}.mp4";
-                                                        }
-                                                    }
-                                                    xhr.open("POST", "/record_status/{{number}}");
-                                                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                                    xhr.send(JSON.stringify({ status: "false" }));
-                                                };
-                                            }
-                                            else{
-                                                alert("Session not Working!");
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="d-flex flex-column">
-                <div class="d-flex flex-column border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: 100vb;">
-                    <div id="showSpan"></div>
-                    <form id="videoform" method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id) }}">
-                        <div id="toolsdiv" class="d-flex justify-content-center align-items-center" style="margin-top: 50px;">
-                            <a href="{{ url_for('main.tasks', new_exp_id=new_exp_id) }}" type="hidden" form="videoform"></a>
-                            {% for elem in tools %}
-                                {% if elem == "video" %}
-                                    <div id="recorder" class="d-flex"></div>
-                                {% endif %}
-                                {% if elem == "analyt" %}   
-                                    <div id="startanalytdiv" class="d-flex"></div>
-                                {% endif %}
-                                {% if elem == "cardio" %}
-                                    <div id="startcardiodiv" class="d-flex"></div>
-                                {% endif %}
-                                {% if elem == "time" %}
-                                    <div id="starttimediv" class="d-flex"></div>
-                                {% endif %}
-                            {% endfor %} 
-                            <div class="d-flex">
-                                <input type="submit" name="next" class="btn btn-primary btn-lg rounded-pill" value="Next Page"/>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <form>
-                            <input style='display: none;' name='donesess' type='hidden' value='Done'/>
-                            <div id="donedivin" style="margin: 10px;"></div>
-                        </form>
-                    </div>
-                </div>
-                <div class="d-flex flex-column border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 600px; height: 600px;">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <input id="timerInput" type="text" name="timerInput" style="display: none;" value="Init"/>
-                        <span id="timerSpan" name="timerSpan" type="text" class="styletimer" style="display: none;"></span>
-                    </div>
-                    {% for elem in tools %}
-                        {% if elem == "video" %}
-                            <div id="videoimage" class="d-flex align-items-center justify-content-center"></div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
             </div>
         </div>
         <div class="d-flex justify-content-center" style="margin-top: 40px;">

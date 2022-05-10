@@ -21,7 +21,7 @@
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('main.profile') }}" class="Style1">UeX</a>
+            <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
             <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
                 <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
                 <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
@@ -32,20 +32,20 @@
         </div>
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
             <div class="d-flex flex-column" style="margin-top: 80px;">
-                <div class="d-flex justify-content-start align-items-center border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 50px;">
-                    <span class="Style3">Your dashboard</span>
+                <div class="d-flex justify-content-start align-items-center border3 shadow" style ="width: 470px; height: 50px;">
+                    <span class="Style3" style="margin: 10px;">Your dashboard</span>
                     <input type="text" id="filtersearch" onkeyup="SortByName()" class="form-control" placeholder="Search..." style="width: auto; margin: 30px; font-size: 16px;">
                 </div>
-                <div class="d-flex flex-column justify-content-between border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: 470px; height: 258px;">
+                <div class="d-flex flex-column justify-content-between border4 shadow" style ="width: 470px; height: 258px; margin-top: 40px;">
                     <div class="d-flex aling-items-start">
-                        <span class="Style3">Open</span>
+                        <span class="Style3" style="margin: 10px;">Open</span>
                     </div>
                     <div class="d-flex justify-content-start align-items-center">
                         <a href="{{ url_for('main.profile') }}" type="button" class="dashbbtn rounded-pill">new</a>
                         <button id="recentbtn" type="button" class="dashbbtn rounded-pill" value="recent" onclick="toggleRecent()">recent</button>
                     </div>
                     <div class="d-flex aling-items-start">
-                        <span class="Style3">Filter by</span>
+                        <span class="Style3" style="margin: 10px;">Filter by</span>
                     </div>
                     <div class="d-flex justify-content-start align-items-center">
                         <button id="datebtn" type="button" class="dashbbtn rounded-pill" onclick="toggleSort()">date</button>
@@ -57,19 +57,16 @@
                             <div class="dropdown-menu" aria-labelledby="toolsbtn">
                                 <button id="drop-clear" class="dropdown-item" value="clear" type="button" onclick='ClearTools($(this).parent().parent())'>--clear--</button>
                                 <button id="drop-vid" class="dropdown-item" value="video" type="button" onclick='SortByTools($(this).parent().parent())'>video</button>
-                                <button id="drop-pict" class="dropdown-item" value="pict" type="button" onclick='SortByTools($(this).parent().parent())'>pict</button>
                                 <button id="drop-analyt" class="dropdown-item" value="analyt" type="button" onclick='SortByTools($(this).parent().parent())'>analyt</button>
                                 <button id="drop-time" class="dropdown-item" value="time" type="button" onclick='SortByTools($(this).parent().parent())'>time</button>
-                                <button id="drop-cardio" class="dropdown-item" value="cardio" type="button" onclick='SortByTools($(this).parent().parent())'>cardio</button>
-                                <button id="drop-quest" class="dropdown-item" value="quest" type="button" onclick='SortByTools($(this).parent().parent())'>quest</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="d-flex" style="margin-top: 80px;">
-                <div class="d-flex flex-column justify-content-start border1 shadow p-3 mb-5 bg-body rounded-3 table-responsive" style ="width: auto; height: 400px;">
-                    <table id="DataTab" class="table table-hover table-bordered table-striped table-light">
+                <div class="d-flex flex-column justify-content-start border3 table-responsive" style ="width: auto; height: 400px; overflow: auto;">
+                    <table id="DataTab" class="table table-hover table-bordered table-striped table-light" style="width: fit-content; margin: 15px">
                         <thead>
                             <tr>
                                 <th scope="col">Timestamp</th>
@@ -77,14 +74,14 @@
                                 <th scope="col">Tools</th>
                                 <th scope="col">Size</th>
                                 <th scope="col">Data</th>
-                                <th scope="col"></th>
+                                <th scope="col">Edit</th>
                             </tr> 
                         </thead>
                         <tbody id="tbody">
                             {% for new_exp in my_exp %}
-                                {%  if new_exp.users_id == current_u_id%}
+                                {%  if new_exp.users_id == current_u_id %}
                                 <tr>
-                                    <th scope="row">{{ new_exp.date_time_added }}</th>
+                                    <th scope="row">{{ new_exp.date_time_added.strftime("%Y-%m-%d %H:%M:%S") }}</th>
                                     <td> <span>{{ new_exp.expname }}</span></td>
                                     <td><span>{{ new_exp.tools }}</span></td>
                                     <td style="text-align: center;"><span>{{ new_exp.number }}</span></td>

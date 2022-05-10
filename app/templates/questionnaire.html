@@ -18,103 +18,164 @@
     <title>Questionnaire</title>
 
     </head>
-    <body class="d-flex flex-column align-items-center text-center">
-        <div class="d-flex border1 shadow p-3 mb-5 bg-body rounded-3" style ="width: auto; height: auto; margin: 40px;">
-            <div class="d-flex align-items-center justify-content-center">
-                <form method="post" action="{{ url_for('main.quest', new_exp_id=new_exp_id) }}">
-                    <div class="d-flex justify-content-between align-items-end">
-                        <span style="font-size: large; margin-right: 20px;">How much were you able to control events?</span>
-                        <div class="d-flex align-items-end">
-                            <div class="form-check form-check-inline" style="text-align: left; margin-right: 8px;">
-                                <div class="d-flex">
-                                    <span class="smaltext">Low</span>
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('main.profile') }}" class="Style1">WTU</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('main.support') }}" class="pe-auto Style3">Support</a>
+                <a href="{{ url_for('main.dashboard') }}" class="pe-auto Style3">Dashboard</a>
+                <a href="{{ url_for('main.logout') }}" class="pe-auto Style3">LogOut</a>
+            </div>
+        </div>
+        <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
+            <div class="d-flex flex-column" style="margin-top: 80px;">
+                <div class="d-flex border3 shadow justify-content-center" style ="width: 470px; height: fit-content; margin-bottom: 40px; background-color: #F0EC10;">
+                    <span class="Style4">{{new_exp_name}}</span>
+                </div>
+                <div class="d-flex flex-column justify-content-between border3 shadow" style ="width: 470px; height: fit-content; margin-bottom: 12px;">
+                    <div class="d-flex aling-items-start">
+                        <span class="Style3" style="padding-left: 20px;">Scales</span>
+                    </div>
+                    <form id="questform" action="{{url_for('main.quest', new_exp_id=new_exp_id)}}" method="POST">
+                        <table>
+                            <div class="d-flex flex-row justify-content-evenly align-items-center" style="margin: 15px;">
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="PQ" id="PQ" type="checkbox" name="questscale"><span class="Style4">PQ</span>
+                                    </label>
                                 </div>
-                                <input class="form-check-input" type="radio" name="q1" id="q11" value="1">
-                                <label class="form-check-label" for="q11">1</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q1" id="q12" value="2">
-                                <label class="form-check-label" for="q12">2</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q1" id="q13" value="3">
-                                <label class="form-check-label" for="q13">3</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q1" id="q14" value="4">
-                                <label class="form-check-label" for="q14">4</label>
-                            </div>
-                            <div class="form-check form-check-inline" style="text-align: left; margin-right: 0px;">
-                                <div class="d-flex">
-                                    <span class="smaltext">High</span>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="TI" id="TI" type="checkbox" name="questscale"><span class="Style4">TI</span>
+                                    </label>
                                 </div>
-                                <input class="form-check-input" type="radio" name="q1" id="q15" value="5">
-                                <label class="form-check-label" for="q15">5</label>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="IPQ" id="IPQ" type="checkbox" name="questscale"><span class="Style4">IPQ</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="ITQ" id="ITQ" type="checkbox" name="questscale"><span class="Style4">ITQ</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="SAM" id="SAM" type="checkbox" name="questscale"><span class="Style4">SAM</span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    </br>
-                    <div class="d-flex justify-content-between align-items-end">
-                        <span style="font-size: large; margin-right: 20px;">How responsive was the environment to actions that you initiated(or performed)?</span>
-                        <div class="d-flex align-items-end">
-                            <div class="form-check form-check-inline" style="text-align: left;">
-                                <input class="form-check-input" type="radio" name="q2" id="q21" value="1">
-                                <label class="form-check-label" for="q21">1</label>
+                            <div class="d-flex flex-row justify-content-evenly align-items-center" style="margin: 15px;">
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="GEQ" id="GEQ" type="checkbox" name="questscale"><span class="Style4">QEO</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="ITC-SOPI" id="ITC-SOPI" type="checkbox" name="questscale"><span class="Style4">ITC-SOPI</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="NASA-LTX" id="NASA-LTX" type="checkbox" name="questscale"><span class="Style4">NASA-LTX</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q2" id="q22" value="2">
-                                <label class="form-check-label" for="q22">2</label>
+                            <div class="d-flex flex-row justify-content-evenly align-items-center" style="margin: 15px;">
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="RSME" id="RSME" type="checkbox" name="questscale"><span class="Style4">RSME</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="PANAS" id="PANAS" type="checkbox" name="questscale"><span class="Style4">PANAS</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="ATTRAKDIFF" id="ATTRAKDIFF" type="checkbox" name="questscale"><span class="Style4">ATTRAKDIFF</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q2" id="q23" value="3">
-                                <label class="form-check-label" for="q23">3</label>
+                            <div class="d-flex flex-row justify-content-evenly align-items-center" style="margin: 15px;">
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="GAMEFULQUEST" id="GAMEFULQUEST" type="checkbox" name="questscale"><span class="Style4">GAMEFULQUEST</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="SUS" id="SUS" type="checkbox" name="questscale"><span class="Style4">SUS</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q2" id="q24" value="4">
-                                <label class="form-check-label" for="q24">4</label>
+                            <div class="d-flex flex-row justify-content-evenly align-items-center" style="margin: 15px;">
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="VRLEQ" id="VRLEQ" type="checkbox" name="questscale"><span class="Style4">VRLEQ</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="UXQUEST" id="UXQUEST" type="checkbox" name="questscale"><span class="Style4">UXQUEST</span>
+                                    </label>
+                                </div>
+                                <div class="d-flex align-items-center questBtn">
+                                    <label>
+                                        <input value="UEQ" id="UEQ" type="checkbox" name="questscale"><span class="Style4">UEQ</span>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline" style="text-align: left;">
-                                <input class="form-check-input" type="radio" name="q2" id="q25" value="5">
-                                <label class="form-check-label" for="q25">5</label>
-                            </div>
-                        </div>
-                    </div>
-                    </br>
-                    <div class="d-flex justify-content-between align-items-end">
-                        <span style="font-size: large; margin-right: 20px;">How well could you move or manipulate objects in the virtual environment?</span>
-                        <div class="d-flex align-items-end">
-                            <div class="form-check form-check-inline" style="text-align: left;">
-                                <input class="form-check-input" type="radio" name="q3" id="q31" value="1">
-                                <label class="form-check-label" for="q31">1</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q3" id="q32" value="2">
-                                <label class="form-check-label" for="q32">2</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q3" id="q33" value="3">
-                                <label class="form-check-label" for="q33">3</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="q3" id="q34" value="4">
-                                <label class="form-check-label" for="q34">4</label>
-                            </div>
-                            <div class="form-check form-check-inline" style="text-align: left;">
-                                <input class="form-check-input" type="radio" name="q3" id="q35" value="5">
-                                <label class="form-check-label" for="q35">5</label>
-                            </div>
-                        </div>
-                    </div>
-                    {% for message in get_flashed_messages() %}
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                    <div class="d-flex flex-row justify-content-center" style="margin-top: 20px;">
-                        <button id="questbtn" name="questsub" type="submit" class="btn btn-primary rounded-pill">Submit</button>
-                    </div>
-                </form>
+                        </table>
+                    </form>
+                </div>
+                <button id="startquest" type="submit" form="questform" class="startbutton" aria-label="Right Arrow">
+                    <span class="Style4">Start</span><i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+            <div class="d-flex justify-content-center" style="margin-top: 80px;">
+                <div class="d-flex flex-column">
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">AttakDiff<span style="font-weight: normal;"> - UX evaluation tool (usability & design)</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">GAMEFULQUEST<span style="font-weight: normal;"> - The gameful experience questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">GEQ<span style="font-weight: normal;"> - The game experience questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">IPQ<span style="font-weight: normal;"> - The igroup presence questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">ITC-SOPI<span style="font-weight: normal;"> - The ITC sense of presence inventory</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">ITQ<span style="font-weight: normal;"> - The immersive tendency questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">NASA-TLX<span style="font-weight: normal;"> - The NASA task load index</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">PANAS<span style="font-weight: normal;"> - The positive and negative affect Schedule</span></span>
+                    <hr>
+                </div>
+                <div class="d-flex flex-column" style="margin-left: 10px;">
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">PQ<span style="font-weight: normal;"> - The Witmer presence questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">RSME<span style="font-weight: normal;"> - The rating scale mental effort</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">SAM<span style="font-weight: normal;"> - The selfe-assesment manikin</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">SUS<span style="font-weight: normal;"> - The system usability scale</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">TI<span style="font-weight: normal;"> - The temple inventory for presence</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">UEQ<span style="font-weight: normal;"> - The user experience questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">UXQUEST<span style="font-weight: normal;"> - The unified UX questionnaire</span></span>
+                    <hr>
+                    <span class="Style7" style="font-weight: 900;">VRLEQ<span style="font-weight: normal;"> - The VR locomotion experience questionnaire</span></span>
+                    <hr>
+                </div>
             </div>
         </div>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

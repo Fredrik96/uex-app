@@ -6,20 +6,6 @@ from app import db, login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-def get_user_fitbit_credentials(user_id):
-    return FitbitToken.query.filter_by(user_id=user_id).first()
-
-def save_fitbit_token(user_id, access_token, refresh_token):
-    fitbit_info = get_user_fitbit_credentials(user_id)
-    if not fitbit_info:
-        fitbit_info = FitbitToken(None, None, None)
-    fitbit_info.user_id = user_id
-    fitbit_info.access_token = access_token
-    fitbit_info.refresh_token = refresh_token
-    db.session.add(fitbit_info)
-    db.session.commit()
-    return fitbit_info
-
 class UserTable(db.Model):
     __tablename__ = 'datatable'
     id_table = db.Column(db.Integer, primary_key=True)
@@ -27,6 +13,7 @@ class UserTable(db.Model):
     date_time_added = db.Column(db.DateTime, default=datetime.utcnow)
     expname = db.Column(db.String(20))
     tools = db.Column(db.String(40))
+    quests = db.Column(db.String(40))
     number = db.Column(db.Integer)
     data = db.relationship("UserData", backref=db.backref("data", uselist=False), lazy = 'joined')
 
@@ -45,15 +32,34 @@ class UserData(db.Model):
     users_table_id = db.Column(db.Integer, db.ForeignKey('datatable.id_table'))
     video_file = db.Column(db.LargeBinary)
     picture_file = db.Column(db.LargeBinary)
-    analytics = db.Column(db.Integer) 
+    analytics = db.relationship("Gamedata", backref="gameanalytics")
+    analyt_file = db.Column(db.String(100)) 
     cardio_file = db.Column(db.Float(4))
     quest_file = db.Column(db.String(200))
     timer = db.Column(db.String(80))
     check = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<timer %r>' % self.timer
+        return 'timer :{} , quest_file :{} , subject :{} , analytics:{}'.format(self.timer, self.quest_file, self.check, self.analytics)
     
+class Gamedata(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    leftclk = db.Column(db.Integer)
+    rightclk = db.Column(db.Integer)
+    upclk =db.Column(db.Integer)
+    spaceclk = db.Column(db.Integer)
+    game_data_id = db.Column(db.Integer, db.ForeignKey('user_data.id'))
+
+    def __init__(self, left, right, up, space, game_id):
+        self.leftclk = left
+        self.rightclk = right
+        self.upclk = up
+        self.spaceclk = space
+        self.game_data_id = game_id
+
+    def __repr__(self):
+        return 'Left_Clicks :{} , Right_Clicks:{} , Up_Clicks:{} , Space_Clicks:{}'.format(self.leftclk, self.rightclk, self.upclk, self.spaceclk)
+
 class FitbitToken(db.Model):
     __tablename__ = 'fitbit_tokens'
     id = db.Column(db.Integer, primary_key=True)
