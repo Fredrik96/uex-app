@@ -1,7 +1,7 @@
 from flask import flash, jsonify, url_for, redirect, render_template, request, Response
 from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import numpy as np
+import os
 
 from app import db
 from forms import RegisterForm, LoginForm, DashboardForm
@@ -216,7 +216,6 @@ def tasks(new_exp_id,number):
             data_number.append(elem.check)
 
     progress = len(data_to_tasks.data)
-    print(data_number,flush=True)
 
     for i in range(numb):
         howMany.append(i+1)
@@ -234,12 +233,17 @@ def tasks(new_exp_id,number):
             session_check = number
             
         if request.form.get('savesession') != None:
-            timer = request.form.get('savesession')    
-            new_data = UserData(timer=timer, quest_file=data_to_tasks.quests, users_table_id=data_to_tasks.id_table, check=session_check)
+            timer = request.form.getlist('savesession')
+            print(timer, flush=True)
+            for item in timer:
+                if item != "Init":
+                    timer = item
+            print(timer, flush=True)   
+            new_data = UserData(timer=str(timer), quest_file=quests, video_file=data_to_tasks.expname, users_table_id=data_to_tasks.id_table, check=session_check)
             db.session.add(new_data)
             db.session.commit()
             timer = ""
-            print("Timer commited to UserData", flush=True)
+            print("New data commited to UserData", flush=True)
 
         if request.form.get('next') == 'To Dashboard':
             current_u_id = current_user.id
@@ -325,10 +329,25 @@ def delete(id):
 @login_required
 def add(id):
     data_to_add = UserTable.query.get_or_404(id)
+    my_exp_game = Gamedata.query.filter_by(game_data_id= id)
     current_numb = data_to_add.number
-    tools = data_to_add.tools.split(',')
+    tools = data_to_add.tools
+    new_exp_name = data_to_add.expname
+    quests = data_to_add.quests
     howMany = []
+    data_number = []
+    analytics = []
+    progress = 0
     updated_numb = 0
+
+    for gamedata in my_exp_game:
+        analytics.append(gamedata)
+
+    if data_to_add.data != []:
+        for elem in data_to_add.data:
+            data_number.append(elem.check)
+
+    progress = len(data_to_add.data)
 
     if request.method == 'POST':
         new_number = request.form.get('addnew')
@@ -342,9 +361,12 @@ def add(id):
             return render_template('tasks.html', 
                 new_exp_id=data_to_add.id_table, 
                 howMany = howMany, 
-                tools=tools, 
-                toolsstr=data_to_add.tools,
+                tools=tools,
+                quests=quests,
+                progress=progress,
+                new_exp_name=new_exp_name, 
                 number=updated_numb,
+                numb=updated_numb,
                 data_to_tasks=data_to_add)
         except:
             pass
@@ -353,8 +375,11 @@ def add(id):
             new_exp_id=data_to_add.id_table, 
             howMany = howMany, 
             tools=tools, 
-            toolsstr = data_to_add.tools,
+            quests=quests,
+            progress=progress,
+            new_exp_name=new_exp_name,
             number=updated_numb,
+            numb=updated_numb,
             data_to_tasks=data_to_add)
 
 @main.route('/dashboard/experiment/<int:row>', methods=['POST','GET'])
@@ -380,10 +405,15 @@ def dashboard_experiment(row):
             quest.append(elem.quest_file)
         if elem.check:
             part_id.append(elem.check)
-
     for game in my_exp_game:
         if game.game_data_id == row:
            analytics.append(game)
+
+    if request.method == 'POST':
+        vid_file = request.form.get('vid_file')
+        path = f"app/static/videos/video{str(vid_file)}user{str(current_u_id)}.mp4"
+        #os.remove(path)
+        print("Video file removed", flush=True)
     
     return render_template('dashboardexp.html', my_exp_table=my_exp_table,
                                                 howMany=howMany, 

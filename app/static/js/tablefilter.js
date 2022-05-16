@@ -141,7 +141,6 @@ function ConvertDate(y) {
 function SortByDateAsc() {
     var tbody = document.querySelector("#DataTab tbody");
     var rows = [].slice.call(tbody.querySelectorAll("tr"));
-
     rows.sort(function(a,b) {
         var asc = ConvertDate(b.cells[0].innerHTML) - ConvertDate(a.cells[0].innerHTML);
         return asc;

@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/UeX-App.css')}}">
 
     <title>User Profile</title>
     
@@ -23,9 +24,9 @@
 
     <body class="d-flex flex-column text-center">
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
-            <div class="d-flex">
-                <span class="Style7">Welcome, {{name}}!</span>
+            <div class="d-flex flex-column">
+                <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
+                <span class="Style9">Welcome, {{name}}!</span>
             </div>
             <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
                 <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
@@ -40,7 +41,7 @@
                 <div class="d-flex border3 shadow" style ="width: 470px; height: 100px; margin-bottom: 40px;">
                     <div class="d-flex flex-column w-100">
                         <div class="d-flex align-items-start">
-                            <span class="Style3" style="padding-left: 10px;">Name</span>
+                            <span class="NormalCharacterStyle8" style="padding-left: 10px;">Name</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <input id="expname" form="expername" class="experinput" type="text" name="ckbox">
@@ -50,10 +51,10 @@
                 <div class="d-flex border3 shadow" style ="width: 470px; height: 100px; margin-bottom: 40px;">
                     <div class="d-flex flex-column w-100">
                         <div class="d-flex align-items-start">
-                            <span class="Style3" style="padding-left: 10px;">Size</span>
+                            <span class="NormalCharacterStyle8" style="padding-left: 10px;">Size</span>
                         </div>
                         <div class="d-flex justify-content-evenly">
-                            <p style="font-size: 24px; font-family: Rubik-Regular; color : #000000;">Number of participants: </p>
+                            <p class="Style3">Number of participants: </p>
                             <div>
                                 <button id="downbtn" class="cbutton" type="button" onclick="p_counter()">-</button>
                             </div>
@@ -68,7 +69,7 @@
                 </div>
                 <div id="cktab" class="d-flex flex-column justify-content-between border1 shadow" style ="width: 470px; height: 388px;">
                     <div class="d-flex aling-items-start">
-                        <span class="Style3" style="padding-left: 20px;">Tools</span>
+                        <span class="NormalCharacterStyle8" style="padding-left: 20px;">Tools</span>
                     </div>
                     <table>
                         <div class="d-flex flex-row justify-content-evenly align-items-center">
@@ -86,7 +87,7 @@
                         <div class="d-flex flex-row justify-content-evenly align-items-center">
                             <div class="d-flex toolBtn">
                                 <label>
-                                    <input value="time" id="time" class="hidden rounded-3" type="checkbox" name="ckbox" form="expername"><span>time</span>
+                                    <input value="time" id="time" class="hidden" type="checkbox" name="ckbox" form="expername"><span>time</span>
                                 </label>
                             </div>
                             <div class="d-flex align-items-center">
@@ -99,16 +100,11 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div id="modbodscale" class="modal-body">
-                                <span>Which scales do you want?</span>
+                                <span class="Style10">Which questionnaires/scales do you want?</span>
                                 </br>
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
                                         <input value="PQ" id="PQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">PQ</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="TI" id="TI" type="checkbox" name="ckbox" form="expername"><span class="Style4">TI</span>
                                     </label>
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
@@ -118,17 +114,17 @@
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
-                                        <input value="ITQ" id="ITQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">ITQ</span>
+                                        <input value="TI" id="TI" type="checkbox" name="ckbox" form="expername"><span class="Style4">TI</span>
                                     </label>
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
-                                        <input value="SAM" id="SAM" type="checkbox" name="ckbox" form="expername"><span class="Style4">SAM</span>
+                                        <input value="SSSQ" id="SSSQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">SSSQ</span>
                                     </label>
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
-                                        <input value="GEQ" id="GEQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">QEO</span>
+                                        <input value="GEQ" id="GEQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">GEQ</span>
                                     </label>
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
@@ -139,11 +135,6 @@
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
                                         <input value="NASA-LTX" id="NASA-LTX" type="checkbox" name="ckbox" form="expername"><span class="Style4">NASA-LTX</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="RSME" id="RSME" type="checkbox" name="ckbox" form="expername"><span class="Style4">RSME</span>
                                     </label>
                                 </div>
                                 <div class="d-flex align-items-center questBtn">
@@ -159,26 +150,6 @@
                                 <div class="d-flex align-items-center questBtn">
                                     <label>
                                         <input value="GAMEFULQUEST" id="GAMEFULQUEST" type="checkbox" name="ckbox" form="expername"><span class="Style4">GAMEFULQUEST</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="SUS" id="SUS" type="checkbox" name="ckbox" form="expername"><span class="Style4">SUS</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="VRLEQ" id="VRLEQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">VRLEQ</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="UXQUEST" id="UXQUEST" type="checkbox" name="ckbox" form="expername"><span class="Style4">UXQUEST</span>
-                                    </label>
-                                </div>
-                                <div class="d-flex align-items-center questBtn">
-                                    <label>
-                                        <input value="UEQ" id="UEQ" type="checkbox" name="ckbox" form="expername"><span class="Style4">UEQ</span>
                                     </label>
                                 </div>
                             </div>
@@ -200,7 +171,7 @@
                     {% endif %}
                 {% endwith %}
                 <div class="d-flex justify-content-center align-items-center" style="margin-top: 40px;">
-                    <span class="Style3">Start</span>
+                    <span class="NormalCharacterStyle193">Start</span>
                     <form id="expername" method="POST">
                         <button id="startbtn" type="submit" class="startbutton" aria-label="Right Arrow">
                             <i class="bi bi-arrow-right"></i>
@@ -209,8 +180,8 @@
                 </div>
             </div>
             <div class="d-flex flex-row justify-content-center align-items-center" style="height: 775px;">
-                <p class="text-end Style2">
-                User testing <br> made easy. all <br> Your results <br> in one place <br> now. Organize <br> better
+                <p class="text-end NormalCharacterStyle214">
+                Count your <br> participants, name <br> your experiment, <br> and choose the <br> tools you like. It's <br> that simple!
                 </p>
             </div>
         </div>
@@ -219,6 +190,7 @@
         const save_mod = document.getElementById('savemodscale');
         var modal_input = document.getElementById('modbodscale')
         const colors = ['#E6FE55', 'rgb(41, 188, 0)'];
+        const textColor = ['#00614F', '#003E33'];
 
         save_mod.addEventListener('click', function onClick() {
             inputs = modal_input.getElementsByTagName('input')
@@ -226,10 +198,12 @@
             for(let i = 0; i < inputCount; i++){
                 if(inputs[i].checked == true){
                     btn.style.backgroundColor = colors[1];
+                    btn.style.color = textColor[0];
                     break
                 }
                 else{
                     btn.style.backgroundColor = colors[0];
+                    btn.style.color = textColor[1];
                 }
             }
         });

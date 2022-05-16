@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/UeX-App.css')}}">
 
     <!-- Template js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -44,33 +45,33 @@
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
                     <div class="d-flex flex-row justify-content-evenly" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex flex-column align-items-start">
-                            <span>Sample</span>
+                            <span class="NormalCharacterStyle8">Sample</span>
                             </br>
                             <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
-                                <span>{{number}}/{{numb}}</span>
+                                <span class="Style3">{{number}}/{{numb}}</span>
                             </div>
                         </div>
                         <div class="d-flex flex-column align-items-start">
-                            <span>Experiment Timer</span>
+                            <span class="NormalCharacterStyle8">Experiment Timer</span>
                             </br>
                             {% if "time" in tools%}
-                                <input id="ststptimer" value="Start Timer" type="button" class="btn startstopBtn rounded-pill">
+                                <input id="ststptimer" value="Start Timer" type="button" class="btn startstopBtn rounded-pill Style9">
                             {% else %}
-                                <input value="Start/Stop" type="button" class="btn startstopBtn rounded-pill" disabled>
+                                <input value="Start/Stop" type="button" class="btn startstopBtn rounded-pill Style9" disabled>
                             {% endif %}
                         </div>
                     </div>
                     <div class="d-flex flex-row" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex flex-column align-items-start">
-                            <span>Controls</span>
+                            <span class="NormalCharacterStyle8">Controls</span>
                             </br>
                             {% if "analyt" in tools %}
                                 <form id="analytform" method="POST">
                                     <input name="startanalytics" value="{{new_exp_id}}" style="display: none;" >
-                                    <button id="analytstartstop" type="submit" class="dashbbtn rounded-pill" style="width: 230px;">Analytics Start/Stop</button>
+                                    <button id="analytstartstop" type="submit" class="dashbbtn rounded-pill Style9" style="width: 230px;">Analytics Start/Stop</button>
                                 </form>
                             {% else %}
-                                <button name="startanalytics" type="button" class="btn startstopBtn rounded-pill" style="width: 230px;" disabled>Analytics Start/Stop</button>
+                                <button name="startanalytics" type="button" class="btn startstopBtn rounded-pill Style9" style="width: 230px;" disabled>Analytics Start/Stop</button>
                             {% endif %}
                             {% if quests != [''] %}
                                 <div class="dropdown" id="questformatmenu">
@@ -81,7 +82,7 @@
                                     </div>
                                 </div>
                             {% else %}
-                                <button type="button" class="btn startstopBtn rounded-pill" style="width: 250px;" disabled>Open Questionnaires</button>
+                                <button type="button" class="btn startstopBtn rounded-pill Style9" style="width: 250px;" disabled>Open Questionnaires</button>
                             {% endif %}
                         </div>
                     </div>
@@ -92,14 +93,43 @@
             </div>
             <div class="modal fade" id="microsoft_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                    <div class="modal-content" style="width: fit-content; height: 300px;">
                         <div class="modal-head">
-                            <span>Questionnaires</span>
+                            <span class="Style4">Open questionnaires</span>
                         </div>
                         <div class="modal-body">
-                            <div class="d-flex flex-row">
+                            <div class="d-flex flex-row" style="margin-top: 18px;">
                                 {% for scale in quests %}
-                                    <button id="{{scale}}" class="questformBtn rounded-pill" name="scale"><span style="margin: 0px 10px 0px 10px;">{{scale}}</span></button>
+                                    {% if scale == "ITC-SOPI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUODlIUUJLQ1AwME9ZT0g5TVAyNlhRSjhMMS4u&sharetoken=IILo405YcPg0O2XD7ahI">ITC_SOPI</a>
+                                    {% endif %}
+                                    {% if scale == "ATTRAKDIFF" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUOUpUQTFMQTFFRUdOMkU1MDBKU1o3NEYzQy4u&sharetoken=BmGtGV98LJ2KaJwpZKrB">ATTRAKDIFF</a>
+                                    {% endif %}
+                                    {% if scale == "IPQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNjA5NjdEQ1RRSzJCN0dWTEZGSjBaNFk2US4u&sharetoken=DFuYgcxdjwRgG0pY31B6">IPQ</a>
+                                    {% endif %}
+                                    {% if scale == "NASA-LTX" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUREszMTUzQlZHVlFGQlQ0MEVQRzhOMjg2Ty4u&sharetoken=AfPIuc1Wq0XRusFGAvD7">NASA_TLX</a>
+                                    {% endif %}
+                                    {% if scale == "PANAS" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUQlMxODRCVFk5UFNWSFROWUk2STVNMjlNSC4u&sharetoken=87JN7oEUFeEyQIRl2ZvC">PANAS</a>
+                                    {% endif %}
+                                    {% if scale == "SSSQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUMDdYTFBUTU9aTEdISTlTTVhDOFZEUVBNQy4u&sharetoken=SEpFAcIwXtiHyR0KktrC">SSSQ</a>
+                                    {% endif %}
+                                    {% if scale == "PQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNFJUVUNZRks0NjFJSEM5QlRRWEg4MkwxVi4u&sharetoken=tLoWk661SXCbbxrTVYJV">PQ</a>
+                                    {% endif %}
+                                    {% if scale == "GAMEFULQUEST" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUM0lOOFM4VU5VRDdaUEpGV1E4UkxMN0FISS4u&sharetoken=hdVAXthS3V5Rmfp39T2t">GAMEFULQUEST</a>
+                                    {% endif %}
+                                    {% if scale == "GEQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNDNETERCNk1BNlI0QUg0Vk9JSjlVQTBSRS4u&sharetoken=OtpLeIlR5IJBJ07Llz34">GEQ</a>
+                                    {% endif %}
+                                    {% if scale == "TI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BURTZXQUlHN0Q5SUpSWFBDUVY4MzZFRTgxSi4u&sharetoken=GJiDvT3Qdzbk0SbZXuce">TI</a>
+                                    {% endif %} 
                                 {% endfor %}
                             </div>
                         </div>
@@ -111,14 +141,44 @@
             </div>
             <div class="modal fade" id="google_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                    <div class="modal-content" style="width: fit-content; height: 300px;">
                         <div class="modal-head">
-                            <span>Questionnaires</span>
+                            <span class="Style4">Open questionnaires</span>
                         </div>
+                        </br>
                         <div class="modal-body">
                             <div class="d-flex flex-row">
                                 {% for scale in quests %}
-                                    <input value="{{scale}}" id="{{scale}}" type="button" class="dashbbtn rounded-pill" name="scale"> 
+                                    {% if scale == "ITC-SOPI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1av41PSL3wxcEjMsQCA9ylSNw5q--Hcinkpzgl7298kg/copy">ITC_SOPI</a>
+                                    {% endif %}
+                                    {% if scale == "ATTRAKDIFF" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1Iekpt5EEFGFDeDnt2vQuiMe33drtyFg0DifHjpcImMY/copy">ATTRAKDIFF</a>
+                                    {% endif %}
+                                    {% if scale == "IPQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1DS8nVOJeFIURFAEpJhTOXwXVB1Dzh9oOa1a1eQkBLSE/copy">IPQ</a>
+                                    {% endif %}
+                                    {% if scale == "NASA-LTX" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1REJaBGkUiZaTl5r4wvrD3hpwU9Janpk1znsr0Hh7c4k/copy">NASA_TLX</a>
+                                    {% endif %}
+                                    {% if scale == "PANAS" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1K_jXW4sQpwLuDT-zTtgi2skJVzSTIyDEEFXjH5QsSRk/copy">PANAS</a>
+                                    {% endif %}
+                                    {% if scale == "SSSQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1GDIhY_HUouBUREz1qDGMmvszBJXVTjOj8AB9m3izM2U/copy">SSSQ</a>
+                                    {% endif %}
+                                    {% if scale == "PQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/12noal31WrRpYuHQGLEMb-iqj0jzUzlNvprEwzgCuyug/copy">PQ</a>
+                                    {% endif %}
+                                    {% if scale == "GAMEFULQUEST" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1plMDdsaqgiTRRfzUQK7ZVMF-sHBmGojhg8VsVHReIHs/copy">GAMEFULQUEST</a>
+                                    {% endif %}
+                                    {% if scale == "GEQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1OB91dgk372mbUOEP1jjbP3jj15xtvyDgohIO12Z5Vtk/copy">GEQ</a>
+                                    {% endif %}
+                                    {% if scale == "TI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1zH-xdTj5SYiFX6rtdm6e4OQAPEa5-XEmnB0Jpu-f9Ac/copy">TI</a>
+                                    {% endif %} 
                                 {% endfor %}
                             </div>
                         </div>
@@ -131,7 +191,7 @@
             <div class="d-flex flex-column">
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 800px; height: 800px;">
                     <div class="d-flex flex-column align-items-start" style="margin: 30px 0px 0px 40px;">
-                        <span>Video</span>
+                        <span class="NormalCharacterStyle8">Video</span>
                     </div>
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div class="d-flex flex-column border5 shadow align-items-center" style ="width: 680px; height: 508px;">
@@ -141,11 +201,12 @@
                         </div>
                         <div class="d-flex flex-row">
                             {% if "video" in tools%}
-                                <button id="startvideo" class="btn startstopBtn rounded-pill">Start Record</button>
-                                <button id="stopvideo" class="btn startstopBtn rounded-pill">Stop Record</button>
+                                <input id="VideoInput" type="hidden" name="savesession" style="display: none;" value="Init"/>
+                                <button id="startvideo" class="btn startstopBtn rounded-pill Style9">Start Record</button>
+                                <button id="stopvideo" class="btn startstopBtn rounded-pill Style9">Stop Record</button>
                             {% else %}
-                                <button id="startrecord" class="btn startstopBtn rounded-pill" disabled>Start Record</button>
-                                <button id="stoprecord" class="btn startstopBtn rounded-pill" disabled>Start Record</button>
+                                <button id="startrecord" class="btn startstopBtn rounded-pill Style9" disabled>Start Record</button>
+                                <button id="stoprecord" class="btn startstopBtn rounded-pill Style9" disabled>Start Record</button>
                             {% endif %}
                         </div>
                         {% if "time" in tools%}
@@ -153,6 +214,9 @@
                             <input id="timerInput" type="text" name="savesession" style="display: none;" value="Init"/>
                             <span id="timerSpan" name="timerSpan" type="text" class="styletimer" style="display: none;"></span>
                         </div>
+                        {% endif %}
+                        {% if quests != ""%}
+                            <input id="questInput" type="text" name="savesession" style="display: none;" value="Init"/>
                         {% endif %}
                     </div>
                 </div>
@@ -258,7 +322,7 @@
                     })
                     .done(function(data){
                         if(data){
-                            $('#analytform').html('<button id="analytstartstop" type="submit" class="analytWaitBtn rounded-pill" style="width: 230px;">Waiting for data..</button>')
+                            $('#analytform').html('<button id="analytstartstop" type="submit" class="analytWaitBtn rounded-pill Style9" style="width: 230px;">Waiting for data..</button>')
                         }
                     });
                 });

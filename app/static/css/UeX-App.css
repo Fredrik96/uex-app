@@ -2743,6 +2743,7 @@
 	font-size : 24px;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+	text-decoration: none!important;
 }
 .NormalCharacterStyle6
 {
@@ -2929,6 +2930,7 @@
 .NormalCharacterStyle193
 {
 	font-family : Rubik;
+	font-weight: 900;
 	font-size : 36px;
 	color : #003E33;
 	color : rgb(0, 62, 51);
@@ -4336,9 +4338,11 @@
 .NormalCharacterStyle98
 {
 	font-family : Rubik;
+	font-weight: 900;
 	font-size : 24px;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+	text-decoration: none;
 }
 .NormalCharacterStyle52
 {

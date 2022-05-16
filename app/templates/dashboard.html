@@ -33,19 +33,19 @@
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
             <div class="d-flex flex-column" style="margin-top: 80px;">
                 <div class="d-flex justify-content-start align-items-center border3 shadow" style ="width: 470px; height: 50px;">
-                    <span class="Style3" style="margin: 10px;">Your dashboard</span>
+                    <span class="Style11" style="margin: 10px;">Your dashboard</span>
                     <input type="text" id="filtersearch" onkeyup="SortByName()" class="form-control" placeholder="Search..." style="width: auto; margin: 30px; font-size: 16px;">
                 </div>
                 <div class="d-flex flex-column justify-content-between border4 shadow" style ="width: 470px; height: 258px; margin-top: 40px;">
                     <div class="d-flex aling-items-start">
-                        <span class="Style3" style="margin: 10px;">Open</span>
+                        <span class="Style11" style="margin: 10px;">Open</span>
                     </div>
                     <div class="d-flex justify-content-start align-items-center">
                         <a href="{{ url_for('main.profile') }}" type="button" class="dashbbtn rounded-pill">new</a>
                         <button id="recentbtn" type="button" class="dashbbtn rounded-pill" value="recent" onclick="toggleRecent()">recent</button>
                     </div>
                     <div class="d-flex aling-items-start">
-                        <span class="Style3" style="margin: 10px;">Filter by</span>
+                        <span class="Style11" style="margin: 10px;">Filter by</span>
                     </div>
                     <div class="d-flex justify-content-start align-items-center">
                         <button id="datebtn" type="button" class="dashbbtn rounded-pill" onclick="toggleSort()">date</button>
@@ -65,10 +65,10 @@
                 </div>
             </div>
             <div class="d-flex" style="margin-top: 80px;">
-                <div class="d-flex flex-column justify-content-start border3 table-responsive" style ="width: auto; height: 400px; overflow: auto;">
+                <div class="d-flex flex-column justify-content-start border3 shadow table-responsive" style ="width: auto; height: 400px; overflow: auto;">
                     <table id="DataTab" class="table table-hover table-bordered table-striped table-light" style="width: fit-content; margin: 15px">
                         <thead>
-                            <tr>
+                            <tr class="Style4">
                                 <th scope="col">Timestamp</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Tools</th>
@@ -81,11 +81,11 @@
                             {% for new_exp in my_exp %}
                                 {%  if new_exp.users_id == current_u_id %}
                                 <tr>
-                                    <th scope="row">{{ new_exp.date_time_added.strftime("%Y-%m-%d %H:%M:%S") }}</th>
-                                    <td> <span>{{ new_exp.expname }}</span></td>
-                                    <td><span>{{ new_exp.tools }}</span></td>
-                                    <td style="text-align: center;"><span>{{ new_exp.number }}</span></td>
-                                    <td style="text-align: center;"><a href="{{ url_for('main.dashboard_experiment', row=new_exp.id_table) }}">Datalink</a></td>
+                                    <th scope="row" style="font-size: 24;">{{ new_exp.date_time_added.strftime("%Y-%m-%d %H:%M:%S") }}</th>
+                                    <td> <span class="Style10">{{ new_exp.expname }}</span></td>
+                                    <td><span class="Style10">{{ new_exp.tools }}</span></td>
+                                    <td style="text-align: center;"><span class="Style10">{{ new_exp.number }}</span></td>
+                                    <td style="text-align: center;"><a class="questformBtn rounded-pill" href="{{ url_for('main.dashboard_experiment', row=new_exp.id_table) }}">Datalink</a></td>
                                     <td style="text-align: center;">
                                         <input type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#datalinkadd{{ new_exp.id_table }}" value="Add"/>
                                         <input type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#datalinkdel{{ new_exp.id_table }}" value="Delete"/>

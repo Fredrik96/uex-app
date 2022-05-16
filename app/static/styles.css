@@ -20,6 +20,8 @@ body {
 
 .loginbutton:hover {
   background-color: #F0EC10;
+  color: #003E33;
+  text-decoration: none;
 }
 
 .cbutton {
@@ -96,9 +98,9 @@ body {
 .questformBtn {
   background-color: #E6FE55;
   font-weight: 900;
-  padding: 0px;
+  padding: 0px 8px 0px 8px;
   font-size: 24px;
-  font-family : Rubik-Regular;
+  font-family : Rubik;
   text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
@@ -107,6 +109,7 @@ body {
   margin: 10px;
   height: 40px;
   border: none;
+  text-decoration: none;
 }
 
 .questformBtn:hover {
@@ -143,7 +146,7 @@ body {
   padding: 0px;
   margin: 10px;
   font-size: 24px;
-  font-family : Rubik-Regular;
+  font-family : Rubik;
   text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
@@ -155,7 +158,7 @@ body {
 
 .dashbbtn:hover {
 cursor: pointer;
-font-size: 26px;
+font-size: 25px;
 color: #00614f;
 text-decoration: none;
 }
@@ -187,7 +190,7 @@ color: #00614f;
   padding: 0px;
   margin: 10px;
   font-size: 45px;
-  font-family : Rubik-Regular;
+  font-family : Rubik;
   text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
@@ -243,39 +246,37 @@ color: #00614f;
 
 .questBtn input:checked + span{
   background-color:rgb(41, 188, 0);
-  color:rgb(0, 0, 0);
+  color: #00614f;
 }
 
 .toolBtn {
-  border-radius: 20pt;
+  border-radius: 15pt;
   font-size: 24px;
-  font-family : Rubik-Regular;
+  font-family : Rubik;
   font-weight: 900;
   text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
   text-align: center;
-  margin:4px;
+  margin:6px;
   background-color:#E6FE55;
 }
 
 .toolBtn:hover {
-  outline: 0pt;
-  border-radius: 20pt;
+  vertical-align: middle;
+  border-radius: 15pt;
   background-color:#E6FE55;
-  overflow:auto;
-  float:left;
   color: #00614f;
   cursor: pointer;
-  font-size: 26px;
+  font-size: 25px;
   text-decoration: none;
 }
 
 .toolBtn label {
-  float: left;
+  outline: 0pt;
+  border-radius: 15pt;
   width: 80px;
   height: 40px;
-  border: 1px solid black;
 }
 
 .toolBtn label span {
@@ -303,9 +304,11 @@ color: #00614f;
 }
 
 .toolBtn input:checked + span{
-  border-radius: 20pt;
+  border-radius: 15pt;
+  color: #00614f;
   background-color:rgb(41, 188, 0);
-  color:rgb(0, 0, 0);
+  width: 80px;
+  height: 40px;
 }
 /*---------------- buttons ----------------------*/
 
@@ -400,23 +403,25 @@ select.form-control {
 
 .Style3
 {
-	font-family : Rubik-Regular;
-	font-size : 26px;
-	color : #000000;
+	font-family : Rubik;
+	font-size : 24px;
+	color : #003E33;
+	color : rgb(0, 62, 51);
 	text-decoration: none!important;
 }
 
 .Style4
 {
-	font-family : sans-serif;
-	font-size : 25px;
+	font-family : Rubik;
+	font-size : 28px;
+  font-weight: 900;
 	color : #000000;
 	text-decoration: none!important;
 }
 
 .Style5
 {
-	font-family : Rubik-Regular;
+	font-family : Rubik;
 	font-size : 80px;
 	color : #003E33;
 	color : rgb(0, 62, 51);
@@ -425,10 +430,12 @@ select.form-control {
 
 .Style6
 {
-	font-family : Rubik-Light;
+	font-family : Rubik;
 	font-size : 12px;
+  font-weight: 900;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+  margin: 15px;
 	text-decoration: none!important;
 }
 
@@ -448,6 +455,32 @@ select.form-control {
   font-weight: 600;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+}
+
+.Style9
+{
+	font-family : Rubik;
+	font-size : 24px;
+  font-weight: 900;
+	color : #003E33;
+	color : rgb(0, 62, 51);
+}
+
+.Style10
+{
+	font-family : Rubik;
+	font-size : 20px;
+	color : #000000;
+	color : rgb(0, 0, 0);
+	text-decoration: none!important;
+}
+
+.Style11
+{
+	font-family : Rubik;
+	font-size : 24px;
+	color : #808080;
+	color : rgb(128, 128, 128);
 }
 
 .smaltext
@@ -485,7 +518,8 @@ textarea {
 }
 
 .progressdone {
-  font-size: 22px; 
+  font-family: Rubik;
+  font-size: 24px; 
   color: rgb(56, 233, 12);
 }
 

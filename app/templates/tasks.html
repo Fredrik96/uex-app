@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/UeX-App.css')}}">
 
     <!-- Template js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -46,42 +47,42 @@
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
-                            <span>Progress</span>
+                            <span class="NormalCharacterStyle8">Progress</span>
                         </div>
                         </br>
                         <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
-                            <span>{{progress}}/{{numb}}</span>
+                            <span class="Style9">{{progress}}/{{numb}}</span>
                         </div>
                     </div>
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
-                            <span>Tools</span>
+                            <span class="NormalCharacterStyle8">Tools</span>
                         </div>
                         </br>
                         <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
-                            {% if tools == [] %}
-                                <span>None</span>
+                            {% if tools == "" %}
+                                <span class="Style9">None</span>
                             {% else %}
-                                <span>{{ tools }}</span>
+                                <span class="Style9">{{ tools }}</span>
                             {% endif %}
                         </div>
                     </div>
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
-                            <span>Questionnaires</span>
+                            <span class="NormalCharacterStyle8">Questionnaires</span>
                         </div>
                         </br>
-                        <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
-                            {% if quests == [] %}
-                                <span>None</span>
+                        <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: fit-content; background-color: rgb(224, 222, 222);">
+                            {% if quests == "" %}
+                                <span class="Style9">None</span>
                             {% else %}
-                                <span>{{ quests }}</span>
+                                <span class="Style9">{{ quests }}</span>
                             {% endif %}
                         </div>
                     </div>
                     <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}">
-                        <div class="d-flex justify-content-center" style="margin-top: 150px;">
-                            <input type="submit" name="next" class="btn startstopBtn rounded-pill" value="To Dashboard" style="width: 180px;"/>
+                        <div class="d-flex justify-content-center" style="margin-top: 100px;">
+                            <input type="submit" name="next" class="btn startstopBtn rounded-pill Style9" value="To Dashboard" style="width: 180px;"/>
                         </div>
                     </form>
                 </div>
@@ -91,20 +92,22 @@
                 <table id="DataTabTask" class="table table-hover table-bordered table-striped table-light" style="margin: 20px;">
                     <thead>
                         <tr style="font-size: 20px;">
-                            <th scope="col">Participant ID</th>
-                            <th scope="col">Data</th>
-                            <th scope="col">Progress</th>
+                            <th scope="col" class="Style4">Participant ID</th>
+                            <th scope="col" class="Style4">Data</th>
+                            <th scope="col" class="Style4">Progress</th>
                         </tr> 
                     </thead>
                     <tbody id="ExperimentTabBody">
                         {% for number in howMany %}
-                            <tr style="font-size: 15px;">
-                                <th scope="row">{{ number }}</th>
-                                <td style="text-align: center;"><a href="{{url_for('main.dashboard_experiment', row=new_exp_id)}}">Datalink</a></td>
+                            <tr>
+                                <th scope="row" class="Style10" style="vertical-align: middle;">{{ number }}</th>
+                                <td class="d-flex justify-content-center align-items-center" style="text-align: center;">
+                                    <a href="{{url_for('main.dashboard_experiment', row=new_exp_id)}}" class="questformBtn rounded-pill">Datalink</a>
+                                </td>
                                 <td id="progrow{{number}}" style="text-align: center;">
-                                    <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}">
+                                    <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
                                         {% if data_to_tasks.data == [] or number not in data_number %}
-                                            <input id="sessiontest{{number}}" name="sessiontest" type="submit" class="btn btn-outline-success" value="Start Session {{ number }}" style="font-size: 15px;"/>
+                                            <input id="sessiontest{{number}}" name="sessiontest" type="submit" class="btn questformBtn rounded-pill" value="Start Session {{ number }}" style="font-size: 24px;"/>
                                         {% endif %}
                                         {% for elem in data_to_tasks.data %}
                                             {% if elem.check == number %}

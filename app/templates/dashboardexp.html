@@ -15,6 +15,8 @@
     <!-- My CSS -->
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <title>Dashboard</title>
 
     </head>
@@ -31,15 +33,20 @@
             </div>
         </div>
         <div class="container-fluid w-100 h-100 d-flex justify-content-evenly">
-            <div class="d-flex flex-column" style="width: auto; margin-top: 80px;">
-                <div class="d-flex flex-column justify-content-start border3 shadow table-responsive" style ="height: 400px; overflow-y: scroll;">
+            <div class="d-flex flex-column justify-content-center align-items-center" style="width: auto; margin-top: 80px;">
+                <div class="d-flex flex-column justify-content-start border3 shadow" style ="height: 400px; overflow-y: scroll;">
                     <table id="DataTabExp" class="table table-hover table-bordered table-striped table-light" style="width: fit-content; margin: 25px;">
                         <thead>
-                                <tr>
-                                    <th scope="col">Subject</th>
+                                <tr class="Style4">
+                                    <th id="subjectCol" scope="col">Subject</th>
                                     {% for tool in tools%}
-                                        <th style="text-align: center;" scope="col">{{tool}}</th>
+                                        {% if tools != [''] %}
+                                            <th style="text-align: center;" scope="col">{{tool}}</th>
+                                        {% endif %}
                                     {% endfor %}
+                                    {% if quest != [] %}
+                                        <th style="text-align: center;" scope="col"> quest </th>
+                                    {% endif %}
                                 </tr>
                         </thead>
                         <tbody>
@@ -47,22 +54,54 @@
                                 {%  if my_exp_table.users_id == current_u_id %}
                                     <tr>
                                         {% if part_id != [] %}
-                                            <th scope="row">{{ part_id[number-1] }}</th>
+                                            <th scope="row"><span style="font-size: 24;">{{ part_id[number-1] }}</span></th>
                                         {% else %}
                                             <th scope="row">{{ number }}</th>
                                         {% endif %}
                                         {% for tool in tools%}
                                             {% if tool == "time" and timer != []%}
-                                                <td> <span>{{ timer[number-1] }}</span></td>
+                                                <td> <span class="Style10">{{ timer[number-1] }}</span></td>
                                             {% endif %}
                                             {% if tool == "video" %}
-                                                <td> <a href="/static/videos/video{{part_id[number-1]}}user{{current_u_id}}.mp4" download>Download Video</a></td>
+                                            <form action="{{ url_for('main.dashboard_experiment', row=row) }}" method="POST">
+                                                <input type="hidden" name="vid_file" value="{{ part_id[number-1] }}"/>
+                                                <input id="submit-vid" type="submit" value="submit" hidden/>
+                                            </form>
+                                            <td> <button id="download-vid" class="btn btn-outline-success">Download Video</button></td>
                                             {% endif %}
                                             {% if tool == "analyt" %}
-                                                <td> <span></span>{{analytics[number-1]}}</td>
+                                                <td> <span class="Style10">{{analytics[number-1]}}</span></td>
                                             {% endif %}
                                         {% endfor %}
+                                        {% if quest != [] %}
+                                            <td> <span style="color: green;">&#10003;</span> </td>
+                                        {% endif %}
                                     </tr>
+                                {% endif %}
+                                {% if tool == "video" %}
+                                <script type="text/javascript">
+                                    const downloadPdf = document.querySelector("#download-vid");
+                                    const submitForm = document.querySelector("#submit-vid");
+
+                                    downloadPdf.addEventListener("click", () => {
+                        
+                                        let element = document.createElement("a");
+                                        element.href = "/static/videos/video{{part_id[number-1]}}user{{current_u_id}}.mp4";
+                                        element.download = "video{{part_id[number-1]}}user{{current_u_id}}.mp4";
+
+                                        // Adding the element to body
+                                        document.documentElement.appendChild(element);
+
+                                        // trigger download
+                                        element.click();
+
+                                        // Removing the element from body
+                                        document.documentElement.removeChild(element);
+
+                                        // submitting the form
+                                        submitForm.click();
+                                    });
+                                </script>
                                 {% endif %}
                             {% endfor %}
                         </tbody>
@@ -71,42 +110,51 @@
                 <div class="d-flex flex-column justify-content-center align-items-center">
                     {% if my_exp_table.data.quest_file != None %}
                         <div class="d-flex flex-column justify-content-center align-items-center border3 shadow" style ="width: 100%; height: fit-content; margin-top: 40px;">
-                            <div class="d-flex align-items-start justify-content-start" style="width: 100%; padding-left: 8pt;">
-                                <span> Questionnaires:</span>
+                            <div class="d-flex align-items-center justify-content-center" style="width: 100%; padding-left: 8pt;">
+                                <span class="Style11"> Questionnaires:</span>
                             </div>
-                            <div class="d-flex justify-content-center align-items-center border3" style ="width: fit-content; height: fit-content; background-color: rgb(213, 212, 212); margin-bottom: 5px;">
-                                <span style="margin: 10px;"> {{ quest[0] }} </span>
+                            <div class="d-flex justify-content-center align-items-center border3" style ="width: fit-content; height: fit-content; background-color: rgb(213, 212, 212); margin: 5px 10px 10px 5px;">
+                                <span class="Style9" style="margin: 10px;">{{ quest[0] }}</span>
                             </div>
                         </div>
                     {% endif %}
-                    <a class="dashbbtn rounded-pill" type="button" href="{{url_for('main.dashboard')}}">Back</a>
+                    <a class="dashbbtn rounded-pill" type="button" href="javascript:window.history.back();">Back</a>
                 </div>
             </div>
         </div>
         <script type="text/javascript">
             var table, rows, switching, i, x, y, shouldSwitch;
             table = document.getElementById("DataTabExp");
+            subhead = document.getElementById("subjectCol");
             switching = true;
-            while (switching) {
-                switching = false;
-                rows = table.rows;
+            $(document).ready(function() {
+                $('#subjectCol').hover(function() {
+                    $(this).css('cursor','pointer');
+                });
 
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
+                subhead.onclick = function() {
+                    while (switching) {
+                        switching = false;
+                        rows = table.rows;
+            
+                        for (i = 1; i < (rows.length - 1); i++) {
+                            shouldSwitch = false;
 
-                    x = rows[i].getElementsByTagName("td")[0];
-                    y = rows[i + 1].getElementsByTagName("td")[0];
-
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
+                            x = rows[i].getElementsByTagName("th")[0];
+                            y = rows[i + 1].getElementsByTagName("th")[0];
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                            }
+                        }
+                        
+                        if (shouldSwitch) {
+                            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                            switching = true;
+                        }
                     }
-                }
-                if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                }
-            }
+                };
+            });
         </script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

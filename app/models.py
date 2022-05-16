@@ -30,7 +30,7 @@ class UserData(db.Model):
     __tablename__ = 'user_data'
     id = db.Column(db.Integer, primary_key=True)
     users_table_id = db.Column(db.Integer, db.ForeignKey('datatable.id_table'))
-    video_file = db.Column(db.LargeBinary)
+    video_file = db.Column(db.String(50))
     picture_file = db.Column(db.LargeBinary)
     analytics = db.relationship("Gamedata", backref="gameanalytics")
     analyt_file = db.Column(db.String(100)) 

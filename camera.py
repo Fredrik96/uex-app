@@ -1,6 +1,5 @@
 import cv2
 import threading
-import multiprocessing
 import time
 from flask_login import current_user
 
