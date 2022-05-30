@@ -15,11 +15,19 @@ from video import Camera
 from utils import base64_to_img, img_to_base64
 from flask_socketio import SocketIO
 from process import webopencv
+from app import app 
 
 video_camera = None
 global_frame = None
 
 camera = Camera(webopencv())
+socketio = SocketIO(app)
+
+@socketio.on('input image', namespace='/test')
+def test_message(input):
+    input = input.split(",")[1]
+    camera.enqueue_input(input)
+    #camera.enqueue_input(base64_to_pil_image(input))
 
 def gen():
     """Video streaming generator function."""
