@@ -51,7 +51,9 @@ class VideoCamera(object):
 
     def get_frame(self):
         if self.cap == None and self.is_open == True:
-            self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+            self.cap = cv2.VideoCapture(1,cv2.CAP_DSHOW)
+            self.cap = cv2.VideoStream(src=0).start()
+            time.sleep(2.0)
         ret, frame = self.cap.read()
 
         if ret:
@@ -63,7 +65,7 @@ class VideoCamera(object):
 
     def start_cam(self):
         self.is_open = True
-        self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+        self.cap = cv2.VideoCapture(1,cv2.CAP_DSHOW)
 
     def start_record(self,number,row):
         self.is_open=True
