@@ -26,7 +26,7 @@ def create_app(config):
     migrate = Migrate(app, db)
     moment = Moment(app)
     #app.config.from_object(config)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://pkkfxybimfvdff:26cbe64d988bc53e68f254d61689ca142401bc867d2446c25c69ab33eec79c4f@ec2-44-194-117-205.compute-1.amazonaws.com:5432/d6gujdtsf5l8ce'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://pkkfxybimfvdff:26cbe64d988bc53e68f254d61689ca142401bc867d2446c25c69ab33eec79c4f@ec2-44-194-117-205.compute-1.amazonaws.com:5432/d6gujdtsf5l8ce'
     config.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
