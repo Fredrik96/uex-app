@@ -41,7 +41,7 @@
                 <div class="d-flex border3 shadow" style ="width: 470px; height: 100px; margin-bottom: 40px;">
                     <div class="d-flex flex-column w-100">
                         <div class="d-flex align-items-start">
-                            <span class="NormalCharacterStyle8" style="padding-left: 10px;">Name</span>
+                            <span class="NormalCharacterStyle8" style="padding-left: 10px;">Name of Experiment</span>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <input id="expname" form="expername" class="experinput" type="text" name="ckbox">
@@ -68,30 +68,35 @@
                     </div>
                 </div>
                 <div id="cktab" class="d-flex flex-column justify-content-between border1 shadow" style ="width: 470px; height: 388px;">
-                    <div class="d-flex aling-items-start">
-                        <span class="NormalCharacterStyle8" style="padding-left: 20px;">Tools</span>
+                    <div class="d-flex flex-column justify-content-start">
+                        <div class="d-flex aling-items-start" style="padding-bottom: 0px;">
+                            <span class="Style11" style="padding-left: 20px;">Tools</span>
+                        </div>
+                        <div class="d-flex aling-items-start">
+                            <span class="Style10" style="padding-left: 20px;">Which tools do you want for your experiment?</span>
+                        </div>
                     </div>
                     <table>
                         <div class="d-flex flex-row justify-content-evenly align-items-center">
                             <div class="d-flex align-items-center toolBtn">
-                                <label>
-                                    <input value="video" id="video" class="hidden" type="checkbox" name="ckbox" form="expername"><span>video</span>
+                                <label style="width: 145pt;">
+                                    <input value="video" id="video" class="hidden" type="checkbox" name="ckbox" form="expername"><span>Video recording</span>
                                 </label>
                             </div>
-                            <div class="d-flex align-items-center toolBtn">
-                                <label>
-                                    <input value="analyt" id="analytic" class="hidden" type="checkbox" name="ckbox" form="expername"><span>analyt</span>
+                            <div class="d-flex align-items-center toolBtn" style="width: 95pt;">
+                                <label style="width: 95pt;">
+                                    <input value="analyt" id="analytic" class="hidden" type="checkbox" name="ckbox" form="expername"><span>Analytical</span>
                                 </label>
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-content-evenly align-items-center">
-                            <div class="d-flex toolBtn">
-                                <label>
-                                    <input value="time" id="time" class="hidden" type="checkbox" name="ckbox" form="expername"><span>time</span>
+                            <div class="d-flex toolBtn" style="width: 122pt;">
+                                <label style="width: 122pt;">
+                                    <input value="time" id="time" class="hidden" type="checkbox" name="ckbox" form="expername"><span>Session timer</span>
                                 </label>
                             </div>
                             <div class="d-flex align-items-center">
-                                <input value="quest" id="questMod" class="dashbbtn rounded-pill" type="button" data-toggle="modal" data-target="#quest_modal">
+                                <input value="questionnaires" id="questMod" class="dashbbtn rounded-pill" type="button" style="width: 140pt;" data-toggle="modal" data-target="#quest_modal">
                             </div>
                         </div>
                     </table>

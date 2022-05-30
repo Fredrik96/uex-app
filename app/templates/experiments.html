@@ -196,7 +196,7 @@
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div class="d-flex flex-column border5 shadow align-items-center" style ="width: 680px; height: 508px;">
                             {% if "video" in tools%}
-                            <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number) }}" style="margin-top: 13px;">
+                            <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;">
                             {% endif %}
                         </div>
                         <div class="d-flex flex-row">
@@ -265,7 +265,7 @@
 
                         }
                     }
-                    xhr.open("POST", "/record_status/{{number}}");
+                    xhr.open("POST", "/record_status/{{number}}/{{new_exp_id}}");
                     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                     xhr.send(JSON.stringify({ status: "true" }));
 
@@ -281,7 +281,7 @@
                             // alert(xhr.responseText);
                         }
                     }
-                    xhr.open("POST", "/record_status/{{number}}");
+                    xhr.open("POST", "/record_status/{{number}}/{{new_exp_id}}");
                     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                     xhr.send(JSON.stringify({ status: "false" }));
                     };

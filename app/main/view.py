@@ -142,12 +142,12 @@ def gamelist_add(new_exp_id):
     print("Successfully added!",gamer_user.id, flush=True)
     return "OK"
 
-@main.route('/record_status/<int:number>', methods=['POST'])
+@main.route('/record_status/<int:number>/<int:row>', methods=['POST'])
 @login_required
-def record_status(number):
+def record_status(number,row):
     global video_camera
     if video_camera == None:
-        video_camera = VideoCamera(number)
+        video_camera = VideoCamera(number,row)
 
     json = request.get_json()
     status = json['status']
@@ -156,19 +156,19 @@ def record_status(number):
         if video_camera == None:
             video_camera.start_cam()
         print("recording", flush=True)
-        video_camera.start_record(number)
+        video_camera.start_record(number,row)
         return jsonify(result="started")
     else:
         video_camera.stop_record()
         print(video_camera.is_open,flush=True)
         return jsonify(result="stopped")
 
-def video_stream(number):
+def video_stream(number,row):
     global video_camera 
     global global_frame
     
     if video_camera == None:
-        video_camera = VideoCamera(number)
+        video_camera = VideoCamera(number,row)
         
     while True:
         frame = video_camera.get_frame()
@@ -183,15 +183,9 @@ def video_stream(number):
     video_camera.is_open = True
         
 
-@main.route('/video_viewer/<int:number>')
-def video_viewer(number):
-    return Response(video_stream(number), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@main.route('/recording/<int:number>')
-@login_required
-def recording(number):
-    file = ["video{}_user{}.mp4".format(str(number),str(current_user))]
-    return render_template('recording.html', file=file, number=number)
+@main.route('/video_viewer/<int:number>/<int:row>')
+def video_viewer(number,row):
+    return Response(video_stream(number,row), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @main.route('/tasks/<int:new_exp_id>/<int:number>', methods=['POST','GET'])
 @login_required
@@ -306,6 +300,8 @@ def process_done():
 def dashboard():
     current_u_id = current_user.id
     my_exp = UserTable.query.order_by(UserTable.id_table)
+    for exp in my_exp:
+        print(exp.users_id, flush=True)
 
     return render_template('dashboard.html', my_exp=my_exp, current_u_id=current_u_id)
 
@@ -408,12 +404,6 @@ def dashboard_experiment(row):
     for game in my_exp_game:
         if game.game_data_id == row:
            analytics.append(game)
-
-    if request.method == 'POST':
-        vid_file = request.form.get('vid_file')
-        path = f"app/static/videos/video{str(vid_file)}user{str(current_u_id)}.mp4"
-        #os.remove(path)
-        print("Video file removed", flush=True)
     
     return render_template('dashboardexp.html', my_exp_table=my_exp_table,
                                                 howMany=howMany, 
@@ -447,7 +437,7 @@ def experiments(new_exp_id):
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('main.login'))
+    return redirect(url_for('main.index'))
 
 #custom error pages
 #invalid url

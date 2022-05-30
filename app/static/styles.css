@@ -254,6 +254,7 @@ color: #00614f;
   font-size: 24px;
   font-family : Rubik;
   font-weight: 900;
+  width: 145pt;
   text-decoration: none;
   color: #003E33; 
   vertical-align: middle;
@@ -280,10 +281,11 @@ color: #00614f;
 }
 
 .toolBtn label span {
-  text-align:center;
+  text-align: center;
   padding-left: 8px;
   padding-right: 8px;
-  display:block;
+  display: block;
+  white-space: nowrap;
 }
 
 .toolBtn label input{
@@ -296,6 +298,7 @@ color: #00614f;
 
 .toolBtn input:focus{
   border-width: 0px;
+  width: 100%;
   outline:0; /* I have also tried outline:none */
   -webkit-appearance:none;
   box-shadow: none;
@@ -307,7 +310,7 @@ color: #00614f;
   border-radius: 15pt;
   color: #00614f;
   background-color:rgb(41, 188, 0);
-  width: 80px;
+  width: 100%;
   height: 40px;
 }
 /*---------------- buttons ----------------------*/

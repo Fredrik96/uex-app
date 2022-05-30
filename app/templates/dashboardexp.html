@@ -17,7 +17,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <title>Dashboard</title>
+    <title>Experiment</title>
 
     </head>
 
@@ -44,14 +44,11 @@
                                             <th style="text-align: center;" scope="col">{{tool}}</th>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if quest != [] %}
-                                        <th style="text-align: center;" scope="col"> quest </th>
-                                    {% endif %}
                                 </tr>
                         </thead>
                         <tbody>
                             {% for number in howMany %}
-                                {%  if my_exp_table.users_id == current_u_id %}
+                                {% if my_exp_table.users_id == current_u_id %}
                                     <tr>
                                         {% if part_id != [] %}
                                             <th scope="row"><span style="font-size: 24;">{{ part_id[number-1] }}</span></th>
@@ -63,45 +60,13 @@
                                                 <td> <span class="Style10">{{ timer[number-1] }}</span></td>
                                             {% endif %}
                                             {% if tool == "video" %}
-                                            <form action="{{ url_for('main.dashboard_experiment', row=row) }}" method="POST">
-                                                <input type="hidden" name="vid_file" value="{{ part_id[number-1] }}"/>
-                                                <input id="submit-vid" type="submit" value="submit" hidden/>
-                                            </form>
-                                            <td> <button id="download-vid" class="btn btn-outline-success">Download Video</button></td>
+                                                <td> <a id="download-vid{{part_id[number-1]}}" href="/static/videos/{{row}}video{{part_id[number-1]}}user{{current_u_id}}.mp4" type="button" class="btn btn-outline-success" download>Download Video</a></td>
                                             {% endif %}
                                             {% if tool == "analyt" %}
                                                 <td> <span class="Style10">{{analytics[number-1]}}</span></td>
                                             {% endif %}
                                         {% endfor %}
-                                        {% if quest != [] %}
-                                            <td> <span style="color: green;">&#10003;</span> </td>
-                                        {% endif %}
                                     </tr>
-                                {% endif %}
-                                {% if tool == "video" %}
-                                <script type="text/javascript">
-                                    const downloadPdf = document.querySelector("#download-vid");
-                                    const submitForm = document.querySelector("#submit-vid");
-
-                                    downloadPdf.addEventListener("click", () => {
-                        
-                                        let element = document.createElement("a");
-                                        element.href = "/static/videos/video{{part_id[number-1]}}user{{current_u_id}}.mp4";
-                                        element.download = "video{{part_id[number-1]}}user{{current_u_id}}.mp4";
-
-                                        // Adding the element to body
-                                        document.documentElement.appendChild(element);
-
-                                        // trigger download
-                                        element.click();
-
-                                        // Removing the element from body
-                                        document.documentElement.removeChild(element);
-
-                                        // submitting the form
-                                        submitForm.click();
-                                    });
-                                </script>
                                 {% endif %}
                             {% endfor %}
                         </tbody>

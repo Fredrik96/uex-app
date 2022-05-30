@@ -4,7 +4,7 @@ import time
 from flask_login import current_user
 
 class RecordingThread (threading.Thread):
-    def __init__(self, name, camera, number):
+    def __init__(self, name, camera, number, row):
         threading.Thread.__init__(self)
         self.name = name
         self.isRunning = True
@@ -14,8 +14,8 @@ class RecordingThread (threading.Thread):
         h = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         #use -1 instead of fourcc. -1 means the videowriter choose for you
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        self.out = cv2.VideoWriter('app/static/videos/video{}user{}.mp4'.format(str(number),str(current_user.id)),-1, 20.0, (int(w),int(h)))
-        print(number, flush=True)
+        self.out = cv2.VideoWriter('app/static/videos/{}video{}user{}.mp4'.format(str(row),str(number),str(current_user.id)),-1, 20.0, (int(w),int(h)))
+        print(row, flush=True)
 
     def run(self):
         while self.isRunning:
@@ -31,13 +31,14 @@ class RecordingThread (threading.Thread):
         self.out.release()
 
 class VideoCamera(object):
-    def __init__(self,number):
+    def __init__(self,number,row):
         self.cap = None
         # Initialize video
         self.is_record = False
         self.out = None
         self.is_open = True
         self.number = number
+        self.row = row
 
         # initialize recording tread
         self.recordingThread = None
@@ -64,10 +65,10 @@ class VideoCamera(object):
         self.is_open = True
         self.cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 
-    def start_record(self,number):
+    def start_record(self,number,row):
         self.is_open=True
         self.is_record = True
-        self.recordingThread = RecordingThread("Recording Thread", self.cap, number)
+        self.recordingThread = RecordingThread("Recording Thread", self.cap, number, row)
         time.sleep(0.3)
         self.recordingThread.start()
 
