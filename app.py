@@ -1,5 +1,5 @@
 import sys
-from app import create_app, db
+from appfile import create_app, db
 from config import get_current_config
 
 app = create_app(get_current_config())

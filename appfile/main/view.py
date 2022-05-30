@@ -3,9 +3,9 @@ from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-from app import db
+from appfile import db
 from forms import RegisterForm, LoginForm, DashboardForm
-from app.models import User, UserTable, UserData, Gamedata
+from appfile.models import User, UserTable, UserData, Gamedata
 from . import main
 
 import cv2
