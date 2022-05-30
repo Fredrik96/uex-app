@@ -10,9 +10,30 @@ from . import main
 
 import cv2
 from camera import VideoCamera
+from video import Camera
+
+from utils import base64_to_img, img_to_base64
+from flask_socketio import SocketIO
+from process import webopencv
 
 video_camera = None
 global_frame = None
+
+camera = Camera(webopencv())
+
+def gen():
+    """Video streaming generator function."""
+    while True:
+        frame = camera.get_frame() #pil_image_to_base64(camera.get_frame())
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+@main.route('/vidfeed')
+def vidfeed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @main.route('/')
 def index():
