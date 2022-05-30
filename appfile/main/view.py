@@ -12,19 +12,12 @@ import cv2
 from camera import VideoCamera
 from video import Camera
 
-from app import socketio
-from flask_socketio import SocketIO
 from process import webopencv 
 
 video_camera = None
 global_frame = None
 
 camera = Camera(webopencv())
-
-@socketio.on('input image', namespace='/test')
-def test_message(input):
-    input = input.split(",")[1]
-    camera.enqueue_input(input)
 
 def gen():
     """Video streaming generator function."""
