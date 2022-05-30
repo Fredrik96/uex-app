@@ -10,7 +10,15 @@ body {
   padding-left: 10px;
   background-color: #f5f5f5;
 }
-  
+@font-face {
+  font-family: "Clean Ape";
+  src: url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.eot"); /* IE9*/
+  src: url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.woff2") format("woff2"), /* chrome firefox */
+  url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.woff") format("woff"), /* chrome firefox */
+  url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.ttf") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
+  url("https://db.onlinewebfonts.com/t/3e7890fe20c81906d11ea20e5a89e27f.svg#Clean Ape") format("svg"); /* iOS 4.1- */
+}
 /*---------------- buttons ----------------------*/
 .loginbutton {
   background-color: #E6FE55;
