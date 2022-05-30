@@ -36,6 +36,7 @@ def create_app(config):
     login_manager.init_app(app)
     migrate.init_app(app, db)
     db.app = app
+    
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
