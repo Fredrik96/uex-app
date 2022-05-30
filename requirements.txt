@@ -27,6 +27,7 @@ Mako==1.1.6
 MarkupSafe==2.0.1
 mysql-connector==2.2.9
 mysql-connector-python==8.0.28
+numpy==1.22.4
 oauthlib==2.0.0
 opencv-python==4.5.5.62
 opencv-python-headless==4.3.0.38
