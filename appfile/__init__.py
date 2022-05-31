@@ -46,7 +46,7 @@ def create_app(config):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    @socketio.on('input image', namespace='/test')
+    @socketio.on('input image')
     def test_message(input):
         input = input.split(",")[1]
         camera.enqueue_input(input)
