@@ -45,6 +45,16 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function() {
+                const io = require('socket.io')(server, {
+                    cors: {
+                        origin: "http://localhost:8100",
+                        methods: ["GET", "POST"],
+                        transports: ['websocket', 'polling'],
+                        credentials: true
+                    },
+                    allowEIO3: true
+                });
+
                 let namespace = "/test";
                 let video = document.querySelector("#videoElement");
                 let canvas = document.querySelector("#canvasElement");
