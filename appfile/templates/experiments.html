@@ -198,7 +198,7 @@
                             {% if "video" in tools%}
                             <!-- <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;"> -->
                             <video autoplay="true" id="videoElement" style="display: none;"></video>
-                            <img id="imageElement" src="{{ url_for('main.vidfeed') }}">
+                            <img id="imageElement" src="{{ url_for('main.vidfeed') }}" style="width: 640px; height: 480px">
                             <canvas id="canvasElement" style="display: none;"></canvas>
                             {% endif %}
                         </div>
@@ -245,7 +245,7 @@
                     return;
                 }
             
-                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 640, 480);
+                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 300, 150);
             
                 let dataURL = canvas.toDataURL('image/jpeg');
                 socket.emit('input image', dataURL);
@@ -338,7 +338,7 @@
 
                 $('#savesess').on('click',function(e){
                     e.preventDefault();
-                    jQuery.ajax({
+                    $.ajax({
                         data: $('[name=savesession]').serialize(),
                         type : 'POST',
                         url : '{{ url_for("main.tasks", new_exp_id=new_exp_id, number=number) }}',
