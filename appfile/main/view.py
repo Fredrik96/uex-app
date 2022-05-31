@@ -1,9 +1,8 @@
 from flask import flash, jsonify, url_for, redirect, render_template, request, Response
 from flask_login import logout_user, login_required, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
 
-from appfile import db
+from appfile import db, gen
 from forms import RegisterForm, LoginForm, DashboardForm
 from appfile.models import User, UserTable, UserData, Gamedata
 from . import main
@@ -18,21 +17,10 @@ from flask_socketio import SocketIO
 video_camera = None
 global_frame = None
 
-camera = Camera(webopencv())
-
-def gen():
-    """Video streaming generator function."""
-    while True:
-        frame = camera.get_frame() 
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-
 @main.route('/vidfeed')
 def vidfeed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 
 @main.route('/')
 def index():

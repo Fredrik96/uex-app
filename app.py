@@ -16,4 +16,4 @@ def create_db():
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'database':
         create_db()
-    socketio.run(debug=True)
+    socketio.run(app)

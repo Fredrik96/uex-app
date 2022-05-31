@@ -46,9 +46,15 @@ def create_app(config):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    @socketio.on('input image', namespace='/test')
+    @socketio.on('input image', namespace='/experiments')
     def test_message(input):
         input = input.split(",")[1]
         camera.enqueue_input(input)
 
     return app
+    
+def gen():
+    while True:
+        frame = camera.get_frame() 
+        yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')

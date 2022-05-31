@@ -337,14 +337,15 @@
                     });
                 });
                 
+                namespace="/experiments"
                 let video = document.querySelector("#videoElement");
                 let canvas = document.querySelector("#canvasElement");
                 let ctx = canvas.getContext('2d');
             
                 var localMediaStream = null;
             
-                var socket = io.connect('https://uex-toolbox.herokuapp.com/experiments/{{row}}?new_exp_name={{new_exp_name}}l&numb={{numb}}&number={{number}}');
-            
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                
                 function sendSnapshot() {
                 if (!localMediaStream) {
                     return;
@@ -357,7 +358,7 @@
                 }
             
                 socket.on('connect', function() {
-                console.log('Connected!');
+                    console.log('Connected!');
                 });
             
                 var constraints = {
