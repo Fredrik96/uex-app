@@ -18,8 +18,8 @@
     {{ moment.include_moment() }}
     
     <!-- CameraTag ad-on in Heroku-->
-    <script src='//cameratag.com/v14/js/cameratag.js' type='text/javascript'></script>
-    <link rel='stylesheet' href='//cameratag.com/static/14/cameratag.css'>
+    <!-- <script src='//cameratag.com/v14/js/cameratag.js' type='text/javascript'></script>
+    <link rel='stylesheet' href='//cameratag.com/static/14/cameratag.css'> -->
 
     <title>Experiments</title>
     
@@ -196,9 +196,10 @@
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div class="d-flex flex-column border5 shadow align-items-center" style ="width: 680px; height: 508px;">
                             {% if "video" in tools%}
-                            <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;">
-                            <!-- <camera id='videosource{{number}}' data-app-id='a-70c0c870-c257-013a-ac9a-025c64289059'></camera> -->
+                            <!-- <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;"> -->
+                            <video autoplay="true" id="videoElement" style="display: none;"></video>
                             <img id="imageElement" src="{{ url_for('main.vidfeed') }}">
+                            <canvas id="canvasElement" style="display: none;"></canvas>
                             {% endif %}
                         </div>
                         <div class="d-flex flex-row">
@@ -226,6 +227,48 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function() {
+                namespace="/test"
+                let video = document.querySelector("#videoElement");
+                let canvas = document.querySelector("#canvasElement");
+                let ctx = canvas.getContext('2d');
+            
+                var localMediaStream = null;
+            
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+                
+                function sendSnapshot() {
+                if (!localMediaStream) {
+                    return;
+                }
+            
+                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 300, 150);
+            
+                let dataURL = canvas.toDataURL('image/jpeg');
+                socket.emit('input image', dataURL);
+                }
+            
+                socket.on('connect', function() {
+                    console.log('Connected!');
+                });
+            
+                var constraints = {
+                video: {
+                    width: { min: 640 },
+                    height: { min: 480 }
+                }
+                };
+            
+                navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+                video.srcObject = stream;
+                localMediaStream = stream;
+            
+                setInterval(function () {
+                    sendSnapshot();
+                }, 50);
+                }).catch(function(error) {
+                console.log(error);
+                });
+
                 var buttonRecord = document.getElementById("startvideo");
                 var buttonStop = document.getElementById("stopvideo");
                 
@@ -327,48 +370,6 @@
                             $('#analytform').html('<button id="analytstartstop" type="submit" class="analytWaitBtn rounded-pill Style9" style="width: 230px;">Waiting for data..</button>')
                         }
                     });
-                });
-                
-                namespace="/test"
-                let video = document.querySelector("#videoElement");
-                let canvas = document.querySelector("#canvasElement");
-                let ctx = canvas.getContext('2d');
-            
-                var localMediaStream = null;
-            
-                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-                
-                function sendSnapshot() {
-                if (!localMediaStream) {
-                    return;
-                }
-            
-                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 300, 150);
-            
-                let dataURL = canvas.toDataURL('image/jpeg');
-                socket.emit('input image', dataURL);
-                }
-            
-                socket.on('connect', function() {
-                    console.log('Connected!');
-                });
-            
-                var constraints = {
-                video: {
-                    width: { min: 640 },
-                    height: { min: 480 }
-                }
-                };
-            
-                navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-                video.srcObject = stream;
-                localMediaStream = stream;
-            
-                setInterval(function () {
-                    sendSnapshot();
-                }, 50);
-                }).catch(function(error) {
-                console.log(error);
                 });
             });
         </script>
