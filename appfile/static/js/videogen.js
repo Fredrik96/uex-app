@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    let namespace = "/test";
     let video = document.querySelector("#videoElement");
     let canvas = document.querySelector("#canvasElement");
     let ctx = canvas.getContext('2d');
