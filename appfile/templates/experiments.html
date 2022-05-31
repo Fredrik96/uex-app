@@ -245,7 +245,7 @@
                     return;
                 }
             
-                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 300, 150);
+                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, 640, 480);
             
                 let dataURL = canvas.toDataURL('image/jpeg');
                 socket.emit('input image', dataURL);
@@ -338,7 +338,7 @@
 
                 $('#savesess').on('click',function(e){
                     e.preventDefault();
-                    $.ajax({
+                    jQuery.ajax({
                         data: $('[name=savesession]').serialize(),
                         type : 'POST',
                         url : '{{ url_for("main.tasks", new_exp_id=new_exp_id, number=number) }}',
