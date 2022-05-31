@@ -45,13 +45,14 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function() {
+                let namespace = "/test";
                 let video = document.querySelector("#videoElement");
                 let canvas = document.querySelector("#canvasElement");
                 let ctx = canvas.getContext('2d');
             
                 var localMediaStream = null;
             
-                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+                var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
                 
                 function sendSnapshot() {
                 if (!localMediaStream) {
