@@ -60,7 +60,7 @@ def create_app(config):
     def test_connect():
         app.logger.info("client connected")
 
-    return app
+    return app, socketio
     
 def gen():
     while True:

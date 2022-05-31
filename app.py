@@ -4,9 +4,7 @@ from flask_socketio import SocketIO
 from appfile import create_app, db
 from config import get_current_config
 
-app = create_app(get_current_config())
-
-socketio = SocketIO(app)
+app, socketio = create_app(get_current_config())
 
 def create_db():
     db.init_app(app)
