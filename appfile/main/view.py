@@ -12,7 +12,8 @@ import cv2
 from camera import VideoCamera
 from video import Camera
 
-from process import webopencv 
+from process import webopencv
+from flask_socketio import SocketIO
 
 video_camera = None
 global_frame = None

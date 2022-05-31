@@ -5,6 +5,7 @@ from appfile import create_app, db
 from config import get_current_config
 
 app = create_app(get_current_config())
+
 socketio = SocketIO(app)
 
 def create_db():
@@ -15,4 +16,4 @@ def create_db():
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'database':
         create_db()
-    app.run(debug=True)
+    socketio.run(debug=True)
