@@ -198,7 +198,7 @@
                             {% if "video" in tools%}
                             <!-- <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;"> -->
                             <video autoplay="true" id="videoElement" style="display: none;"></video>
-                            <img id="imageElement" src="{{ url_for('main.vidfeed') }}" style="width: 640px; height: 480px">
+                            <img id="imageElement" src="{{ url_for('main.vidfeed') }}" style="width: 640px; height: 480px; margin-top: 10px;" allow="camera">
                             <canvas id="canvasElement" style="display: none;"></canvas>
                             {% endif %}
                         </div>
