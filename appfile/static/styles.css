@@ -93,13 +93,13 @@ body {
 
 .bi-arrow-right {
   color: #003E33;
-  font-size: 25px;
+  font-size: 36px;
   font-weight: 100;
 }
 
 .bi-arrow-right:hover {
   color: #003E33;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 900;
 }
 
@@ -118,6 +118,10 @@ body {
   height: 40px;
   border: none;
   text-decoration: none;
+}
+
+.questformBtn span{
+  margin: 0px 10px 0px 10px;
 }
 
 .questformBtn:hover {
@@ -177,13 +181,14 @@ text-decoration: none;
   padding: 0px;
   margin: 10px;
   font-size: 24px;
-  font-family : Rubik-Regular;
+  font-family : Rubik;
   color: #003E33; 
   vertical-align: middle;
   text-align: center;
   width: 150px;
   height: 40px;
   border: none;
+  white-space: nowrap;
 }
 
 .startstopBtn:hover{
@@ -275,10 +280,15 @@ color: #00614f;
   vertical-align: middle;
   border-radius: 15pt;
   background-color:#E6FE55;
+<<<<<<< Updated upstream:appfile/static/styles.css
+=======
+  float:left;
+>>>>>>> Stashed changes:app/static/styles.css
   color: #00614f;
   cursor: pointer;
   font-size: 25px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .toolBtn label {
@@ -292,8 +302,13 @@ color: #00614f;
   text-align: center;
   padding-left: 8px;
   padding-right: 8px;
+<<<<<<< Updated upstream:appfile/static/styles.css
   display: block;
   white-space: nowrap;
+=======
+  outline:0;
+  display:block;
+>>>>>>> Stashed changes:app/static/styles.css
 }
 
 .toolBtn label input{
@@ -318,8 +333,13 @@ color: #00614f;
   border-radius: 15pt;
   color: #00614f;
   background-color:rgb(41, 188, 0);
+<<<<<<< Updated upstream:appfile/static/styles.css
   width: 100%;
   height: 40px;
+=======
+  color: #00614f;
+  padding-top: 3px;
+>>>>>>> Stashed changes:app/static/styles.css
 }
 /*---------------- buttons ----------------------*/
 
@@ -406,7 +426,7 @@ select.form-control {
 
 .Style2
 {
-	font-family : Rubik-Light;
+	font-family : Rubik;
 	font-size: 80px;
 	color : #000;
 	color : rgb(0, 0, 0);
@@ -415,9 +435,14 @@ select.form-control {
 .Style3
 {
 	font-family : Rubik;
+<<<<<<< Updated upstream:appfile/static/styles.css
 	font-size : 24px;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+=======
+	font-size : 26px;
+	color : #000000;
+>>>>>>> Stashed changes:app/static/styles.css
 	text-decoration: none!important;
 }
 
@@ -452,7 +477,7 @@ select.form-control {
 
 .Style7
 {
-	font-family : Rubik-Regular;
+	font-family : Rubik;
 	font-size : 18px;
 	color : #000000;
 	color : rgb(0, 0, 0);
@@ -461,7 +486,7 @@ select.form-control {
 
 .Style8
 {
-	font-family : Rubik-light;
+	font-family : Rubik;
 	font-size : 18px;
   font-weight: 600;
 	color : #003E33;
@@ -471,29 +496,59 @@ select.form-control {
 .Style9
 {
 	font-family : Rubik;
+<<<<<<< Updated upstream:appfile/static/styles.css
 	font-size : 24px;
   font-weight: 900;
 	color : #003E33;
 	color : rgb(0, 62, 51);
+=======
+  font-weight: 600;
+	font-size : 24px;
+	color : #003E33;
+	color : rgb(0, 62, 51);
+  text-decoration: none;
+>>>>>>> Stashed changes:app/static/styles.css
 }
 
 .Style10
 {
 	font-family : Rubik;
+<<<<<<< Updated upstream:appfile/static/styles.css
 	font-size : 20px;
 	color : #000000;
 	color : rgb(0, 0, 0);
 	text-decoration: none!important;
+=======
+	font-size : 24px;
+	color : #808080;
+	color : rgb(128, 128, 128);
+>>>>>>> Stashed changes:app/static/styles.css
 }
 
 .Style11
 {
 	font-family : Rubik;
+<<<<<<< Updated upstream:appfile/static/styles.css
 	font-size : 24px;
+=======
+	font-size : 20px;
+>>>>>>> Stashed changes:app/static/styles.css
 	color : #808080;
 	color : rgb(128, 128, 128);
 }
 
+<<<<<<< Updated upstream:appfile/static/styles.css
+=======
+.Style12
+{
+	font-family : Rubik;
+  font-weight: 900;
+	font-size : 36px;
+	color : #003E33;
+	color : rgb(0, 62, 51);
+}
+
+>>>>>>> Stashed changes:app/static/styles.css
 .smaltext
 {
   font-size: 10px;

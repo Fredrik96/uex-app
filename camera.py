@@ -15,7 +15,11 @@ class RecordingThread (threading.Thread):
         #use -1 instead of fourcc. -1 means the videowriter choose for you
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         self.out = cv2.VideoWriter('app/static/videos/{}video{}user{}.mp4'.format(str(row),str(number),str(current_user.id)),-1, 20.0, (int(w),int(h)))
+<<<<<<< Updated upstream
         print(row, flush=True)
+=======
+        print(number, flush=True)
+>>>>>>> Stashed changes
 
     def run(self):
         while self.isRunning:

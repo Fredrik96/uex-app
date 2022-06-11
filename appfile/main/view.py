@@ -282,27 +282,6 @@ def process_timer(new_exp_id):
                                         new_exp_id=data_table.id_table,
                                         howMany = howMany,numb = numb)
 
-@main.route('/process/<int:new_exp_id>', methods=['POST','GET'])
-def process(new_exp_id):
-
-    if request.method == 'POST':
-        in_session = request.form.get('session')
-
-        if in_session != None:
-            return jsonify({'in_session' : in_session})
-        else:
-            print("Not retreived done",flush=True)
-
-@main.route('/process/done', methods=['POST'])
-def process_done():
-    done_session = request.form.get('donesess')
-    if done_session != None:
-        print(done_session, flush=True)
-        return jsonify({'done_session' : done_session})
-    else:
-        print("Not retreived done")
-
-
 @main.route('/dashboard')
 @login_required
 def dashboard():
@@ -335,9 +314,15 @@ def add(id):
     data_to_add = UserTable.query.get_or_404(id)
     my_exp_game = Gamedata.query.filter_by(game_data_id= id)
     current_numb = data_to_add.number
+<<<<<<< Updated upstream:appfile/main/view.py
     tools = data_to_add.tools
     new_exp_name = data_to_add.expname
     quests = data_to_add.quests
+=======
+    exp_name = data_to_add.expname
+    quest = data_to_add.quests
+    tools = data_to_add.tools
+>>>>>>> Stashed changes:app/main/view.py
     howMany = []
     data_number = []
     analytics = []
@@ -370,8 +355,15 @@ def add(id):
                 progress=progress,
                 new_exp_name=new_exp_name, 
                 number=updated_numb,
+<<<<<<< Updated upstream:appfile/main/view.py
                 numb=updated_numb,
                 data_to_tasks=data_to_add)
+=======
+                data_to_tasks=data_to_add,
+                new_exp_name=exp_name,
+                quests=quest,
+                numb=current_numb)
+>>>>>>> Stashed changes:app/main/view.py
         except:
             pass
     else:

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
@@ -40,13 +40,17 @@
         <div class="d-flex justify-content-evenly text-center">
             <div class="d-flex flex-column">
                 <div class="d-flex border3 shadow justify-content-center" style ="width: 600px; height: fit-content; margin-bottom: 40px; background-color: rgb(246, 246, 90);">
-                    <span class="Style4">{{new_exp_name}}</span>
+                    <span class="Style4">Name: {{new_exp_name}}</span>
                 </div>
                 
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
+<<<<<<< Updated upstream:appfile/templates/tasks.html
                             <span class="NormalCharacterStyle8">Progress</span>
+=======
+                            <span class="Style10">Progress</span>
+>>>>>>> Stashed changes:app/templates/tasks.html
                         </div>
                         </br>
                         <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
@@ -55,7 +59,11 @@
                     </div>
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
+<<<<<<< Updated upstream:appfile/templates/tasks.html
                             <span class="NormalCharacterStyle8">Tools</span>
+=======
+                            <span class="Style10">Tools</span>
+>>>>>>> Stashed changes:app/templates/tasks.html
                         </div>
                         </br>
                         <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
@@ -68,7 +76,11 @@
                     </div>
                     <div class="d-flex flex-column" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex align-items-start">
+<<<<<<< Updated upstream:appfile/templates/tasks.html
                             <span class="NormalCharacterStyle8">Questionnaires</span>
+=======
+                            <span class="Style10">Questionnaires</span>
+>>>>>>> Stashed changes:app/templates/tasks.html
                         </div>
                         </br>
                         <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: fit-content; background-color: rgb(224, 222, 222);">
@@ -101,12 +113,20 @@
                             <tr>
                                 <th scope="row" class="Style10" style="vertical-align: middle;">{{ number }}</th>
                                 <td class="d-flex justify-content-center align-items-center" style="text-align: center;">
+<<<<<<< Updated upstream:appfile/templates/tasks.html
                                     <a href="{{url_for('main.dashboard_experiment', row=new_exp_id)}}" class="questformBtn rounded-pill">Datalink</a>
+=======
+                                    <a href="{{url_for('main.dashboard_experiment', row=new_exp_id)}}" class="questformBtn rounded-pill" style="padding: 0px 10px 0px 10px;">Datalink</a>
+>>>>>>> Stashed changes:app/templates/tasks.html
                                 </td>
                                 <td id="progrow{{number}}" style="text-align: center;">
                                     <form method="POST" action="{{ url_for('main.tasks', new_exp_id=new_exp_id, number=number) }}" class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
                                         {% if data_to_tasks.data == [] or number not in data_number %}
+<<<<<<< Updated upstream:appfile/templates/tasks.html
                                             <input id="sessiontest{{number}}" name="sessiontest" type="submit" class="btn questformBtn rounded-pill" value="Start Session {{ number }}" style="font-size: 24px;"/>
+=======
+                                            <input id="sessiontest{{number}}" name="sessiontest" type="submit" class="btn questformBtn rounded-pill" value="Start Session {{ number }}" style="padding: 0px 10px 0px 10px;"/>
+>>>>>>> Stashed changes:app/templates/tasks.html
                                         {% endif %}
                                         {% for elem in data_to_tasks.data %}
                                             {% if elem.check == number %}

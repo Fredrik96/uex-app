@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <!-- My CSS -->
@@ -45,14 +45,22 @@
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 600px; height: 600px;">
                     <div class="d-flex flex-row justify-content-evenly" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex flex-column align-items-start">
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                             <span class="NormalCharacterStyle8">Sample</span>
+=======
+                            <span class="Style10">Sample</span>
+>>>>>>> Stashed changes:app/templates/experiments.html
                             </br>
                             <div class="d-flex border3 align-items-center" style="padding: 0px 10px 0px 10px; width: fit-content; height: 40px; background-color: rgb(224, 222, 222);">
                                 <span class="Style3">{{number}}/{{numb}}</span>
                             </div>
                         </div>
                         <div class="d-flex flex-column align-items-start">
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                             <span class="NormalCharacterStyle8">Experiment Timer</span>
+=======
+                            <span class="Style10">Experiment Timer</span>
+>>>>>>> Stashed changes:app/templates/experiments.html
                             </br>
                             {% if "time" in tools%}
                                 <input id="ststptimer" value="Start Timer" type="button" class="btn startstopBtn rounded-pill Style9">
@@ -63,15 +71,26 @@
                     </div>
                     <div class="d-flex flex-row" style="margin: 30px 0px 0px 40px;">
                         <div class="d-flex flex-column align-items-start">
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                             <span class="NormalCharacterStyle8">Controls</span>
+=======
+                            <span class="Style10">Controls</span>
+>>>>>>> Stashed changes:app/templates/experiments.html
                             </br>
                             {% if "analyt" in tools %}
                                 <form id="analytform" method="POST">
                                     <input name="startanalytics" value="{{new_exp_id}}" style="display: none;" >
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                                     <button id="analytstartstop" type="submit" class="dashbbtn rounded-pill Style9" style="width: 230px;">Analytics Start/Stop</button>
                                 </form>
                             {% else %}
                                 <button name="startanalytics" type="button" class="btn startstopBtn rounded-pill Style9" style="width: 230px;" disabled>Analytics Start/Stop</button>
+=======
+                                    <button id="analytstartstop" type="submit" class="dashbbtn rounded-pill Style9" style="width: 250px;">Analytics Start/Stop</button>
+                                </form>
+                            {% else %}
+                                <button name="startanalytics" type="button" class="btn startstopBtn rounded-pill Style9" style="width: 250px;" disabled>Analytics Start/Stop</button>
+>>>>>>> Stashed changes:app/templates/experiments.html
                             {% endif %}
                             {% if quests != [''] %}
                                 <div class="dropdown" id="questformatmenu">
@@ -87,7 +106,7 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row" style="margin: 160px 0px 0px 40px;">
-                        <input id="savesess" value="Save Session" type="button" class="dashbbtn rounded-pill" style="width: 150px;">
+                        <input id="savesess" value="Save Session" type="button" class="dashbbtn rounded-pill" style="width: 170px;">
                     </div>
                 </div>
             </div>
@@ -101,6 +120,7 @@
                             <div class="d-flex flex-row" style="margin-top: 18px;">
                                 {% for scale in quests %}
                                     {% if scale == "ITC-SOPI" %}
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                                         <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUODlIUUJLQ1AwME9ZT0g5TVAyNlhRSjhMMS4u&sharetoken=IILo405YcPg0O2XD7ahI">ITC_SOPI</a>
                                     {% endif %}
                                     {% if scale == "ATTRAKDIFF" %}
@@ -129,6 +149,36 @@
                                     {% endif %}
                                     {% if scale == "TI" %}
                                         <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BURTZXQUlHN0Q5SUpSWFBDUVY4MzZFRTgxSi4u&sharetoken=GJiDvT3Qdzbk0SbZXuce">TI</a>
+=======
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUODlIUUJLQ1AwME9ZT0g5TVAyNlhRSjhMMS4u&sharetoken=IILo405YcPg0O2XD7ahI"><span>ITC_SOPI</span></a>
+                                    {% endif %}
+                                    {% if scale == "ATTRAKDIFF" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUOUpUQTFMQTFFRUdOMkU1MDBKU1o3NEYzQy4u&sharetoken=BmGtGV98LJ2KaJwpZKrB"><span>ATTRAKDIFF</span></a>
+                                    {% endif %}
+                                    {% if scale == "IPQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNjA5NjdEQ1RRSzJCN0dWTEZGSjBaNFk2US4u&sharetoken=DFuYgcxdjwRgG0pY31B6"><span>IPQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "NASA-LTX" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUREszMTUzQlZHVlFGQlQ0MEVQRzhOMjg2Ty4u&sharetoken=AfPIuc1Wq0XRusFGAvD7"><span>NASA_TLX</span></a>
+                                    {% endif %}
+                                    {% if scale == "PANAS" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUQlMxODRCVFk5UFNWSFROWUk2STVNMjlNSC4u&sharetoken=87JN7oEUFeEyQIRl2ZvC"><span>PANAS</span></a>
+                                    {% endif %}
+                                    {% if scale == "SSSQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUMDdYTFBUTU9aTEdISTlTTVhDOFZEUVBNQy4u&sharetoken=SEpFAcIwXtiHyR0KktrC"><span>SSSQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "PQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNFJUVUNZRks0NjFJSEM5QlRRWEg4MkwxVi4u&sharetoken=tLoWk661SXCbbxrTVYJV"><span>PQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "GAMEFULQUEST" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUM0lOOFM4VU5VRDdaUEpGV1E4UkxMN0FISS4u&sharetoken=hdVAXthS3V5Rmfp39T2t"><span>GAMEFULQUEST</span></a>
+                                    {% endif %}
+                                    {% if scale == "GEQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BUNDNETERCNk1BNlI0QUg0Vk9JSjlVQTBSRS4u&sharetoken=OtpLeIlR5IJBJ07Llz34"><span>GEQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "TI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://forms.office.com/Pages/ShareFormPage.aspx?id=cgahCS-CZ0SluluzdZZ8BZYUspk3f8VMvkL2XZwxX8BURTZXQUlHN0Q5SUpSWFBDUVY4MzZFRTgxSi4u&sharetoken=GJiDvT3Qdzbk0SbZXuce"><span>TI</span></a>
+>>>>>>> Stashed changes:app/templates/experiments.html
                                     {% endif %} 
                                 {% endfor %}
                             </div>
@@ -141,7 +191,11 @@
             </div>
             <div class="modal fade" id="google_modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                     <div class="modal-content" style="width: fit-content; height: 300px;">
+=======
+                    <div class="modal-content" style="width: 600px; height: 300px;">
+>>>>>>> Stashed changes:app/templates/experiments.html
                         <div class="modal-head">
                             <span class="Style4">Open questionnaires</span>
                         </div>
@@ -150,6 +204,7 @@
                             <div class="d-flex flex-row">
                                 {% for scale in quests %}
                                     {% if scale == "ITC-SOPI" %}
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                                         <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1av41PSL3wxcEjMsQCA9ylSNw5q--Hcinkpzgl7298kg/copy">ITC_SOPI</a>
                                     {% endif %}
                                     {% if scale == "ATTRAKDIFF" %}
@@ -178,6 +233,36 @@
                                     {% endif %}
                                     {% if scale == "TI" %}
                                         <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1zH-xdTj5SYiFX6rtdm6e4OQAPEa5-XEmnB0Jpu-f9Ac/copy">TI</a>
+=======
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1av41PSL3wxcEjMsQCA9ylSNw5q--Hcinkpzgl7298kg/copy"><span>ITC_SOPI</span></a>
+                                    {% endif %}
+                                    {% if scale == "ATTRAKDIFF" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1Iekpt5EEFGFDeDnt2vQuiMe33drtyFg0DifHjpcImMY/copy"><span>ATTRAKDIFF</span></a>
+                                    {% endif %}
+                                    {% if scale == "IPQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1DS8nVOJeFIURFAEpJhTOXwXVB1Dzh9oOa1a1eQkBLSE/copy"><span>IPQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "NASA-LTX" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1REJaBGkUiZaTl5r4wvrD3hpwU9Janpk1znsr0Hh7c4k/copy"><span>NASA_TLX</span></a>
+                                    {% endif %}
+                                    {% if scale == "PANAS" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1K_jXW4sQpwLuDT-zTtgi2skJVzSTIyDEEFXjH5QsSRk/copy"><span>PANAS</span></a>
+                                    {% endif %}
+                                    {% if scale == "SSSQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1GDIhY_HUouBUREz1qDGMmvszBJXVTjOj8AB9m3izM2U/copy"><span>SSSQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "PQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/12noal31WrRpYuHQGLEMb-iqj0jzUzlNvprEwzgCuyug/copy"><span>PQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "GAMEFULQUEST" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1plMDdsaqgiTRRfzUQK7ZVMF-sHBmGojhg8VsVHReIHs/copy"><span>GAMEFULQUEST</span></a>
+                                    {% endif %}
+                                    {% if scale == "GEQ" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1OB91dgk372mbUOEP1jjbP3jj15xtvyDgohIO12Z5Vtk/copy"><span>GEQ</span></a>
+                                    {% endif %}
+                                    {% if scale == "TI" %}
+                                        <a type="button" class="questformBtn rounded-pill" href="https://docs.google.com/forms/d/1zH-xdTj5SYiFX6rtdm6e4OQAPEa5-XEmnB0Jpu-f9Ac/copy"><span>TI</span></a>
+>>>>>>> Stashed changes:app/templates/experiments.html
                                     {% endif %} 
                                 {% endfor %}
                             </div>
@@ -191,15 +276,23 @@
             <div class="d-flex flex-column">
                 <div class="d-flex flex-column border1 shadow align-items-evenly" style ="width: 800px; height: 800px;">
                     <div class="d-flex flex-column align-items-start" style="margin: 30px 0px 0px 40px;">
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                         <span class="NormalCharacterStyle8">Video</span>
+=======
+                        <span class="Style10">Video</span>
+>>>>>>> Stashed changes:app/templates/experiments.html
                     </div>
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <div class="d-flex flex-column border5 shadow align-items-center" style ="width: 680px; height: 508px;">
                             {% if "video" in tools%}
+<<<<<<< Updated upstream:appfile/templates/experiments.html
                             <!-- <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;"> -->
                             <video autoplay="true" id="videoElement" style="display: none;"></video>
                             <img id="imageElement" src="{{ url_for('main.vidfeed') }}" style="width: 640px; height: 480px; margin-top: 10px;">
                             <canvas id="canvasElement" style="display: none;"></canvas>
+=======
+                            <img id='videosrc{{number}}' src="{{url_for('main.video_viewer', number=number, row=new_exp_id) }}" style="margin-top: 13px;">
+>>>>>>> Stashed changes:app/templates/experiments.html
                             {% endif %}
                         </div>
                         <div class="d-flex flex-row">
@@ -225,10 +318,16 @@
                 </div>
             </div>
         </div>
+<<<<<<< Updated upstream:appfile/templates/experiments.html
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
         <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+=======
+        
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+>>>>>>> Stashed changes:app/templates/experiments.html
         <script type="text/javascript">
             $(document).ready(function() {
                 namespace="/test"
@@ -343,10 +442,10 @@
                         type : 'POST',
                         url : '{{ url_for("main.tasks", new_exp_id=new_exp_id, number=number) }}',
                         success:function(){
-                            alert("Session Sendt");
+                            // alert("Session Sendt");
                         },
                         error:function(){
-                            alert("Not able to send..");
+                            // alert("Not able to send..");
                         }
                     })
                     .done(function(data){
@@ -363,10 +462,10 @@
                         type : 'GET',
                         url : '{{ url_for("main.dashboard") }}',
                         success:function(){
-                            alert("analyt sendt!");
+                            // alert("analyt sendt!");
                         },
                         error:function(){
-                            alert("Not able to send..");
+                            // alert("Not able to send..");
                         }
                     })
                     .done(function(data){
@@ -377,5 +476,9 @@
                 });
             });
         </script>
+<<<<<<< Updated upstream:appfile/templates/experiments.html
+=======
+
+>>>>>>> Stashed changes:app/templates/experiments.html
     </body>
 </html>

@@ -1,9 +1,12 @@
-{% extends "bootstrap/base.html" %}
+<!doctype html>
+<html lang="en">
 
-{% block title %}
-About
-{% endblock %}
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<<<<<<< Updated upstream:appfile/templates/about.html
 {% block styles %}
 {{super()}}
 <link href="/static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -36,8 +39,44 @@ About
             <div class="d-flex flex-row justify-content-between">
                 <span class="Style6">Developer: Fredrik Skorstøl</span>
                 <span class="Style6">Contributor: Asim Hameed</span>
+=======
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Fonts CSS -->
+    <link href="//db.onlinewebfonts.com/c/3e7890fe20c81906d11ea20e5a89e27f?family=Clean+Ape" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+    <title>About</title>
+    </head>
+    <body class="d-flex flex-column text-center">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{{ url_for('main.profile') }}" class="Style1">STUX</a>
+            <div class="d-flex justify-content-evenly align-items-center" style="width: 50%;">
+                <a href="{{ url_for('main.about') }}" class="pe-auto Style3">About</a>
+                <a href="{{ url_for('main.features') }}" class="pe-auto Style3">Features</a>
+                <a href="{{ url_for('main.support') }}" class="pe-auto Style3">Support</a>
+>>>>>>> Stashed changes:app/templates/about.html
             </div>
         </div>
-    </div>
-</body>
-{% endblock %}
+        <div class="d-flex justify-content-center">
+            <span class="Style5">About:</span>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column justify-content-between border1 shadow" style ="width: 550px; height: 600px;">
+                <span class="Style4" style="margin-top: 15px;"> This application is created as part of a master project at 
+                    the Norwegian University of Science and Technology (NTNU). 
+                    The application is a toolkit used for evaluation purposes, 
+                    mostly designed for experiments conducted within the field of 
+                    Extended reality experiments. Its main goal is to make the total 
+                    evaluation process more efficient and easier to conduct, as well
+                    as having a common place to see your experiments and download desired results. </span>
+                <div class="d-flex flex-row justify-content-between">
+                    <span class="Style6" style="margin: 20px;">Developer: Fredrik Skorstøl</span>
+                    <span class="Style6" style="margin: 20px;">Contributor: Asim Hameed</span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
